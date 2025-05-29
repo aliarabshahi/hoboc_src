@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         "hoboc": "#1F9ECE",
-        "hoboc-dark": "#0086B9",
+        "hoboc-dark": "#0076A6",
       },
     },
   },
