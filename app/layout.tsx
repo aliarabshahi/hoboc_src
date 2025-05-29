@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Vazirmatn } from "next/font/google";
+
+
+const vazir = Vazirmatn({
+  subsets: ["arabic"], // includes Persian
+  display: "swap",
+});
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="fa">
+      <body className={vazir.className}>
+        {children}
+        </body>
     </html>
   );
 }
