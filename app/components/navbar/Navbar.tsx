@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import NavbarRight from "./NavbarRight";
-import NavbarCenter from "./NavbarCenter";
-import NavbarLeft from "./NavbarLeft";
+import NavbarLogo from "./NavbarLogo";
+import NavbarMenu from "./NavbarMenu";
+import NavbarLogin from "./NavbarLogin";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
@@ -28,30 +28,30 @@ export default function Navbar() {
         <div className="flex items-center md:gap-4 flex-1 md:flex-none justify-center md:justify-start">
           {/* HOBOC Logo */}
           <div className="md:mr-4">
-            <NavbarRight />
+            <NavbarLogo />
           </div>
 
           {/* Desktop menu */}
           <div className="hidden md:block">
-            <NavbarCenter />
+            <NavbarMenu />
           </div>
         </div>
 
         {/* Desktop buttons (shrink = false) */}
         <div className="hidden lg:flex">
-          <NavbarLeft shrink={false} />
+          <NavbarLogin shrink={false} />
         </div>
 
         {/* Mobile & mid-width login (shrink = true) */}
         <div className="block lg:hidden">
-          <NavbarLeft shrink={true} />
+          <NavbarLogin shrink={true} />
         </div>
       </div>
 
       {/* Mobile Menu content */}
       {menuOpen && (
         <div className="md:hidden px-4 pb-4" dir="rtl">
-          <NavbarCenter />
+          <NavbarMenu />
         </div>
       )}
     </div>

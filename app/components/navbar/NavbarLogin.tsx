@@ -4,7 +4,7 @@ interface Props {
   shrink: boolean;
 }
 
-export default function NavbarLeft({ shrink }: Props) {
+export default function NavbarLogin({ shrink }: Props) {
   if (shrink) {
     return (
       <div className="flex items-center gap-2">
