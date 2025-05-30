@@ -1,6 +1,6 @@
-# 🏠 HomeHero Component
+# 🏠 Hero Component
 
-The `HomeHero` component is a prominent hero section for the homepage, designed to introduce the community of Iranian developers. It includes a title, description, call-to-action button, and a supportive message with a link.
+The `Hero` component is a prominent hero section for the homepage, designed to introduce the community of Iranian developers. It includes a title, description, call-to-action button, and a supportive message with a link.
 
 ## ✨ Features
 
