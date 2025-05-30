@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         "hoboc": "#1F9ECE",
         "hoboc-dark": "#0076A6",
+        "custom-blue-for-hero-bg": "#EFFAFD",
       },
     },
   },
