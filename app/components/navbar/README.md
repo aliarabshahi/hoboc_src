@@ -13,7 +13,7 @@ A responsive, RTL-friendly navigation bar built with **React**, **Next.js**, and
 ## 🏗️ Structure
 ```
 components/
-└── Navbar/
+└── navbar/
     ├── Navbar.tsx
     ├── NavbarLogo.tsx
     ├── NavbarMenu.tsx
