@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Vazirmatn } from "next/font/google";
+import Navbar from "./components/navbar/Navbar";
+import Footer from "./components/footer/Footer";
 
 
 const vazir = Vazirmatn({
