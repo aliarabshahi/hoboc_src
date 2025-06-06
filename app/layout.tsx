@@ -5,12 +5,10 @@ import { Vazirmatn } from "next/font/google";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 
-
 const vazir = Vazirmatn({
   subsets: ["arabic"], // includes Persian
   display: "swap",
 });
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa">
-      <body className={vazir.className}>
+      <body className={`${vazir.className} bg-main-bg min-h-screen`}>
+        <Navbar />
         {children}
-        </body>
+        <Footer />
+      </body>
     </html>
   );
 }

@@ -9,7 +9,7 @@ export const getApiData = async (endpoint: string) => {
         Authorization: 'Token fb65966b2be41961bf8d41278c85782e3c0ee4a7',
       },
       cache: 'no-cache',
-      next: { revalidate: 3600 },
+      // next: { revalidate: 3600 },
     });
 
     if (!res.ok) {

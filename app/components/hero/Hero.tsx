@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeHero: React.FC = () => {
   return (
-    <div className="hero bg-base-200 bg-custom-blue-for-hero-bg pt-24 pb-24">
+    <div className="hero  bg-cyan-100 pt-24 pb-24">
       <div className="hero-content text-center">
         <div className="max-w-lg">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800" dir="rtl">از بیت تا بینش</h1>

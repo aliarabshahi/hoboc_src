@@ -1,22 +1,21 @@
 // app/page.tsx
-import Navbar from "./components/navbar/Navbar";
 import Hero from "./components/hero/Hero";
 import Vision from "./components/vision/Vision";
-import Footer from "./components/footer/Footer";
-import ApiTest from "./components/ApiTest";
-import ApiTest2 from "./components/courses/ApiTest2";
-import ApiTest3 from "./components/courses/ApiTest3";
+import RowLessonsData from "./components/courses/RowLessonsData";
+
+import CoursesCard from "./components/courses/courses_card/CoursesCard";
+import MainCoursesDetail from "./components/courses/MainCoursesDetail";
+import CoursesDetail from "./components/courses/courses_detail/CoursesDetail";
+
 export default function Home() {
   return (
     <main className="">
-      <Navbar />
       <Hero />
       <Vision />
-      {/* <ApiTest /> */}
-      <ApiTest3 />
-
-      <ApiTest2 />
-      <Footer />
+      {/* <CoursesCard /> */}
+      {/* <RowLessonsData /> */}
+      <CoursesDetail />
+      {/* <MainCoursesDetail /> */}
     </main>
   );
 }

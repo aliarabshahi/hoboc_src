@@ -1,7 +1,7 @@
 // app/components/courses/ApiTest2.tsx
 import { getApiData } from "@/app/services/api/getData";
 
-const ApiTest2 = async () => {
+const RowLessonsData = async () => {
   const { data, error, message } = await getApiData('/course-lessons/');
 
   if (error) {
@@ -15,4 +15,4 @@ const ApiTest2 = async () => {
   return <pre>{JSON.stringify(data, null, 2)}</pre>;
 };
 
-export default ApiTest2;
+export default RowLessonsData;
