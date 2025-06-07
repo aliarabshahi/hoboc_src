@@ -1,16 +1,27 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { Topic } from "@/app/types/course";
 
 type Props = {
   topic: Topic;
+  isActive: boolean;
+  onClick: () => void;
 };
 
-const CourseTopic = ({ topic }: Props) => {
+const CourseTopic = ({ topic, isActive, onClick }: Props) => {
   const isLocalhostImage = topic.image?.includes("localhost");
 
   return (
-    <div className="flex flex-col items-center justify-center text-center border-b-2 border-white opacity-60 hover:opacity-100 hover:border-gray-100 pb-2 transition-all duration-200">
+    <div
+      className={`flex flex-col items-center justify-center text-center border-b-2 pb-2 transition-all duration-200 ${
+        isActive
+          ? "opacity-100 border-gray-100"
+          : "opacity-60 border-white hover:opacity-100 hover:border-gray-100"
+      }`}
+      onClick={onClick}
+    >
       <Image
         src={topic.image}
         alt={topic.title}
