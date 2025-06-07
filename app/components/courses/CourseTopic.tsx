@@ -1,6 +1,6 @@
+// app/components/courses/CourseTopic.tsx
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import { Topic } from "@/app/types/course";
 
@@ -15,7 +15,7 @@ const CourseTopic = ({ topic, isActive, onClick }: Props) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center text-center border-b-2 pb-2 transition-all duration-200 ${
+      className={`flex flex-col items-center justify-center text-center border-b-2 pb-2 transition-all duration-200 cursor-pointer ${
         isActive
           ? "opacity-100 border-gray-100"
           : "opacity-60 border-white hover:opacity-100 hover:border-gray-100"
