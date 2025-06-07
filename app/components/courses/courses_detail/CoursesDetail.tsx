@@ -7,13 +7,7 @@ import CourseTopicList from "../CourseTopicList";
 import { getApiData } from "@/app/services/api/getData";
 import { Course } from "@/app/types/course";
 
-interface CoursesDetailProps {
-  params: {
-    slug: string;
-  };
-}
-
-const CoursesDetail = async ({ params }: CoursesDetailProps) => {
+const CoursesDetail = async () => {
   const { data: courseData, error } = await getApiData(`/course-lessons/`);
 
   if (error) {
