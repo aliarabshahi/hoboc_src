@@ -22,14 +22,19 @@ export interface Instructor {
 
 export interface Course {
   id: number;
-  topic: string | Topic; // Can be string or full Topic object
-  instructor: Instructor;
+  topic: string | Topic; // slug or full object
+  instructor: Instructor | null;
   tags: Tag[];
   title: string;
   slug: string;
   description: string;
-  thumbnail: string;
+  pdf_file: string | null;
+  video_file: string | null;
+  video_url: string | null;
+  thumbnail: string | null;
+  is_published: boolean;
+  is_free: boolean;
+  duration: number; // in minutes
+  created_at: string;
   updated_at: string;
-  price?: number;
-  duration?: string;
 }

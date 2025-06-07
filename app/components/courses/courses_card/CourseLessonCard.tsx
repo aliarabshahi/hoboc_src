@@ -9,7 +9,7 @@ interface CourseLessonCardProps {
 const CourseLessonCard = ({ course }: CourseLessonCardProps) => {
   const isLocalhostImage = course.thumbnail?.includes("localhost");
   const isLocalhostProfile =
-    course.instructor.profile_picture?.includes("localhost");
+    course.instructor?.profile_picture?.includes("localhost");
 
   return (
     <Link href={`/courses/${course.slug}`} key={course.id} className="group">
