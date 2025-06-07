@@ -1,34 +1,33 @@
 import React from "react";
-import Image from "next/image";
-import { FaStar } from "react-icons/fa";
+import { Course } from "@/app/types/course";
 
-type Course = {
-  id: string;
-  title: string;
-  description: string;
-  instructor: string;
-  category: string;
-  rating: number;
-  students: number;
-};
+interface CoursesDetailHeaderProps {
+  course: Course;
+}
 
-const CoursesDetailHeader = () => {
-  const courseData: Course = {
-    id: "react-advanced-2024",
-    title: "الگوهای پیشرفته ری‌اکت",
-    description: "بر مفاهیم پیشرفته ری‌اکت و الگوهای طراحی مورد استفاده توسعه‌دهندگان ارشد در شرکت‌های برتر فناوری مسلط شوید.",
-    instructor: "سارا جانسون",
-    category: "توسعه فرانت‌اند",
-    rating: 4.9,
-    students: 2450,
-  };
-
+const CoursesDetailHeader = ({ course }: CoursesDetailHeaderProps) => {
   return (
     <div className="mb-8" dir="rtl">
-      <h1 className="text-2xl font-bold mt-2">{courseData.title}</h1>
-      <p className="text-md opacity-80 mt-2">{courseData.description}</p>
+      <h1 className="text-2xl font-bold mt-2">{course.title}</h1>
+      <p className="text-md opacity-80 mt-2">{course.description}</p>
       
-      
+      {/* <div className="flex items-center mt-4">
+        {course.instructor && (
+          <div className="flex items-center ml-6">
+            <span className="text-sm opacity-70">مدرس:</span>
+            <span className="font-medium mr-2">
+              {(course.instructor as any)?.user?.name || 'نامعلوم'}
+            </span>
+          </div>
+        )}
+        
+        <div className="flex items-center">
+          <span className="text-sm opacity-70">دسته‌بندی:</span>
+          <span className="font-medium mr-2">
+            {(course.topic as any)?.title || course.topic}
+          </span>
+        </div>
+      </div> */}
     </div>
   );
 };
