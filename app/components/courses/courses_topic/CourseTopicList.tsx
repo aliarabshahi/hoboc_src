@@ -1,4 +1,3 @@
-// app/components/courses_topic/CourseTopicList.tsx
 "use client";
 
 import { useTopicStore } from "@/app/stores/topicStore";
@@ -47,7 +46,9 @@ const CourseTopicList = ({ initialTopics }: CourseTopicListProps) => {
   }, [setActiveTopic, activeTopic, initialTopics]);
 
   const handleTopicClick = (topic: CoursesTopic) => {
-    setActiveTopic(activeTopic?.slug === topic.slug ? null : topic);
+    if (activeTopic?.slug !== topic.slug) {
+      setActiveTopic(topic);
+    }
   };
 
   if (isLoading) {
