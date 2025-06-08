@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Course } from "@/app/types/course";
+import { CoursesLesson } from "@/app/types/coursesType";
 
 interface CourseLessonCardProps {
-  course: Course;
+  course: CoursesLesson;
 }
 
 const CourseLessonCard = ({ course }: CourseLessonCardProps) => {

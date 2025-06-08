@@ -1,12 +1,13 @@
 // stores/topicStore.ts
 import { create } from "zustand";
+import { CoursesTopic } from "@/app/types/coursesType";
 
 interface TopicStore {
-  activeTopicSlug: string | null;
-  setActiveTopicSlug: (slug: string | null) => void;
+  activeTopic: CoursesTopic | null;
+  setActiveTopic: (topic: CoursesTopic | null) => void;
 }
 
 export const useTopicStore = create<TopicStore>((set) => ({
-  activeTopicSlug: null,
-  setActiveTopicSlug: (slug) => set({ activeTopicSlug: slug }),
+  activeTopic: null,
+  setActiveTopic: (topic) => set({ activeTopic: topic }),
 }));

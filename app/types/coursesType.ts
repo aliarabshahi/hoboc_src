@@ -1,4 +1,12 @@
-export interface Topic {
+export interface ApiResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+
+export interface CoursesTopic {
   id: number;
   title: string;
   slug: string;
@@ -7,24 +15,24 @@ export interface Topic {
   is_published: boolean;
 }
 
-export interface Tag {
+export interface CoursesTag {
   id: number;
   name: string;
   slug: string;
 }
 
-export interface Instructor {
+export interface CoursesInstructor {
   id: number;
   user: string;
   bio: string;
   profile_picture: string;
 }
 
-export interface Course {
+export interface CoursesLesson {
   id: number;
-  topic: string | Topic; // slug or full object
-  instructor: Instructor | null;
-  tags: Tag[];
+  topic: string | CoursesTopic; // slug or full object
+  instructor: CoursesInstructor | null;
+  tags: CoursesTag[];
   title: string;
   slug: string;
   description: string;

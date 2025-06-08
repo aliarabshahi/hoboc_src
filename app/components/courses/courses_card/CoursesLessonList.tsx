@@ -1,8 +1,8 @@
 import CourseLessonCard from "./CourseLessonCard";
-import { Course } from "@/app/types/course";
+import { CoursesLesson } from "@/app/types/coursesType";
 
 interface CoursesLessonListProps {
-  courses: Course[];
+  courses: CoursesLesson[];
 }
 
 const CoursesLessonList = ({ courses }: CoursesLessonListProps) => {

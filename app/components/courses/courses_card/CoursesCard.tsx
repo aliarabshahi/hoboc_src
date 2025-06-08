@@ -1,7 +1,7 @@
-import { getApiData } from "@/app/services/api/getData";
+import { getApiData } from "@/app/services/api/apiServerFetch";
 import CoursesLessonList from "./CoursesLessonList";
-import { Course } from "@/app/types/course";
-import CourseTopicList from "../CourseTopicList";
+import { CoursesLesson } from "@/app/types/coursesType";
+import CourseTopicList from "../courses_topic/CourseTopicList";
 
 const CoursesCard = async () => {
   const { data, error } = await getApiData("/course-lessons/");
@@ -22,7 +22,7 @@ const CoursesCard = async () => {
     );
   }
 
-  const courses = data as Course[];
+  const courses = data as CoursesLesson[];
 
   return (
     <section className="py-12" dir="rtl">

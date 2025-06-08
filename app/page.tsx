@@ -6,8 +6,6 @@ import RowLessonsData from "./components/courses/RowLessonsData";
 import CoursesCard from "./components/courses/courses_card/CoursesCard";
 import MainCoursesDetail from "./components/courses/MainCoursesDetail";
 import CoursesDetail from "./components/courses/courses_detail/CoursesDetail";
-import ActiveTopicDisplay from "./components/ActiveTopicDisplay";
-import CourseLessons from "./components/CourseLessons";
 export default function Home() {
   return (
     <main className="">
@@ -17,8 +15,6 @@ export default function Home() {
       {/* <RowLessonsData /> */}
       <CoursesDetail />
       {/* <MainCoursesDetail /> */}
-      <ActiveTopicDisplay />
-      <CourseLessons />
     </main>
   );
 }

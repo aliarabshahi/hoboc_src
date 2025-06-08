@@ -2,10 +2,10 @@
 "use client";
 
 import Image from "next/image";
-import { Topic } from "@/app/types/course";
+import { CoursesTopic } from "@/app/types/coursesType";
 
 type Props = {
-  topic: Topic;
+  topic: CoursesTopic;
   isActive: boolean;
   onClick: () => void;
 };

@@ -1,8 +1,8 @@
 // app/components/courses/ApiTest2.tsx
-import { getApiData } from "@/app/services/api/getData";
+import { getApiData } from "@/app/services/api/apiServerFetch";
 
 const RowLessonsData = async () => {
-  const { data, error, message } = await getApiData('/course-lessons/');
+  const { data, error, message } = await getApiData("/course-lessons/");
 
   if (error) {
     return <div>{error}</div>; // Shows all error messages including 403

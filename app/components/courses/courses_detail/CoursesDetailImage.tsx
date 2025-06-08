@@ -1,22 +1,44 @@
 "use client";
 
 import Image from "next/image";
+import { CoursesTopic } from "@/app/types/coursesType";
 
-const CoursesDetailImage = ({ course }: { course: any }) => {
+interface CoursesDetailImageProps {
+  topic: CoursesTopic | null;
+}
+
+const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
+  if (!topic) {
+    return (
+      <div
+        className="relative aspect-video rounded-box overflow-hidden shadow-xl flex-shrink-0 bg-gray-200 flex items-center justify-center"
+        dir="rtl"
+      >
+        <div className="text-gray-500">هیچ موضوعی انتخاب نشده است</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative aspect-video rounded-box overflow-hidden shadow-xl flex-shrink-0" dir="rtl">
+    <div
+      className="relative aspect-video rounded-box overflow-hidden shadow-xl flex-shrink-0"
+      dir="rtl"
+    >
       <Image
-        src={course.thumbnail || "/logo.png"}
-        alt={course.title || "Course image"}
+        src={topic.image || "/logo.png"}
+        alt={topic.title}
         fill
         className="object-cover"
         priority
-        unoptimized={process.env.NODE_ENV !== 'production'} // Only optimize in production
+        unoptimized={process.env.NODE_ENV !== "production"}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
       <div className="absolute bottom-0 right-0 p-6">
         <span className="badge badge-accent mb-2">متوسط</span>
-        <h2 className="text-2xl font-bold text-white">{course.title}</h2>
+        <h2 className="text-2xl font-bold text-white">{topic.title}</h2>
+        {topic.description && (
+          <p className="text-white/80 text-sm mt-1">{topic.description}</p>
+        )}
       </div>
     </div>
   );
