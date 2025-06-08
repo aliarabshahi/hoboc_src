@@ -7,21 +7,68 @@ import CoursesDetailImage from "./CoursesDetailImage";
 import CourseTopicList from "../courses_topic/CourseTopicList";
 import { fetchApiData } from "@/app/services/api/apiClientAxios";
 import { useTopicStore } from "@/app/stores/topicStore";
+import { CoursesTopic } from "@/app/types/coursesType";
 
-const CoursesDetail = () => {
-  const activeTopic = useTopicStore((state) => state.activeTopic);
+interface CoursesDetailProps {
+  initialTopic: CoursesTopic | null;
+  topics: CoursesTopic[];
+}
+
+const SkeletonLoader = () => (
+  <>
+    {/* Header skeleton */}
+    <div className="mb-8 h-20 bg-gray-200 rounded animate-pulse" dir="rtl"></div>
+    
+    {/* Content skeleton */}
+    <div className="flex flex-col lg:flex-row gap-8" dir="rtl">
+      <div className="lg:w-2/3 bg-gray-100 rounded-box p-6 h-64 animate-pulse"></div>
+      <div className="lg:w-1/3 flex flex-col gap-6">
+        <div className="relative aspect-video bg-gray-100 rounded-box animate-pulse"></div>
+      </div>
+    </div>
+  </>
+);
+
+const NoTopicSelected = () => (
+  <div className="flex flex-col items-center justify-center py-12">
+    <div className="w-32 h-32 bg-gray-100 rounded-full mb-4"></div>
+    <p className="text-lg text-gray-500">لطفاً یک موضوع را انتخاب کنید</p>
+  </div>
+);
+
+const CourseNotFound = () => (
+  <div className="flex flex-col items-center justify-center py-12">
+    <div className="w-32 h-32 bg-gray-100 rounded-full mb-4"></div>
+    <p className="text-lg text-gray-500">دوره مورد نظر یافت نشد</p>
+  </div>
+);
+
+const CoursesDetail = ({ initialTopic, topics }: CoursesDetailProps) => {
+  const { activeTopic, setActiveTopic } = useTopicStore();
   const [courseData, setCourseData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initialTopic && !activeTopic) {
+      setActiveTopic(initialTopic);
+    }
+  }, [initialTopic, activeTopic, setActiveTopic]);
+
+  useEffect(() => {
     const fetchData = async () => {
+      if (!activeTopic) {
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true);
       setError(null);
 
       try {
-        const params = activeTopic ? { topic: activeTopic.slug } : undefined;
-        const data = await fetchApiData<any>("course-lessons", params);
+        const data = await fetchApiData<any>("course-lessons", { 
+          topic: activeTopic.slug 
+        });
         setCourseData(data.results[0]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
@@ -35,38 +82,30 @@ const CoursesDetail = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-      <CourseTopicList />
+      <CourseTopicList initialTopics={topics} />
 
-      {loading && (
-        <div className="flex justify-center items-center h-64">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
-
-      {error && (
+      {loading ? (
+        <SkeletonLoader />
+      ) : error ? (
         <div className="alert alert-error" dir="rtl">
           {error}
         </div>
-      )}
-
-      {!loading && (
+      ) : !activeTopic ? (
+        <NoTopicSelected />
+      ) : (
         <>
           <CoursesDetailHeader topic={activeTopic} />
-          {courseData && (
+          {courseData ? (
             <div className="flex flex-col lg:flex-row gap-8" dir="rtl">
               <CoursesDetailContent course={courseData} />
               <div className="lg:w-1/3 flex flex-col gap-6">
                 <CoursesDetailImage topic={activeTopic} />
               </div>
             </div>
+          ) : (
+            <CourseNotFound />
           )}
         </>
-      )}
-
-      {!loading && !courseData && !error && (
-        <div className="alert alert-info" dir="rtl">
-          دوره مورد نظر یافت نشد
-        </div>
       )}
     </div>
   );

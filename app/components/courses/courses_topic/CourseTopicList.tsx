@@ -1,19 +1,26 @@
-// CourseTopicList.tsx
+// app/components/courses_topic/CourseTopicList.tsx
 "use client";
 
 import { useTopicStore } from "@/app/stores/topicStore";
-import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesTopic } from "@/app/types/coursesType";
 import CourseTopic from "./CourseTopic";
 import { useEffect, useState } from "react";
+import { getApiData } from "@/app/services/api/apiServerFetch";
 
-const CourseTopicList = () => {
+interface CourseTopicListProps {
+  initialTopics: CoursesTopic[];
+}
+
+const CourseTopicList = ({ initialTopics }: CourseTopicListProps) => {
   const { activeTopic, setActiveTopic } = useTopicStore();
-  const [topics, setTopics] = useState<CoursesTopic[]>([]);
+  const [topics, setTopics] = useState<CoursesTopic[]>(initialTopics || []);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialTopics?.length);
 
   useEffect(() => {
+    // Only fetch if we didn't get initial data from server
+    if (initialTopics?.length > 0) return;
+
     const fetchData = async () => {
       try {
         setIsLoading(true);
@@ -25,7 +32,6 @@ const CourseTopicList = () => {
           const topicsData = data as CoursesTopic[];
           setTopics(topicsData);
 
-          // Automatically select the first topic if none is active
           if (topicsData.length > 0 && !activeTopic) {
             setActiveTopic(topicsData[0]);
           }
@@ -38,14 +44,14 @@ const CourseTopicList = () => {
     };
 
     fetchData();
-  }, [setActiveTopic, activeTopic]);
+  }, [setActiveTopic, activeTopic, initialTopics]);
 
   const handleTopicClick = (topic: CoursesTopic) => {
     setActiveTopic(activeTopic?.slug === topic.slug ? null : topic);
   };
 
   if (isLoading) {
-    return <div className="flex justify-center py-4">Loading...</div>;
+    return <div className="flex justify-center py-4">Loading topics...</div>;
   }
 
   if (error) {

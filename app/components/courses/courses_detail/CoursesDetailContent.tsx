@@ -10,12 +10,10 @@ import { useTopicStore } from "@/app/stores/topicStore";
 const CoursesDetailContent = ({ course }: { course: any }) => {
   const activeTopic = useTopicStore((state) => state.activeTopic);
   const [lessons, setLessons] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLessons = async () => {
-      setLoading(true);
       setError(null);
 
       try {
@@ -24,18 +22,14 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
         setLessons(data.results);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchLessons();
   }, [activeTopic?.slug]); // Only re-run if the topic slug changes
 
-  if (loading) return <div>Loading lessons...</div>;
   if (error) return <div className="alert alert-error">{error}</div>;
-  if (!lessons.length)
-    return <div className="alert alert-info">درسی برای نمایش وجود ندارد</div>;
+  if (!lessons.length) return null;
 
   return (
     <div className="lg:w-2/3 bg-base-100 rounded-box shadow-md p-6" dir="rtl">
