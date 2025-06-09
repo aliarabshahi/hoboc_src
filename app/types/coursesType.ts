@@ -9,9 +9,11 @@ export interface ApiResponse<T> {
 export interface CoursesTopic {
   id: number;
   title: string;
+  catchy_title: string;
   slug: string;
   description: string;
   image: string;
+  logo_file: string;
   is_published: boolean;
 }
 

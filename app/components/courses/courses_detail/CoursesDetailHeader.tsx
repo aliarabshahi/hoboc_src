@@ -16,7 +16,7 @@ const CoursesDetailHeader = ({ topic }: CoursesDetailHeaderProps) => {
 
   return (
     <div className="mb-8" dir="rtl">
-      <h1 className="text-2xl font-bold mt-2">{topic.title}</h1>
+      <h1 className="text-2xl font-bold mt-2">{topic.catchy_title}</h1>
       <p className="text-md opacity-80 mt-2">{topic.description}</p>
 
       {/* <div className="flex items-center mt-4">

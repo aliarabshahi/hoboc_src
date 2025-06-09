@@ -23,7 +23,7 @@ const CourseTopic = ({ topic, isActive, onClick }: Props) => {
       onClick={onClick}
     >
       <Image
-        src={topic.image}
+        src={topic.logo_file}
         alt={topic.title}
         width={48}
         height={48}
