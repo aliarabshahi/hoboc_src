@@ -1,5 +1,7 @@
 // app/page.tsx
 import Hero from "./components/hero/Hero";
+import NewHero from "./components/hero/NewHero";
+
 import Vision from "./components/vision/Vision";
 import RowLessonsData from "./components/courses/RowLessonsData";
 
@@ -10,7 +12,9 @@ import CoursesDetailWrapper from "./components/courses/courses_detail/CoursesDet
 export default function Home() {
   return (
     <main className="">
-      <Hero />
+      {/* <Hero /> */}
+            <NewHero />
+
       <Vision />
       {/* <CoursesCard /> */}
       {/* <RowLessonsData /> */}

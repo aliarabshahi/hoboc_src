@@ -8,7 +8,7 @@ export default function Vision() {
       {/* Flex direction changes based on screen size */}
       <div className="flex flex-col lg:flex-row-reverse items-start gap-6 lg:gap-8">
         {/* Image - Appears first visually in both layouts */}
-        <div className="w-full md:w-4/5 mx-auto lg:flex-[3] lg:w-auto lg:order-2 pt-10">
+        <div className="w-full md:w-4/5 mx-auto lg:flex-[3] lg:w-auto lg:order-2 ">
           <VisionImage className="max-w-[500px] mx-auto" />
         </div>
         
