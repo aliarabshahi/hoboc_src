@@ -5,9 +5,11 @@ type NewHeroBackgroundProps = {
   toColor?: string;
 };
 
+//   fromColor = '#ff80b5',
+//   toColor = '#9089fc',
 export default function NewHeroBackground({
-  fromColor = '#ff80b5',
-  toColor = '#9089fc',
+fromColor = '#1F9ECD',
+toColor = '#3ddbd9',
 }: NewHeroBackgroundProps) {
   return (
     <>
