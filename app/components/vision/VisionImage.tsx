@@ -6,7 +6,7 @@ export default function VisionImage({ className }: { className?: string }) {
   return (
     <div className={`${className}`}>
       <Image
-        src="/vision.svg"
+        src="/hero_images/22.jpg"
         alt="Vision Image"
         width={600}
         height={600}
