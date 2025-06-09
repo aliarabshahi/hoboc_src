@@ -1,4 +1,3 @@
-// components/footer/FooterNavbar.tsx
 import Link from "next/link";
 
 const navItems = [
@@ -27,13 +26,15 @@ export default function FooterNavbar() {
     <div className="flex justify-between gap-8">
       {navItems.map((item, index) => (
         <nav key={index} className="flex-1 space-y-2">
-          <h6 className="footer-title text-lg font-bold whitespace-nowrap">{item.title}</h6>
+          <h6 className=" text-lg font-bold text-black whitespace-nowrap">
+            {item.title}
+          </h6>
           <div className="flex flex-col space-y-1">
             {item.links.map((link, linkIndex) => (
               <Link
                 key={linkIndex}
                 href={link.href}
-                className="text-sm transition-colors whitespace-nowrap hover:no-underline"
+                className="text-sm text-gray-500 hover:text-gray-400 transition-colors whitespace-nowrap"
               >
                 {link.text}
               </Link>

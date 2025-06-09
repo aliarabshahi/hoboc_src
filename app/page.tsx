@@ -9,6 +9,7 @@ import CoursesCard from "./components/courses/courses_card/CoursesCard";
 import MainCoursesDetail from "./components/courses/MainCoursesDetail";
 import CoursesDetail from "./components/courses/courses_detail/CoursesDetail";
 import CoursesDetailWrapper from "./components/courses/courses_detail/CoursesDetailWrapper";
+import Looser from "./components/loser/Looser";
 export default function Home() {
   return (
     <main className="">
@@ -20,6 +21,7 @@ export default function Home() {
       {/* <RowLessonsData /> */}
       <CoursesDetailWrapper />
       {/* <MainCoursesDetail /> */}
+      <Looser/>
     </main>
   );
 }
