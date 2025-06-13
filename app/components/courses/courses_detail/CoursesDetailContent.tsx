@@ -26,7 +26,7 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
     };
 
     fetchLessons();
-  }, [activeTopic?.slug]); // Only re-run if the topic slug changes
+  }, [activeTopic?.slug]);
 
   if (error) return <div className="alert alert-error">{error}</div>;
   if (!lessons.length) return null;
@@ -42,8 +42,9 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
         <div className="space-y-3">
           {lessons.map((lesson, index) => (
             <Link
-              href={`/course/${course.slug}/lesson/${lesson.slug}`}
+              href={`/course/${activeTopic?.slug}/lesson/${lesson.slug}`} 
               key={lesson.id}
+              passHref
             >
               <div className="flex items-center justify-between p-4 hover:bg-base-200 rounded-lg transition-colors duration-200 cursor-pointer">
                 <div className="flex items-center">
