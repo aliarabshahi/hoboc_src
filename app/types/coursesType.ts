@@ -26,6 +26,7 @@ export interface CoursesTag {
 export interface CoursesInstructor {
   id: number;
   user: string;
+  name: string;
   bio: string;
   profile_picture: string;
 }
