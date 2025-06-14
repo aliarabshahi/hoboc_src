@@ -67,7 +67,7 @@ const CoursesDetail = ({ initialTopic, topics }: CoursesDetailProps) => {
 
       try {
         const data = await fetchApiData<any>("course-lessons", { 
-          topic: activeTopic.slug 
+          'topic-slug': activeTopic.slug 
         });
         setCourseData(data.results[0]);
       } catch (err) {

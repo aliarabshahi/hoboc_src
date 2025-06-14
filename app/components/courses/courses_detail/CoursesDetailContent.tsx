@@ -17,7 +17,7 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
       setError(null);
 
       try {
-        const params = activeTopic ? { topic: activeTopic.slug } : undefined;
+        const params = activeTopic ? { 'topic-slug': activeTopic.slug } : undefined;
         const data = await fetchApiData<any>("course-lessons", params);
         setLessons(data.results);
       } catch (err) {
@@ -42,7 +42,7 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
         <div className="space-y-3">
           {lessons.map((lesson, index) => (
             <Link
-              href={`/course/${activeTopic?.slug}/lesson/${lesson.slug}`} 
+              href={`/courses/${activeTopic?.slug}/lesson/${lesson.slug}`} 
               key={lesson.id}
               passHref
             >
