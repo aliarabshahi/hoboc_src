@@ -5,6 +5,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { ZoomIn, ZoomOut, Download, Maximize, Minimize } from "lucide-react";
+import { FaSpinner } from "react-icons/fa";
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 
@@ -71,6 +72,18 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     setIsFullscreen(!isFullscreen);
   };
 
+  const LoadingSpinner = () => (
+    <div className="flex items-center justify-center h-full py-16">
+      <FaSpinner className="animate-spin text-4xl text-hoboc" />
+    </div>
+  );
+
+  const PageLoadingSpinner = () => (
+    <div className="flex items-center justify-center h-full py-16">
+      <FaSpinner className="animate-spin text-3xl text-hoboc" />
+    </div>
+  );
+
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
       {/* Enhanced Dark Top Controls Bar */}
@@ -125,14 +138,14 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         <Document
           file={pdfUrl}
           onLoadSuccess={onDocumentLoadSuccess}
-          loading={<div className="flex items-center justify-center h-full">در حال بارگذاری سند...</div>}
+          loading={<LoadingSpinner />}
         >
           <Page
             pageNumber={pageNumber}
             width={containerWidth * scale}
             renderAnnotationLayer={false}
             renderTextLayer={true}
-            loading={<div className="flex items-center justify-center h-full">در حال بارگذاری صفحه...</div>}
+            loading={<PageLoadingSpinner />}
           />
         </Document>
       </div>
