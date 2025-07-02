@@ -10,14 +10,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 
 interface PdfViewerProps {
   pdfUrl: string;
-  isFullscreen: boolean;
-  onFullscreenToggle: () => void;
 }
 
-const PdfViewer = ({ pdfUrl, isFullscreen, onFullscreenToggle }: PdfViewerProps) => {
+const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
@@ -32,7 +31,7 @@ const PdfViewer = ({ pdfUrl, isFullscreen, onFullscreenToggle }: PdfViewerProps)
     window.addEventListener('resize', updateWidth);
 
     return () => window.removeEventListener('resize', updateWidth);
-  }, [isFullscreen]); // Added isFullscreen as dependency
+  }, [isFullscreen]);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -51,6 +50,10 @@ const PdfViewer = ({ pdfUrl, isFullscreen, onFullscreenToggle }: PdfViewerProps)
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
   };
 
   return (
@@ -88,7 +91,7 @@ const PdfViewer = ({ pdfUrl, isFullscreen, onFullscreenToggle }: PdfViewerProps)
             </button>
           </div>
           <button
-            onClick={onFullscreenToggle}
+            onClick={toggleFullscreen}
             className="p-2 rounded hover:bg-gray-100 text-gray-700"
             title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
           >
