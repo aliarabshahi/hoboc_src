@@ -19,18 +19,33 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
     const updateWidth = () => {
       if (containerRef.current) {
         setContainerWidth(containerRef.current.offsetWidth);
       }
     };
 
+    checkIfMobile();
     updateWidth();
-    window.addEventListener('resize', updateWidth);
+    
+    window.addEventListener('resize', () => {
+      checkIfMobile();
+      updateWidth();
+    });
 
-    return () => window.removeEventListener('resize', updateWidth);
+    return () => {
+      window.removeEventListener('resize', () => {
+        checkIfMobile();
+        updateWidth();
+      });
+    };
   }, [isFullscreen]);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
@@ -57,50 +72,52 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   };
 
   return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'border rounded-lg shadow-lg'} flex flex-col h-full`}>
-      {/* Top Controls Bar */}
-      <div className="bg-white border-b flex items-center justify-between p-3">
+    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
+      {/* Enhanced Dark Top Controls Bar */}
+      <div className="bg-gray-800 border-gray-700 flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
           <button
             onClick={downloadPdf}
-            className="p-2 rounded hover:bg-gray-100 text-gray-700"
+            className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
             title="دانلود"
           >
-            <Download size={18} />
+            <Download size={isMobile ? 16 : 18} />
           </button>
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 bg-gray-700 rounded-md p-1">
             <button
               onClick={zoomOut}
               disabled={scale <= 0.5}
-              className={`p-2 rounded ${scale <= 0.5 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 text-gray-700'}`}
+              className={`p-2 rounded-md ${scale <= 0.5 ? 'opacity-50 cursor-not-allowed text-gray-400' : 'hover:bg-gray-600 text-gray-200 hover:text-white'} transition-colors`}
               title="کوچک‌نمایی"
             >
-              <ZoomOut size={18} />
+              <ZoomOut size={isMobile ? 16 : 18} />
             </button>
-            <span className="text-sm font-medium text-gray-700">{Math.round(scale * 100)}%</span>
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200 px-1`}>
+              {Math.round(scale * 100)}%
+            </span>
             <button
               onClick={zoomIn}
               disabled={scale >= 2.5}
-              className={`p-2 rounded ${scale >= 2.5 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 text-gray-700'}`}
+              className={`p-2 rounded-md ${scale >= 2.5 ? 'opacity-50 cursor-not-allowed text-gray-400' : 'hover:bg-gray-600 text-gray-200 hover:text-white'} transition-colors`}
               title="بزرگ‌نمایی"
             >
-              <ZoomIn size={18} />
+              <ZoomIn size={isMobile ? 16 : 18} />
             </button>
           </div>
           <button
             onClick={toggleFullscreen}
-            className="p-2 rounded hover:bg-gray-100 text-gray-700"
+            className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
             title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
           >
-            {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+            {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
           </button>
         </div>
       </div>
 
-      {/* PDF Content - Full width with no padding */}
+      {/* PDF Content */}
       <div 
         ref={containerRef}
         className="flex-1 overflow-auto bg-white w-full flex justify-center"
@@ -120,31 +137,31 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         </Document>
       </div>
 
-      {/* Bottom Navigation Bar - Buttons on sides */}
-      <div className="bg-white border-t flex items-center justify-between p-3">
+      {/* Bottom Navigation Bar */}
+      <div className="bg-gray-800 border-t border-gray-700 flex items-center justify-between p-3">
         <button
           onClick={goToPrevPage}
           disabled={pageNumber <= 1}
-          className={`px-5 py-2 rounded-md text-base font-medium transition-colors ${
+          className={`${isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'} rounded-md font-medium transition-colors ${
             pageNumber <= 1 
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-              : 'bg-hoboc text-white hover:bg-hoboc-dark'
+              ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
+              : "bg-hoboc text-white hover:bg-hoboc-dark"
           }`}
         >
           قبلی
         </button>
         
-        <span className="text-sm font-medium text-gray-700">
+        <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200`}>
           صفحه {pageNumber} از {numPages || '--'}
         </span>
         
         <button
           onClick={goToNextPage}
           disabled={!numPages || pageNumber >= numPages}
-          className={`px-5 py-2 rounded-md text-base font-medium transition-colors ${
+          className={`${isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'} rounded-md font-medium transition-colors ${
             !numPages || pageNumber >= numPages 
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-              : 'bg-hoboc text-white hover:bg-hoboc-dark'
+              ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
+              : "bg-hoboc text-white hover:bg-hoboc-dark"
           }`}
         >
           بعدی
