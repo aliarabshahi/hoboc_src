@@ -1,9 +1,10 @@
 // app/course/[topicSlug]/lesson/[lessonSlug]/page.tsx
-import { getApiData } from "@/app/services/api/apiServerFetch";
-import LessonContentMain from "@/app/courses/components/lessons/LessonContentMain";
-import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
-import LessonContent from "@/app/courses/components/lessons/LessonContent";
+"use client";
+
+import { useState } from "react";
 import PdfViewer from "@/app/courses/components/lessons/PdfViewer";
+import LessonContent from "@/app/courses/components/lessons/LessonContent";
+import LessonContentMain from "@/app/courses/components/lessons/LessonContentMain";
 interface Params {
   params: {
     topicSlug: string;
@@ -11,17 +12,25 @@ interface Params {
   };
 }
 
-export default async function LessonPage({ params }: Params) {
+export default function LessonPage({ params }: Params) {
   const { topicSlug, lessonSlug } = params;
-  
-  console.log("Received slugs - Topic:", topicSlug, "Lesson:", lessonSlug);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Minimal version - just pass the slugs to the component
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* <LessonContentMain topicSlug={topicSlug} lessonSlug={lessonSlug} /> */}
-      <PdfViewer pdfUrl="http://localhost/hoboc/media/courses/lessons/pdfs/RvuTMEe.pdf" />
+      {/* Your lesson content */}
       {/* <LessonContent topicSlug={topicSlug} lessonSlug={lessonSlug} /> */}
+      {/* PDF Viewer - embedded by default */}
+      <div className="mt-8 border rounded-lg shadow-lg overflow-hidden">
+        <PdfViewer
+          pdfUrl="http://localhost/hoboc/media/courses/lessons/pdfs/RvuTMEe.pdf"
+          isFullscreen={isFullscreen}
+          onFullscreenToggle={() => setIsFullscreen(!isFullscreen)}
+        />
+      </div>
+      <LessonContentMain topicSlug={topicSlug} lessonSlug={lessonSlug} />
+
+      {/* More lesson content can go here */}
     </div>
   );
 }
