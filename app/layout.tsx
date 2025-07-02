@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Vazirmatn } from "next/font/google";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import localFont from 'next/font/local';
 
-const vazir = Vazirmatn({
-  subsets: ["arabic"], // includes Persian
-  display: "swap",
+const vazir = localFont({
+  src: [
+    {
+      path: '../public/fonts/vazirmatn/Vazirmatn-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/vazirmatn/Vazirmatn-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-vazir',
 });
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa">
-      <body className={`${vazir.className} bg-main-bg min-h-screen`}>
+    <html lang="fa" dir="rtl" className={`${vazir.variable}`}>
+      <body className="font-sans bg-main-bg min-h-screen">
         <Navbar />
         {children}
         <Footer />

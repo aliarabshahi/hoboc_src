@@ -19,8 +19,8 @@ export default async function LessonPage({ params }: Params) {
   // Minimal version - just pass the slugs to the component
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* <LessonContentMain topicSlug={topicSlug} lessonSlug={lessonSlug} /> */}
-      <PdfViewer />
+      <LessonContentMain topicSlug={topicSlug} lessonSlug={lessonSlug} />
+      <PdfViewer pdfUrl="http://localhost/hoboc/media/courses/lessons/pdfs/دوره_ایرفلو_RvuTMEe.pdf" />
       <LessonContent topicSlug={topicSlug} lessonSlug={lessonSlug} />
     </div>
   );
