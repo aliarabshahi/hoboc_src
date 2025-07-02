@@ -1,33 +1,11 @@
 // app/components/courses/courses_detail/LessonContent.tsx
-import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson } from "@/app/types/coursesType";
 
 interface LessonContentProps {
-  topicSlug: string;
-  lessonSlug: string;
+  lessonData: CoursesLesson;
 }
 
-const LessonContentMain = async ({ topicSlug, lessonSlug }: LessonContentProps) => {
-  const response = await getApiData(`/course-lessons/?slug=${lessonSlug}`);
-
-  if (response.error) {
-    return <p>{response.error}</p>;
-  }
-
-  if (response.message) {
-    return <p>{response.message}</p>;
-  }
-
-  let lessonData: CoursesLesson | undefined;
-
-  if (Array.isArray(response.data)) {
-    lessonData = response.data.find((l: CoursesLesson) => l.slug === lessonSlug);
-  } else if (response.data?.results) {
-    lessonData = response.data.results.find((l: CoursesLesson) => l.slug === lessonSlug);
-  } else {
-    lessonData = response.data;
-  }
-
+const LessonContentMain = ({ lessonData }: LessonContentProps) => {
   if (!lessonData) {
     return <p>درس مورد نظر یافت نشد</p>;
   }

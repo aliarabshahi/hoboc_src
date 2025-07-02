@@ -1,5 +1,3 @@
-// app/course/[topicSlug]/lesson/[lessonSlug]/page.tsx
-
 import PdfViewer from "@/app/courses/components/lessons/PdfViewer";
 import LessonContentMain from "@/app/courses/components/lessons/LessonContentMain";
 import { getApiData } from "@/app/services/api/apiServerFetch";
@@ -39,8 +37,12 @@ export default async function LessonPage({ params }: Params) {
         <p className="text-red-600">فایل PDF برای این درس وجود ندارد.</p>
       )}
 
-      {/* Server component that displays lesson metadata */}
-      <LessonContentMain topicSlug={topicSlug} lessonSlug={lessonSlug} />
+      {/* Pass lessonData directly to LessonContentMain */}
+      {lessonData ? (
+        <LessonContentMain lessonData={lessonData} />
+      ) : (
+        <p>درس مورد نظر یافت نشد</p>
+      )}
     </div>
   );
 }
