@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-import { ZoomIn, ZoomOut, Download, Maximize, Minimize } from "lucide-react";
+import { Download, Maximize, Minimize } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
@@ -16,11 +16,11 @@ interface PdfViewerProps {
 const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
-  const [scale, setScale] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const originalWidthRef = useRef<number>(0);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -29,24 +29,25 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
 
     const updateWidth = () => {
       if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
+        const width = containerRef.current.offsetWidth;
+        setContainerWidth(width);
+        // Store the original width when not in fullscreen
+        if (!isFullscreen) {
+          originalWidthRef.current = width;
+        }
       }
     };
 
     checkIfMobile();
     updateWidth();
-    
-    window.addEventListener('resize', () => {
+
+    const handleResize = () => {
       checkIfMobile();
       updateWidth();
-    });
-
-    return () => {
-      window.removeEventListener('resize', () => {
-        checkIfMobile();
-        updateWidth();
-      });
     };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [isFullscreen]);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
@@ -56,8 +57,6 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
 
   const goToPrevPage = () => setPageNumber(prev => Math.max(prev - 1, 1));
   const goToNextPage = () => numPages && setPageNumber(prev => Math.min(prev + 1, numPages));
-  const zoomIn = () => setScale(prev => Math.min(prev + 0.25, 2.5));
-  const zoomOut = () => setScale(prev => Math.max(prev - 0.25, 0.5));
 
   const downloadPdf = () => {
     const link = document.createElement('a');
@@ -69,6 +68,10 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   };
 
   const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      // Store the current width before entering fullscreen
+      originalWidthRef.current = containerRef.current?.offsetWidth || 0;
+    }
     setIsFullscreen(!isFullscreen);
   };
 
@@ -86,7 +89,7 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
-      {/* Enhanced Dark Top Controls Bar */}
+      {/* Top Bar */}
       <div className="bg-gray-800 border-gray-700 flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
           <button
@@ -97,40 +100,17 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
             <Download size={isMobile ? 16 : 18} />
           </button>
         </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-gray-700 rounded-md p-1">
-            <button
-              onClick={zoomOut}
-              disabled={scale <= 0.5}
-              className={`p-2 rounded-md ${scale <= 0.5 ? 'opacity-50 cursor-not-allowed text-gray-400' : 'hover:bg-gray-600 text-gray-200 hover:text-white'} transition-colors`}
-              title="کوچک‌نمایی"
-            >
-              <ZoomOut size={isMobile ? 16 : 18} />
-            </button>
-            <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200 px-1`}>
-              {Math.round(scale * 100)}%
-            </span>
-            <button
-              onClick={zoomIn}
-              disabled={scale >= 2.5}
-              className={`p-2 rounded-md ${scale >= 2.5 ? 'opacity-50 cursor-not-allowed text-gray-400' : 'hover:bg-gray-600 text-gray-200 hover:text-white'} transition-colors`}
-              title="بزرگ‌نمایی"
-            >
-              <ZoomIn size={isMobile ? 16 : 18} />
-            </button>
-          </div>
-          <button
-            onClick={toggleFullscreen}
-            className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
-            title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
-          >
-            {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
-          </button>
-        </div>
+
+        <button
+          onClick={toggleFullscreen}
+          className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+          title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
+        >
+          {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
+        </button>
       </div>
 
-      {/* PDF Content */}
+      {/* PDF Viewer */}
       <div 
         ref={containerRef}
         className="flex-1 overflow-auto bg-white w-full flex justify-center"
@@ -142,7 +122,7 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         >
           <Page
             pageNumber={pageNumber}
-            width={containerWidth * scale}
+            width={isFullscreen ? containerWidth : originalWidthRef.current}
             renderAnnotationLayer={false}
             renderTextLayer={true}
             loading={<PageLoadingSpinner />}
@@ -150,7 +130,7 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         </Document>
       </div>
 
-      {/* Bottom Navigation Bar */}
+      {/* Bottom Navigation */}
       <div className="bg-gray-800 border-t border-gray-700 flex items-center justify-between p-3">
         <button
           onClick={goToPrevPage}
