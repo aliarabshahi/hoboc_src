@@ -36,13 +36,11 @@ export default async function CoursesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold my-6 text-center">موضوعات دوره‌ها</h1>
       <CourseTopics topics={topic_api_response.data} />
       
       {/* Render lessons for each topic */}
       {topicsWithLessons.map(({ topic, lessons, error }) => (
         <div key={topic.id}>
-          <h2 className="text-xl font-semibold mt-8 mb-4">{topic.title}</h2>
           {error ? (
             <div className="text-red-500 text-center my-6">
               {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}

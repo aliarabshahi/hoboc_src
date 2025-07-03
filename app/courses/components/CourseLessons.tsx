@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa";
 import { BsBook } from "react-icons/bs";
@@ -21,11 +19,16 @@ export default function CourseLessons({ lessons_api_response }: CourseLessonsPro
 
   if (!lessons.length) return null;
 
+  const topicName =
+    lessons[0]?.topic && typeof lessons[0].topic === "string"
+      ? lessons[0].topic
+      : (lessons[0]?.topic as any)?.title || "موضوع نامشخص";
+
   return (
     <div className="lg:w-2/3 bg-base-100 rounded-box shadow-md p-6 mt-10" dir="rtl">
       <h2 className="text-2xl font-bold mb-6 flex items-center">
         <BsBook className="w-6 h-6 ml-2" />
-        درس‌های مربوط به "linux"
+        درس‌های مربوط به {topicName}
       </h2>
 
       <div className="overflow-y-auto max-h-[300px] pl-4">
@@ -33,7 +36,7 @@ export default function CourseLessons({ lessons_api_response }: CourseLessonsPro
           {lessons.map((lesson, index) => (
             <Link
               key={lesson.id}
-              href={`/courses/linux/lesson/${lesson.slug}`}
+              href={`/courses/${topicName}/lesson/${lesson.slug}`}
               passHref
             >
               <div className="flex items-center justify-between p-4 hover:bg-base-200 rounded-lg transition-colors duration-200 cursor-pointer">
