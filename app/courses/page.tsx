@@ -9,14 +9,7 @@ type ApiResult<T> =
   | { data: T[]; message: string; error?: undefined };
 
 export default async function CoursesPage() {
-  const topic_api_response = (await getApiData("/course-topics/")) as ApiResult<
-    CoursesTopic
-  >;
-  const topic_name = "linux";
-
-  const lessons_api_response = (await getApiData(
-    `/course-lessons/?topic-slug=${topic_name}`
-  )) as ApiResult<CoursesLesson>;
+  const topic_api_response = (await getApiData("/course-topics/")) as ApiResult<CoursesTopic>;
 
   if (!topic_api_response || topic_api_response.data === null) {
     return (
@@ -26,21 +19,39 @@ export default async function CoursesPage() {
     );
   }
 
-  if (!lessons_api_response || lessons_api_response.data === null) {
-    return (
-      <div className="text-red-500 text-center my-6">
-        {lessons_api_response?.error || "خطا در دریافت اطلاعات درس‌های دوره"}
-      </div>
-    );
-  }
+  // Fetch lessons for each topic
+  const topicsWithLessons = await Promise.all(
+    topic_api_response.data.map(async (topic) => {
+      const lessons_api_response = (await getApiData(
+        `/course-lessons/?topic-slug=${topic.slug}`
+      )) as ApiResult<CoursesLesson>;
 
-  const topics = topic_api_response.data;
+      return {
+        topic,
+        lessons: lessons_api_response.data || [],
+        error: lessons_api_response.error
+      };
+    })
+  );
 
   return (
     <div>
       <h1 className="text-2xl font-bold my-6 text-center">موضوعات دوره‌ها</h1>
-      <CourseTopics topics={topics} />
-      <CourseLessons lessons_api_response={lessons_api_response} />
+      <CourseTopics topics={topic_api_response.data} />
+      
+      {/* Render lessons for each topic */}
+      {topicsWithLessons.map(({ topic, lessons, error }) => (
+        <div key={topic.id}>
+          <h2 className="text-xl font-semibold mt-8 mb-4">{topic.title}</h2>
+          {error ? (
+            <div className="text-red-500 text-center my-6">
+              {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}
+            </div>
+          ) : (
+            <CourseLessons lessons_api_response={{ data: lessons }} />
+          )}
+        </div>
+      ))}
     </div>
   );
 }
