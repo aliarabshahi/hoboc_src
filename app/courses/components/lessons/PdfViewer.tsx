@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-import { Download, Maximize, Minimize } from "lucide-react";
+import { Download, Maximize, Minimize, ZoomIn, ZoomOut } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
@@ -21,6 +21,10 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const originalWidthRef = useRef<number>(0);
+  const [scale, setScale] = useState(1);
+  const minScale = 0.5;
+  const maxScale = 2;
+  const scaleStep = 0.25;
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -31,7 +35,6 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       if (containerRef.current) {
         const width = containerRef.current.offsetWidth;
         setContainerWidth(width);
-        // Store the original width when not in fullscreen
         if (!isFullscreen) {
           originalWidthRef.current = width;
         }
@@ -55,8 +58,35 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     setPageNumber(1);
   };
 
-  const goToPrevPage = () => setPageNumber(prev => Math.max(prev - 1, 1));
-  const goToNextPage = () => numPages && setPageNumber(prev => Math.min(prev + 1, numPages));
+  const scrollToTop = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const goToPrevPage = () => {
+    setPageNumber(prev => Math.max(prev - 1, 1));
+    scrollToTop();
+  };
+
+  const goToNextPage = () => {
+    if (numPages) {
+      setPageNumber(prev => Math.min(prev + 1, numPages));
+      scrollToTop();
+    }
+  };
+
+  const zoomIn = () => {
+    setScale(prev => Math.min(prev + scaleStep, maxScale));
+  };
+
+  const zoomOut = () => {
+    setScale(prev => Math.max(prev - scaleStep, minScale));
+  };
+
+  const resetZoom = () => {
+    setScale(1);
+  };
 
   const downloadPdf = () => {
     const link = document.createElement('a');
@@ -69,10 +99,13 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
 
   const toggleFullscreen = () => {
     if (!isFullscreen) {
-      // Store the current width before entering fullscreen
       originalWidthRef.current = containerRef.current?.offsetWidth || 0;
     }
     setIsFullscreen(!isFullscreen);
+    // Reset zoom when exiting fullscreen
+    if (isFullscreen) {
+      setScale(1);
+    }
   };
 
   const LoadingSpinner = () => (
@@ -101,13 +134,46 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
           </button>
         </div>
 
-        <button
-          onClick={toggleFullscreen}
-          className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
-          title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
-        >
-          {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Show zoom controls only in fullscreen mode */}
+          {isFullscreen && (
+            <>
+              <button
+                onClick={zoomOut}
+                disabled={scale <= minScale}
+                className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors disabled:opacity-50"
+                title="کوچک‌نمایی"
+              >
+                <ZoomOut size={isMobile ? 16 : 18} />
+              </button>
+
+              <span 
+                className="text-sm font-medium text-gray-200 cursor-pointer px-2"
+                onClick={resetZoom}
+                title="بازنشانی اندازه"
+              >
+                {Math.round(scale * 100)}%
+              </span>
+
+              <button
+                onClick={zoomIn}
+                disabled={scale >= maxScale}
+                className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors disabled:opacity-50"
+                title="بزرگ‌نمایی"
+              >
+                <ZoomIn size={isMobile ? 16 : 18} />
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={toggleFullscreen}
+            className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+            title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
+          >
+            {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
+          </button>
+        </div>
       </div>
 
       {/* PDF Viewer */}
@@ -122,7 +188,7 @@ const PdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         >
           <Page
             pageNumber={pageNumber}
-            width={isFullscreen ? containerWidth : originalWidthRef.current}
+            width={isFullscreen ? containerWidth * scale : originalWidthRef.current}
             renderAnnotationLayer={false}
             renderTextLayer={true}
             loading={<PageLoadingSpinner />}
