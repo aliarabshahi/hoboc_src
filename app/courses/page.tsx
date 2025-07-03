@@ -29,7 +29,7 @@ export default async function CoursesPage() {
       return {
         topic,
         lessons: lessons_api_response.data || [],
-        error: lessons_api_response.error
+        error: lessons_api_response.error,
       };
     })
   );
@@ -37,7 +37,7 @@ export default async function CoursesPage() {
   return (
     <div>
       <CourseTopics topics={topic_api_response.data} />
-      
+
       {/* Render lessons for each topic */}
       {topicsWithLessons.map(({ topic, lessons, error }) => (
         <div key={topic.id}>
@@ -46,7 +46,7 @@ export default async function CoursesPage() {
               {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}
             </div>
           ) : (
-            <CourseLessons lessons_api_response={{ data: lessons }} />
+            <CourseLessons lessons_api_response={{ data: lessons }} topic={topic} />
           )}
         </div>
       ))}
