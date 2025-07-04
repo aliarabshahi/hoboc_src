@@ -45,7 +45,7 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
         {/* Topics List */}
         <ul className="divide-y divide-gray-100 max-h-[50vh] lg:max-h-[calc(100vh-10rem)] overflow-y-auto">
           {filteredTopics.length === 0 ? (
-            <li className="p-4 text-center text-gray-500">نتیجه‌ای یافت نشد</li>
+            <li className="p-4 text-center text-gray-500">نداریم داداش! </li>
           ) : (
             filteredTopics.map((topic) => (
               <li key={topic.id}>

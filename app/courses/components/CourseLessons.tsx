@@ -28,7 +28,11 @@ function truncateDescription(text: string, maxLength = 150): string {
     : slice.slice(0, lastSpaceIndex) + "...";
 }
 
-export default function CourseLessons({ lessons_api_response, topic, noTopMargin }: CourseLessonsProps) {
+export default function CourseLessons({
+  lessons_api_response,
+  topic,
+  noTopMargin,
+}: CourseLessonsProps) {
   const lessons: CoursesLesson[] =
     lessons_api_response?.data || lessons_api_response?.results || [];
 
@@ -72,13 +76,13 @@ export default function CourseLessons({ lessons_api_response, topic, noTopMargin
             <Link
               key={lesson.id}
               href={`/courses/${topic.slug}/lesson/${lesson.slug}`}
-  className="group block rounded-md p-3 transition-colors duration-200 cursor-pointer bg-base-100 dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-none hover:shadow-none focus:outline-none focus-visible:ring-0 border-0"
+              className="group block rounded-md p-3 transition-colors duration-200 cursor-pointer bg-base-100 dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-none hover:shadow-none focus:outline-none focus-visible:ring-0 border-0"
               aria-label={`رفتن به درس ${lesson.title}`}
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold select-none ${
+                    className={`min-w-7 min-h-7 w-7 h-7 aspect-square rounded-full flex items-center justify-center text-xs font-semibold select-none ${
                       lesson.is_free
                         ? "bg-green-200 text-green-800 group-hover:bg-green-300"
                         : "bg-hoboc text-white group-hover:bg-hoboc-dark"
@@ -99,7 +103,7 @@ export default function CourseLessons({ lessons_api_response, topic, noTopMargin
                       {lesson.title}
                     </h3>
                     <p
-                      className="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
+                      className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 "
                       style={{ boxShadow: "none", border: "none" }}
                     >
                       {truncateDescription(lesson.description, 150)}
@@ -108,7 +112,9 @@ export default function CourseLessons({ lessons_api_response, topic, noTopMargin
                 </div>
 
                 <div className="flex items-center gap-3 text-gray-400 dark:text-gray-400 text-xs select-none">
-                  <span className="whitespace-nowrap">{lesson.duration} دقیقه</span>
+                  <span className="whitespace-nowrap pr-2">
+                    {lesson.duration} دقیقه
+                  </span>
                   {lesson.is_free && (
                     <span className="bg-green-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-none select-none">
                       رایگان

@@ -65,7 +65,7 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
   <div className="flex justify-between items-center">
     <div className="flex items-center gap-3">
       <div
-        className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold select-none
+        className={`min-w-7 min-h-7 w-7 h-7 aspect-square rounded-full flex items-center justify-center text-sm font-semibold select-none
           ${
             lesson.is_free
               ? "bg-green-200 text-green-800 group-hover:bg-green-300"
@@ -80,14 +80,14 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-hoboc transition-colors truncate" style={{ boxShadow: "none", border: "none" }}>
           {lesson.title}
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5" style={{ boxShadow: "none", border: "none" }}>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 " style={{ boxShadow: "none", border: "none" } }>
           {truncateDescription(lesson.description, 100)}
         </p>
       </div>
     </div>
 
     <div className="flex items-center gap-3 text-gray-400 dark:text-gray-400 text-xs select-none">
-      <span className="whitespace-nowrap">{lesson.duration} دقیقه</span>
+      <span className="whitespace-nowrap pr-2">{lesson.duration} دقیقه</span>
       {lesson.is_free && (
         <span className="bg-green-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-none select-none">
           رایگان
