@@ -13,7 +13,7 @@ export default async function CoursesPage() {
 
   if (!topic_api_response || topic_api_response.data === null) {
     return (
-      <div className="text-red-500 text-center my-6">
+      <div className="text-red-600 dark:text-red-400 text-center my-6 font-semibold text-lg">
         {topic_api_response?.error || "خطا در دریافت اطلاعات موضوعات دوره"}
       </div>
     );
@@ -34,14 +34,16 @@ export default async function CoursesPage() {
   );
 
   return (
-    <div className="container mx-auto p-4 grid grid-cols-1 lg:grid-cols-[18rem_1fr] gap-6">
+    <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 min-h-screen">
+      {/* Sidebar topics */}
       <CourseTopics topics={topic_api_response.data} />
 
-      <main>
+      {/* Main lessons content */}
+      <main className="space-y-16">
         {topicsWithLessons.map(({ topic, lessons, error }, index) => (
-          <div key={topic.id}>
+          <section key={topic.id} id={`topic-${topic.id}`} tabIndex={-1} className="scroll-mt-24">
             {error ? (
-              <div className="text-red-500 text-center my-6">
+              <div className="text-red-600 dark:text-red-400 text-center my-6 font-semibold text-lg">
                 {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}
               </div>
             ) : (
@@ -51,7 +53,7 @@ export default async function CoursesPage() {
                 noTopMargin={index === 0}
               />
             )}
-          </div>
+          </section>
         ))}
       </main>
     </div>

@@ -31,76 +31,71 @@ export default function CourseLessons({ lessons_api_response, topic, noTopMargin
 
   return (
     <div
-      id={`topic-${topic.id}`}
-      className={`max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 ${
-        noTopMargin ? "" : "mt-10"
-      } flex flex-col lg:flex-row gap-8 scroll-mt-24`}
+      className={`max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-md shadow-sm p-4 ${
+        noTopMargin ? "" : "mt-8"
+      } flex flex-col lg:flex-row gap-6 scroll-mt-24`}
       dir="rtl"
+      aria-label={`درس‌های موضوع ${topicName}`}
     >
-      {/* تصویر موضوع */}
-      <div className="w-full lg:w-1/3 relative rounded-lg overflow-hidden shadow-md flex items-center justify-center">
+      {/* Topic Image - Simplified version without text overlay */}
+      <div className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-100 dark:bg-gray-800">
         <Image
           src={topic.image || "/logo.png"}
           alt={topic.title}
-          width={280}
-          height={160}
-          className="object-cover rounded-lg"
+          width={240}
+          height={135}
+          className="object-cover rounded-md"
           priority
           unoptimized={process.env.NODE_ENV !== "production"}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg" />
-        <div className="absolute bottom-3 right-3 text-white text-right">
-          <span className="bg-hoboc text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm inline-block mb-1">
-            متوسط
-          </span>
-          <h2 className="text-sm font-semibold drop-shadow-md">{topic.title}</h2>
-        </div>
       </div>
 
-      {/* لیست درس‌ها */}
+      {/* Lessons List */}
       <div className="flex-1 flex flex-col" dir="rtl">
-        <h2 className="text-xl font-extrabold mb-4 flex items-center gap-2 text-hoboc">
-          <BsBook className="w-5 h-5" />
+        <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-hoboc">
+          <BsBook className="w-4 h-4" />
           {topicName}
         </h2>
 
-        <div className="space-y-3 overflow-visible">
+        <div className="space-y-2 overflow-visible">
           {lessons.map((lesson, index) => (
             <Link
               key={lesson.id}
               href={`/courses/${topic.slug}/lesson/${lesson.slug}`}
-              className="group block bg-gray-50 dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="group block bg-gray-50 dark:bg-gray-800 rounded-md p-3 shadow-sm hover:shadow-md transition-shadow duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-hoboc focus-visible:ring-offset-1"
+              aria-label={`رفتن به درس ${lesson.title}`}
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold select-none
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold select-none
                       ${
                         lesson.is_free
                           ? "bg-green-200 text-green-800 group-hover:bg-green-300"
                           : "bg-hoboc text-white group-hover:bg-hoboc-dark"
                       }`}
+                    aria-hidden="true"
                   >
                     {index + 1}
                   </div>
-                  <div className="text-right">
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-hoboc transition-colors">
+                  <div className="text-right max-w-xs">
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-hoboc transition-colors truncate">
                       {lesson.title}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate max-w-xs">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
                       {lesson.description}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-gray-400 dark:text-gray-400 text-xs">
+                <div className="flex items-center gap-3 text-gray-400 dark:text-gray-400 text-xs select-none">
                   <span className="whitespace-nowrap">{lesson.duration} دقیقه</span>
                   {lesson.is_free && (
-                    <span className="bg-green-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm select-none">
+                    <span className="bg-green-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm select-none">
                       رایگان
                     </span>
                   )}
-                  <FaChevronLeft className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <FaChevronLeft className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </div>
               </div>
             </Link>
