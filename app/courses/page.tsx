@@ -19,7 +19,6 @@ export default async function CoursesPage() {
     );
   }
 
-  // Fetch lessons for each topic
   const topicsWithLessons = await Promise.all(
     topic_api_response.data.map(async (topic) => {
       const lessons_api_response = (await getApiData(
@@ -35,21 +34,26 @@ export default async function CoursesPage() {
   );
 
   return (
-    <div>
+    <div className="container mx-auto p-4 grid grid-cols-1 lg:grid-cols-[18rem_1fr] gap-6">
       <CourseTopics topics={topic_api_response.data} />
 
-      {/* Render lessons for each topic */}
-      {topicsWithLessons.map(({ topic, lessons, error }) => (
-        <div key={topic.id}>
-          {error ? (
-            <div className="text-red-500 text-center my-6">
-              {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}
-            </div>
-          ) : (
-            <CourseLessons lessons_api_response={{ data: lessons }} topic={topic} />
-          )}
-        </div>
-      ))}
+      <main>
+        {topicsWithLessons.map(({ topic, lessons, error }, index) => (
+          <div key={topic.id}>
+            {error ? (
+              <div className="text-red-500 text-center my-6">
+                {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}
+              </div>
+            ) : (
+              <CourseLessons
+                lessons_api_response={{ data: lessons }}
+                topic={topic}
+                noTopMargin={index === 0}
+              />
+            )}
+          </div>
+        ))}
+      </main>
     </div>
   );
 }

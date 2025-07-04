@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { FaChevronLeft } from "react-icons/fa";
@@ -11,9 +13,10 @@ interface CourseLessonsProps {
     [key: string]: any;
   };
   topic: CoursesTopic;
+  noTopMargin?: boolean;
 }
 
-export default function CourseLessons({ lessons_api_response, topic }: CourseLessonsProps) {
+export default function CourseLessons({ lessons_api_response, topic, noTopMargin }: CourseLessonsProps) {
   const lessons: CoursesLesson[] =
     lessons_api_response?.data ||
     lessons_api_response?.results ||
@@ -28,7 +31,10 @@ export default function CourseLessons({ lessons_api_response, topic }: CourseLes
 
   return (
     <div
-      className="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 mt-10 flex flex-col lg:flex-row gap-8"
+      id={`topic-${topic.id}`}
+      className={`max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 ${
+        noTopMargin ? "" : "mt-10"
+      } flex flex-col lg:flex-row gap-8 scroll-mt-24`}
       dir="rtl"
     >
       {/* تصویر موضوع */}
@@ -62,7 +68,7 @@ export default function CourseLessons({ lessons_api_response, topic }: CourseLes
           {lessons.map((lesson, index) => (
             <Link
               key={lesson.id}
-              href={`/courses/${topicName}/lesson/${lesson.slug}`}
+              href={`/courses/${topic.slug}/lesson/${lesson.slug}`}
               className="group block bg-gray-50 dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               <div className="flex justify-between items-center">

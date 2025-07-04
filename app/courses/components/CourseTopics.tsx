@@ -1,5 +1,3 @@
-// app/courses/components/CourseTopics.tsx
-import Link from "next/link";
 import Image from "next/image";
 import { CoursesTopic } from "@/app/types/coursesType";
 
@@ -17,16 +15,16 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
   }
 
   return (
-    <aside className="w-72 bg-white border border-gray-200 rounded-lg shadow-sm h-full overflow-y-auto rtl">
+    <aside className="w-72 bg-white border border-gray-200 rounded-lg shadow-sm h-full overflow-y-auto rtl sticky top-16 max-h-screen">
       <div className="p-4 border-b border-gray-200">
         <h2 className="font-bold text-lg text-gray-800">همه موضوعات</h2>
       </div>
-      
+
       <ul className="divide-y divide-gray-100">
         {topics.map((topic) => (
           <li key={topic.id}>
-            <Link
-              href={`/courses/${topic.slug}`}
+            <a
+              href={`#topic-${topic.id}`}
               className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors duration-150"
             >
               {topic.logo_file && (
@@ -43,7 +41,7 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
               <span className="font-medium text-gray-700 text-sm truncate">
                 {topic.title}
               </span>
-            </Link>
+            </a>
           </li>
         ))}
       </ul>
