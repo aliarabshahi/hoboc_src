@@ -9,14 +9,14 @@ const CoursesDetailHeader = ({ topic }: CoursesDetailHeaderProps) => {
   if (!topic) {
     return (
       <div className="mb-8" dir="rtl">
-        <h1 className="text-2xl font-bold mt-2">هیچ موضوعی انتخاب نشده است</h1>
+        <h1 className="text-2xl font-bold  text-hoboc  mt-2">هیچ موضوعی انتخاب نشده است</h1>
       </div>
     );
   }
 
   return (
     <div className="mb-8" dir="rtl">
-      <h1 className="text-2xl font-bold mt-2">{topic.catchy_title}</h1>
+      <h1 className="text-2xl text-hoboc font-bold mt-2">{topic.catchy_title}</h1>
       <p className="text-md opacity-80 mt-2">{topic.description}</p>
 
       {/* <div className="flex items-center mt-4">

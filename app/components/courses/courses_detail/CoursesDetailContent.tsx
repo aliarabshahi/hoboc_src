@@ -7,6 +7,21 @@ import { BsBook } from "react-icons/bs";
 import { fetchApiData } from "@/app/services/api/apiClientAxios";
 import { useTopicStore } from "@/app/stores/topicStore";
 
+function truncateDescription(text: string, maxLength = 150): string {
+  if (!text) return "";
+
+  if (text.length <= maxLength) return text;
+
+  const slice = text.slice(0, maxLength);
+  const lastSpaceIndex = slice.lastIndexOf(" ");
+
+  if (lastSpaceIndex === -1) {
+    return slice + "...";
+  }
+
+  return slice.slice(0, lastSpaceIndex) + "...";
+}
+
 const CoursesDetailContent = ({ course }: { course: any }) => {
   const activeTopic = useTopicStore((state) => state.activeTopic);
   const [lessons, setLessons] = useState<any[]>([]);
@@ -17,7 +32,7 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
       setError(null);
 
       try {
-        const params = activeTopic ? { 'topic-slug': activeTopic.slug } : undefined;
+        const params = activeTopic ? { "topic-slug": activeTopic.slug } : undefined;
         const data = await fetchApiData<any>("course-lessons", params);
         setLessons(data.results);
       } catch (err) {
@@ -33,46 +48,56 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
 
   return (
     <div className="lg:w-2/3 bg-base-100 rounded-box shadow-md p-6" dir="rtl">
-      <h2 className="text-2xl font-bold mb-6 flex items-center">
+      <h2 className="text-xl font-bold mb-6 flex items-center ">
         <BsBook className="w-6 h-6 ml-2" />
         محتوای دوره
       </h2>
 
-      <div className="overflow-y-auto max-h-[300px] pl-4">
-        <div className="space-y-3">
+      <div className="overflow-y-auto max-h-[300px] pl-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-700 dark:scrollbar-track-gray-800">
+        <div className="space-y-2">
           {lessons.map((lesson, index) => (
-            <Link
-              href={`/courses/${activeTopic?.slug}/lesson/${lesson.slug}`} 
-              key={lesson.id}
-              passHref
-            >
-              <div className="flex items-center justify-between p-4 hover:bg-base-200 rounded-lg transition-colors duration-200 cursor-pointer">
-                <div className="flex items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ml-4 flex-shrink-0 ${
-                      lesson.is_free
-                        ? "bg-green-100 text-green-800"
-                        : "bg-blue-100 text-blue-800"
-                    }`}
-                  >
-                    {index + 1}
-                  </div>
-                  <div>
-                    <h3 className="font-medium">{lesson.title}</h3>
-                    <p className="text-sm text-gray-500">
-                      {lesson.description}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <span className="text-xs ml-3">{lesson.duration} دقیقه</span>
-                  {lesson.is_free && (
-                    <span className="badge badge-success badge-sm">رایگان</span>
-                  )}
-                  <FaChevronLeft className="w-4 h-4 text-gray-400" />
-                </div>
-              </div>
-            </Link>
+<Link
+  key={lesson.id}
+  href={`/courses/${activeTopic?.slug}/lesson/${lesson.slug}`}
+  className="group block rounded-md p-3 transition-colors duration-200 cursor-pointer bg-base-100 dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-none hover:shadow-none focus:outline-none focus-visible:ring-0 border-0"
+  aria-label={`رفتن به درس ${lesson.title}`}
+>
+  <div className="flex justify-between items-center">
+    <div className="flex items-center gap-3">
+      <div
+        className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold select-none
+          ${
+            lesson.is_free
+              ? "bg-green-200 text-green-800 group-hover:bg-green-300"
+              : "bg-hoboc text-white group-hover:bg-hoboc-dark"
+          }`}
+        aria-hidden="true"
+        style={{ boxShadow: "none", border: "none" }}
+      >
+        {index + 1}
+      </div>
+      <div className="text-right max-w-xs">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-hoboc transition-colors truncate" style={{ boxShadow: "none", border: "none" }}>
+          {lesson.title}
+        </h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5" style={{ boxShadow: "none", border: "none" }}>
+          {truncateDescription(lesson.description, 100)}
+        </p>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-3 text-gray-400 dark:text-gray-400 text-xs select-none">
+      <span className="whitespace-nowrap">{lesson.duration} دقیقه</span>
+      {lesson.is_free && (
+        <span className="bg-green-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-none select-none">
+          رایگان
+        </span>
+      )}
+      <FaChevronLeft className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+    </div>
+  </div>
+</Link>
+
           ))}
         </div>
       </div>
