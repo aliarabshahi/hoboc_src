@@ -2,6 +2,8 @@
 
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson } from "@/app/types/coursesType";
+import Link from "next/link";
+import { FaChevronLeft } from "react-icons/fa";
 
 export default async function SideBarTopicLessons({ topicSlug }: { topicSlug: string }) {
   const res = await getApiData(`/course-lessons/?topic-slug=${topicSlug}`);
@@ -9,7 +11,7 @@ export default async function SideBarTopicLessons({ topicSlug }: { topicSlug: st
   if (!res || !res.data) {
     return (
       <div className="bg-white p-4 rounded-xl shadow-sm border border-red-200 text-red-500 text-sm">
-        دریافت اطلاعات دروس این موضوع با خطا مواجه شد.
+        دریافت اطلاعات دروس با خطا مواجه شد.
       </div>
     );
   }
@@ -18,21 +20,44 @@ export default async function SideBarTopicLessons({ topicSlug }: { topicSlug: st
 
   return (
     <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-      <h2 className="text-lg font-bold text-blue-600 mb-3">
-        لیست دروس مرتبط با: {topicSlug}
+      <h2 className="text-xl font-bold text-hoboc mb-2">
+        محتوای دوره
       </h2>
 
       {lessons.length === 0 ? (
         <p className="text-sm text-gray-500">درسی برای این موضوع یافت نشد.</p>
       ) : (
-        <ul className="text-sm space-y-2">
-          {lessons.map((lesson) => (
-            <li key={lesson.id} className="border-b pb-2">
-              <div className="font-medium text-gray-800">{lesson.title}</div>
-              <div className="text-gray-500 text-xs">مدت: {lesson.duration} دقیقه</div>
-            </li>
+        <div className="flex flex-col gap-y-1">
+          {lessons.map((lesson, index) => (
+            <Link
+              key={lesson.id}
+              href={`/courses/${topicSlug}/lesson/${lesson.slug}`}
+              className="group block p-2 transition-colors duration-150 hover:bg-gray-50 rounded-md"
+              aria-label={`رفتن به درس ${lesson.title}`}
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${
+                      lesson.is_free
+                        ? "bg-green-200 text-green-800"
+                        : "bg-hoboc text-white"
+                    }`}
+                  >
+                    {index + 1}
+                  </div>
+                  <h3 className="text-sm text-gray-800 truncate group-hover:text-hoboc">
+                    {lesson.title}
+                  </h3>
+                </div>
+                <div className="flex items-center gap-1 text-gray-400 text-xs">
+                  <span>{lesson.duration} دقیقه</span>
+                  <FaChevronLeft className="w-3 h-3" />
+                </div>
+              </div>
+            </Link>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
