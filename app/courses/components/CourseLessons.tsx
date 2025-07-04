@@ -52,7 +52,7 @@ export default function CourseLessons({
       aria-label={`درس‌های موضوع ${topicName}`}
     >
       {/* Topic Image */}
-      <div className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+      <div className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-50 dark:bg-gray-800">
         <Image
           src={topic.image || "/logo.png"}
           alt={topic.title}
