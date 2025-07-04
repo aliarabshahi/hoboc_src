@@ -1,10 +1,9 @@
-// app/courses/[topicSlug]/lesson/[lessonSlug]/page.tsx
-
 import { getApiData } from "@/app/services/api/apiServerFetch";
-import { CoursesLesson } from "@/app/types/coursesType";
+import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 import { notFound } from "next/navigation";
 import PdfViewer from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/PdfViewer";
 import Sidebar from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/sidebar/Sidebar";
+import LessonNavigationBar from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/LessonNavigationBar";
 
 interface Params {
   params: {
@@ -14,6 +13,7 @@ interface Params {
 }
 
 export default async function LessonPage({ params }: Params) {
+  // Fetch lesson data
   const response = await getApiData(`/course-lessons/?slug=${params.lessonSlug}`);
   let lessonData: CoursesLesson | undefined;
 
@@ -27,8 +27,26 @@ export default async function LessonPage({ params }: Params) {
 
   if (!lessonData) notFound();
 
+  // Fetch topic data
+  const topicResponse = await getApiData(`/course-topics/?slug=${params.topicSlug}`);
+  let topicData: CoursesTopic | undefined;
+
+  if (Array.isArray(topicResponse.data)) {
+    topicData = topicResponse.data.find((t: CoursesTopic) => t.slug === params.topicSlug);
+  } else if (topicResponse.data?.results) {
+    topicData = topicResponse.data.results.find((t: CoursesTopic) => t.slug === params.topicSlug);
+  } else {
+    topicData = topicResponse.data;
+  }
+
+  if (!topicData) notFound();
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" dir="rtl">
+    <div dir="rtl" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Navigation Bar */}
+      <LessonNavigationBar topic={topicData} lessonTitle={lessonData.title} />
+
+      {/* Main Content */}
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1 min-w-0 order-2 lg:order-1">
           {lessonData.pdf_file && (
