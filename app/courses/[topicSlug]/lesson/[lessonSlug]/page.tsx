@@ -30,7 +30,6 @@ export default async function LessonPage({ params }: Params) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" dir="rtl">
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Main PDF Content */}
         <div className="flex-1 min-w-0 order-2 lg:order-1">
           {lessonData.pdf_file && (
             <div className="border rounded-lg shadow-lg overflow-hidden h-[80vh] w-full">
@@ -39,10 +38,13 @@ export default async function LessonPage({ params }: Params) {
           )}
         </div>
 
-        {/* Sidebar */}
         <div className="lg:w-80 xl:w-96 order-1 lg:order-2 flex-shrink-0">
           <div className="sticky top-16 space-y-6">
-            <Sidebar lessonData={lessonData} topicSlug={params.topicSlug} />
+            <Sidebar
+              lessonData={lessonData}
+              topicSlug={params.topicSlug}
+              currentLessonSlug={params.lessonSlug}
+            />
           </div>
         </div>
       </div>

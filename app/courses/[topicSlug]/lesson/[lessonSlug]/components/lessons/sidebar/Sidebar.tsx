@@ -8,15 +8,17 @@ import SideBarTopicLessons from "./SideBarTopicLessons";
 export default function Sidebar({
   lessonData,
   topicSlug,
+  currentLessonSlug,
 }: {
   lessonData: CoursesLesson;
   topicSlug: string;
+  currentLessonSlug: string;
 }) {
   return (
     <div className="space-y-4">
       <SidebarLessonDetails lessonData={lessonData} />
       <SidebarVideoPlayer lessonData={lessonData} />
-      <SideBarTopicLessons topicSlug={topicSlug} />
+      <SideBarTopicLessons topicSlug={topicSlug} currentLessonSlug={currentLessonSlug} />
     </div>
   );
 }
