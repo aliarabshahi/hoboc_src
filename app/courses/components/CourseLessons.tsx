@@ -16,6 +16,27 @@ interface CourseLessonsProps {
   noTopMargin?: boolean;
 }
 
+// تابع برای برش متن توضیح طبق شرط شما
+function truncateDescription(text: string, maxLength = 150): string {
+  if (!text) return "";
+
+  if (text.length <= maxLength) return text;
+
+  // برش اولیه تا 150 کاراکتر
+  const slice = text.slice(0, maxLength);
+
+  // پیدا کردن آخرین فاصله (space) در برش 150 کاراکتری
+  const lastSpaceIndex = slice.lastIndexOf(" ");
+
+  if (lastSpaceIndex === -1) {
+    // اگر فضای خالی نبود، برش 150 کاراکتر با ... (ممکن است وسط کلمه باشد)
+    return slice + "...";
+  }
+
+  // برش تا آخرین فاصله و اضافه کردن ...
+  return slice.slice(0, lastSpaceIndex) + "...";
+}
+
 export default function CourseLessons({ lessons_api_response, topic, noTopMargin }: CourseLessonsProps) {
   const lessons: CoursesLesson[] =
     lessons_api_response?.data ||
@@ -37,7 +58,7 @@ export default function CourseLessons({ lessons_api_response, topic, noTopMargin
       dir="rtl"
       aria-label={`درس‌های موضوع ${topicName}`}
     >
-      {/* Topic Image - Simplified version without text overlay */}
+      {/* Topic Image */}
       <div className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-100 dark:bg-gray-800">
         <Image
           src={topic.image || "/logo.png"}
@@ -82,8 +103,9 @@ export default function CourseLessons({ lessons_api_response, topic, noTopMargin
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-hoboc transition-colors truncate">
                       {lesson.title}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
-                      {lesson.description}
+                    {/* اینجا کلاس truncate حذف شده و تابع truncateDescription اعمال شده */}
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      {truncateDescription(lesson.description, 150)}
                     </p>
                   </div>
                 </div>
