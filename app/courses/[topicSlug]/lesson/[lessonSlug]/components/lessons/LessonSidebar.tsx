@@ -59,6 +59,7 @@ export default function LessonSidebar({
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
         <VideoPlayer lessonData={lessonData} />
       </div>
+      
     </div>
   );
 }

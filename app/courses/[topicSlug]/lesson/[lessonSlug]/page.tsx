@@ -1,8 +1,8 @@
 import { getApiData } from "@/app/services/api/apiServerFetch"
 import { CoursesLesson } from "@/app/types/coursesType"
 import { notFound } from "next/navigation"
-import PdfViewer from "@/app/courses/components/lessons/PdfViewer"
-import LessonSidebar from "@/app/courses/components/lessons/LessonSidebar"
+import PdfViewer from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/PdfViewer"
+import LessonSidebar from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/LessonSidebar"
 
 interface Params {
   params: {
