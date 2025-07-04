@@ -1,5 +1,3 @@
-// components/lessons/sidebar/SideBarTopicLessons.tsx
-
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson } from "@/app/types/coursesType";
 import Link from "next/link";
@@ -40,12 +38,14 @@ export default async function SideBarTopicLessons({
                 key={lesson.id}
                 href={`/courses/${topicSlug}/lesson/${lesson.slug}`}
                 className={`group block p-2 rounded-md transition-colors duration-150 ${
-                  isActive ? "bg-hoboc/10 border border-hoboc" : "hover:bg-gray-50"
+                  isActive
+                    ? "bg-hoboc/10 border border-hoboc"
+                    : "hover:bg-gray-50"
                 }`}
-                aria-label={`رفتن به درس ${lesson.title}`}
               >
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
+                <div className="flex justify-between items-start">
+                  {/* Title container: flex-grow, wraps text */}
+                  <div className="flex items-center gap-2 flex-grow min-w-0">
                     <div
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${
                         lesson.is_free
@@ -56,7 +56,7 @@ export default async function SideBarTopicLessons({
                       {index + 1}
                     </div>
                     <h3
-                      className={`text-sm truncate ${
+                      className={`text-sm break-words ${
                         isActive
                           ? "text-hoboc font-bold"
                           : "text-gray-800 group-hover:text-hoboc"
@@ -65,7 +65,9 @@ export default async function SideBarTopicLessons({
                       {lesson.title}
                     </h3>
                   </div>
-                  <div className="flex items-center gap-1 text-gray-400 text-xs">
+
+                  {/* Duration fixed width, no shrink */}
+                  <div className="flex-shrink-0 flex items-center gap-1 text-gray-400 text-xs whitespace-nowrap">
                     <span>{lesson.duration} دقیقه</span>
                     <FaChevronLeft className="w-3 h-3" />
                   </div>
