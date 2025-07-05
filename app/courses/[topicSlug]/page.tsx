@@ -2,6 +2,8 @@ import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesTopic, CoursesLesson } from "@/app/types/coursesType";
 import { notFound } from "next/navigation";
 import CourseNavigationBar from "./components/CourseNavigationBar";
+import CourseSideBar from "./components/CourseSideBar";
+import CourseLessonDetails from "./components/CourseLessonDetails";
 
 interface PageProps {
   params: {
@@ -27,26 +29,12 @@ export default async function TopicPage({ params }: PageProps) {
       <CourseNavigationBar topic={topic} />
 
       {/* Main Content */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Main Section */}
-        <div className="flex-1 min-w-0 order-2 lg:order-1">
+      <div className="flex flex-col lg:flex-row gap-6 mt-6">
+        {/* Sidebar */}
+        <CourseSideBar topic={topic} />
 
-          {/* Raw JSON Debug Data */}
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold mb-2">Raw JSON Data</h2>
-            <div className="bg-gray-100 p-4 rounded-lg text-xs whitespace-pre-wrap break-words">
-              <strong>Topic:</strong>
-              <pre className="mb-4">{JSON.stringify(topic, null, 2)}</pre>
-              <strong>Lessons:</strong>
-              <pre>{JSON.stringify(lessons, null, 2)}</pre>
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar (optional) */}
-        <div className="lg:w-80 xl:w-96 order-1 lg:order-2 flex-shrink-0">
-          {/* Add sidebar content if needed */}
-        </div>
+        {/* Lesson List */}
+        <CourseLessonDetails topic={topic} lessons={lessons} />
       </div>
     </div>
   );
