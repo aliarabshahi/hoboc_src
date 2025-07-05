@@ -1,4 +1,4 @@
-"use client";
+// app/courses/components/CourseLessons.tsx
 
 import Link from "next/link";
 import Image from "next/image";
@@ -49,7 +49,6 @@ export default function CourseLessons({
       dir="rtl"
       aria-label={`درس‌های موضوع ${topicName}`}
     >
-      {/* Topic Image without Link */}
       <div
         className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-50 dark:bg-gray-800"
         aria-label={`تصویر موضوع ${topic.title}`}
@@ -65,7 +64,6 @@ export default function CourseLessons({
         />
       </div>
 
-      {/* Lessons List */}
       <div className="flex-1 flex flex-col" dir="rtl">
         <Link 
           href={`/courses/${topic.slug}`}
@@ -104,9 +102,7 @@ export default function CourseLessons({
                     >
                       {lesson.title}
                     </h3>
-                    <p
-                      className="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-                    >
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                       {truncateDescription(lesson.description, 150)}
                     </p>
                   </div>
