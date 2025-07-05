@@ -26,8 +26,8 @@ export default function CourseLessonDetails({
   lessons: CoursesLesson[];
 }) {
   return (
-    <div className="flex-1 min-w-0">
-      <div className="bg-base-100 rounded-box shadow-md p-6">
+    <div className="flex-1 min-w-0 ">
+      <div className="bg-white p-4 rounded-xl py-6 px-6 shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-700">
         <h2 className="text-xl font-bold mb-6 flex items-center text-gray-800 dark:text-gray-100">
           <BsBook className="w-6 h-6 ml-2" />
           محتوای دوره

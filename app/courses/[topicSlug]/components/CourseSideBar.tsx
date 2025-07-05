@@ -20,7 +20,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
 
   return (
     <div className="lg:w-80 xl:w-96 flex-shrink-0">
-      <div className="bg-base-100 rounded-box shadow-md p-6 lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
+      <div className="bg-white p-4 rounded-xl py-6 px-6 shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-700 lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
         
         {/* Back button */}
         <Link 
