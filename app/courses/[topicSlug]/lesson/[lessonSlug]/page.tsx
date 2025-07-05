@@ -14,7 +14,7 @@ interface Params {
 
 export default async function LessonPage({ params }: Params) {
   // Fetch lesson data
-  const response = await getApiData(`/course-lessons/?slug=${params.lessonSlug}`);
+  const response = await getApiData(`/course-lessons/?lesson-slug=${params.lessonSlug}`);
   let lessonData: CoursesLesson | undefined;
 
   if (Array.isArray(response.data)) {
