@@ -10,21 +10,18 @@ interface CourseSideBarProps {
 }
 
 export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
-  // Calculate total duration from lessons
   const totalDuration = lessons.reduce((sum, lesson) => sum + (lesson.duration || 0), 0);
   const hours = Math.floor(totalDuration / 60);
   const minutes = totalDuration % 60;
   const durationText = hours > 0 ? `${hours} ساعت و ${minutes} دقیقه` : `${minutes} دقیقه`;
 
-  // Get instructor from first lesson that has one
   const instructor = lessons.find(lesson => lesson.instructor)?.instructor;
-
-  // Get first lesson slug
   const firstLesson = lessons[0]?.slug;
 
   return (
     <div className="lg:w-80 xl:w-96 flex-shrink-0">
       <div className="bg-base-100 rounded-box shadow-md p-6 lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
+        
         {/* Back button */}
         <Link 
           href="/courses" 
@@ -45,9 +42,16 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
         </div>
 
         {/* Course Title */}
-        <h1 className="text-2xl text-hoboc font-bold mb-2 dark:text-gray-100">{topic.title}</h1>
+        <h1 className="text-3xl font-bold text-hoboc dark:text-hoboc mb-1">
+          {topic.title}
+        </h1>
 
-        {/* Course Description */}
+        {/* Catchy Title */}
+        <h2 className="text-lg text-hoboc-dark dark:text-hoboc-dark mb-4">
+          {topic.catchy_title}
+        </h2>
+
+        {/* Description */}
         <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
           {topic.description}
         </p>
@@ -58,9 +62,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
             <div className="flex items-center gap-2">
               <FiUser className="text-gray-500" size={14} />
               <span className="text-gray-500">مدرس:</span>
-              <span className="text-green-600">
-                {instructor.name}
-              </span>
+              <span className="text-green-600">{instructor.name}</span>
             </div>
           )}
 
@@ -77,7 +79,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           </div>
         </div>
 
-        {/* Start Course Button - Now links to first lesson */}
+        {/* Start Course Button */}
         {firstLesson ? (
           <Link 
             href={`/courses/${topic.slug}/lesson/${firstLesson}`}
@@ -102,7 +104,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           </div>
           <div className="flex flex-wrap gap-2" dir="ltr">
             {lessons.flatMap(lesson => lesson.tags)
-              .filter((tag, index, self) => 
+              .filter((tag, index, self) =>
                 index === self.findIndex(t => t.id === tag.id)
               )
               .slice(0, 3)
