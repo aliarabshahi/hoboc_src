@@ -18,9 +18,7 @@ interface CourseLessonsProps {
 
 function truncateDescription(text: string, maxLength = 150): string {
   if (!text) return "";
-
   if (text.length <= maxLength) return text;
-
   const slice = text.slice(0, maxLength);
   const lastSpaceIndex = slice.lastIndexOf(" ");
   return lastSpaceIndex === -1
@@ -51,8 +49,11 @@ export default function CourseLessons({
       dir="rtl"
       aria-label={`درس‌های موضوع ${topicName}`}
     >
-      {/* Topic Image */}
-      <div className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+      {/* Topic Image without Link */}
+      <div
+        className="w-full lg:w-1/4 relative rounded-md overflow-hidden shadow-sm flex items-center justify-center bg-gray-50 dark:bg-gray-800"
+        aria-label={`تصویر موضوع ${topic.title}`}
+      >
         <Image
           src={topic.image || "/logo.png"}
           alt={topic.title}
@@ -66,10 +67,16 @@ export default function CourseLessons({
 
       {/* Lessons List */}
       <div className="flex-1 flex flex-col" dir="rtl">
-        <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-hoboc">
-          <BsBook className="w-4 h-4" />
-          {topicName}
-        </h2>
+        <Link 
+          href={`/courses/${topic.slug}`}
+          className="group"
+          aria-label={`برو به صفحه موضوع ${topic.title}`}
+        >
+          <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-hoboc group-hover:text-hoboc-dark transition-colors">
+            <BsBook className="w-4 h-4" />
+            {topicName}
+          </h2>
+        </Link>
 
         <div className="space-y-2 overflow-visible">
           {lessons.map((lesson, index) => (
@@ -88,23 +95,17 @@ export default function CourseLessons({
                         : "bg-hoboc text-white group-hover:bg-hoboc-dark"
                     }`}
                     aria-hidden="true"
-                    style={{ boxShadow: "none", border: "none" }}
                   >
                     {index + 1}
                   </div>
-                  <div
-                    className="text-right max-w-xs"
-                    style={{ boxShadow: "none", border: "none" }}
-                  >
+                  <div className="text-right max-w-xs">
                     <h3
                       className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-hoboc transition-colors truncate"
-                      style={{ boxShadow: "none", border: "none" }}
                     >
                       {lesson.title}
                     </h3>
                     <p
-                      className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 "
-                      style={{ boxShadow: "none", border: "none" }}
+                      className="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
                     >
                       {truncateDescription(lesson.description, 150)}
                     </p>
