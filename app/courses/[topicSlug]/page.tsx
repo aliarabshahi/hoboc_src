@@ -1,3 +1,4 @@
+// app/[topicSlug]/page.tsx
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesTopic, CoursesLesson } from "@/app/types/coursesType";
 import { notFound } from "next/navigation";
@@ -29,9 +30,9 @@ export default async function TopicPage({ params }: PageProps) {
       <CourseNavigationBar topic={topic} />
 
       {/* Main Content */}
-      <div className="flex flex-col lg:flex-row gap-6 mt-6">
+      <div className="flex flex-col lg:flex-row gap-6 mt-6 ">
         {/* Sidebar */}
-        <CourseSideBar topic={topic} />
+        <CourseSideBar topic={topic} lessons={lessons} />
 
         {/* Lesson List */}
         <CourseLessonDetails topic={topic} lessons={lessons} />

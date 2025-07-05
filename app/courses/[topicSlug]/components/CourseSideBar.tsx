@@ -1,21 +1,28 @@
-import { CoursesTopic } from "@/app/types/coursesType";
+// components/CourseSideBar.tsx
+import { CoursesTopic, CoursesLesson } from "@/app/types/coursesType";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeftShort } from "react-icons/bs";
-import { FiBookmark, FiUser, FiClock, FiBarChart2, FiFolder } from "react-icons/fi";
+import { FiBookmark, FiUser, FiClock, FiBarChart2 } from "react-icons/fi";
 
-export default function CourseSideBar({ topic }: { topic: CoursesTopic }) {
-  // Mock data - replace with actual data from your API
-  const courseDetails = {
-    instructor: { name: "احمد محمدی" },
-    duration: "320", // in minutes
-    level: "مقدماتی",
-    category: "برنامه‌نویسی"
-  };
+interface CourseSideBarProps {
+  topic: CoursesTopic;
+  lessons: CoursesLesson[];
+}
+
+export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
+  // Calculate total duration from lessons
+  const totalDuration = lessons.reduce((sum, lesson) => sum + (lesson.duration || 0), 0);
+  const hours = Math.floor(totalDuration / 60);
+  const minutes = totalDuration % 60;
+  const durationText = hours > 0 ? `${hours} ساعت و ${minutes} دقیقه` : `${minutes} دقیقه`;
+
+  // Get instructor from first lesson that has one
+  const instructor = lessons.find(lesson => lesson.instructor)?.instructor;
 
   return (
     <div className="lg:w-80 xl:w-96 flex-shrink-0">
-      <div className="bg-base-100 rounded-box shadow-md p-6 sticky top-6">
+      <div className="bg-base-100 rounded-box shadow-md p-6">
         {/* Back button */}
         <Link 
           href="/courses" 
@@ -36,7 +43,7 @@ export default function CourseSideBar({ topic }: { topic: CoursesTopic }) {
         </div>
 
         {/* Course Title */}
-        <h1 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-100">{topic.title}</h1>
+        <h1 className="text-2xl text-hoboc font-bold mb-2 dark:text-gray-100">{topic.title}</h1>
 
         {/* Course Description */}
         <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
@@ -45,12 +52,12 @@ export default function CourseSideBar({ topic }: { topic: CoursesTopic }) {
 
         {/* Metadata */}
         <div className="mt-3 space-y-2 text-[13px]">
-          {courseDetails.instructor && (
+          {instructor && (
             <div className="flex items-center gap-2">
               <FiUser className="text-gray-500" size={14} />
               <span className="text-gray-500">مدرس:</span>
               <span className="text-green-600">
-                {courseDetails.instructor.name}
+                {instructor.name}
               </span>
             </div>
           )}
@@ -58,19 +65,13 @@ export default function CourseSideBar({ topic }: { topic: CoursesTopic }) {
           <div className="flex items-center gap-2">
             <FiClock className="text-gray-500" size={14} />
             <span className="text-gray-500">مدت زمان:</span>
-            <span className="text-green-600">{courseDetails.duration} دقیقه</span>
+            <span className="text-green-600">{durationText}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <FiBarChart2 className="text-gray-500" size={14} />
             <span className="text-gray-500">سطح:</span>
-            <span className="text-green-600">{courseDetails.level}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <FiFolder className="text-gray-500" size={14} />
-            <span className="text-gray-500">دسته‌بندی:</span>
-            <span className="text-green-600">{courseDetails.category}</span>
+            <span className="text-green-600">مقدماتی</span>
           </div>
         </div>
 
@@ -86,14 +87,19 @@ export default function CourseSideBar({ topic }: { topic: CoursesTopic }) {
             <span>برچسب‌ها:</span>
           </div>
           <div className="flex flex-wrap gap-2" dir="ltr">
-            {['جاوااسکریپت', 'تایپ‌اسکریپت', 'React'].map(tag => (
-              <span 
-                key={tag}
-                className="bg-hoboc/10 text-hoboc px-2.5 py-0.5 rounded-full text-xs font-medium hover:bg-hoboc-dark/10 transition-colors"
-              >
-                {tag}
-              </span>
-            ))}
+            {lessons.flatMap(lesson => lesson.tags)
+              .filter((tag, index, self) => 
+                index === self.findIndex(t => t.id === tag.id)
+              )
+              .slice(0, 3)
+              .map(tag => (
+                <span 
+                  key={tag.id}
+                  className="bg-hoboc/10 text-hoboc px-2.5 py-0.5 rounded-full text-xs font-medium hover:bg-hoboc-dark/10 transition-colors"
+                >
+                  {tag.name}
+                </span>
+              ))}
           </div>
         </div>
       </div>
