@@ -41,7 +41,12 @@ export default async function CoursesPage() {
       {/* Main lessons content */}
       <main className="space-y-16">
         {topicsWithLessons.map(({ topic, lessons, error }, index) => (
-          <section key={topic.id} id={`topic-${topic.id}`} tabIndex={-1} className="scroll-mt-24">
+          <section 
+            key={topic.id} 
+            id={`topic-${topic.id}`} 
+            tabIndex={-1} 
+            className="scroll-mt-24 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hoboc focus-visible:ring-offset-4 focus-visible:rounded-md"
+          >
             {error ? (
               <div className="text-red-600 dark:text-red-400 text-center my-6 font-semibold text-lg">
                 {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}

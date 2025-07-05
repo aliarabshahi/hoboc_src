@@ -17,6 +17,24 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
     topic.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleTopicClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(`topic-${id}`);
+    if (element) {
+      // Always use smooth scroll
+      window.history.pushState(null, '', `#topic-${id}`);
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      
+      // Focus the element for accessibility
+      setTimeout(() => {
+        element.focus({ preventScroll: true });
+      }, 1000);
+    }
+  };
+
   if (topics.length === 0) {
     return (
       <div className="text-center p-6 bg-white rounded-xl shadow-sm">
@@ -51,6 +69,7 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
               <li key={topic.id}>
                 <a
                   href={`#topic-${topic.id}`}
+                  onClick={(e) => handleTopicClick(e, String(topic.id))}
                   className="flex items-center gap-3 px-4 py-3 hover:bg-hoboc/5 transition-colors duration-200 group"
                 >
                   {topic.logo_file && (
