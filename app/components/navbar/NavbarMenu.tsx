@@ -1,5 +1,5 @@
 const navbarLinks = [
-  { label: "کالج", href: "#" },
+  { label: "کالج", href: "/courses/" },
   { label: "بلاگ", href: "#" },
   { label: "استخدام", href: "#" },
   { label: "دیتاهاب", href: "#" },
