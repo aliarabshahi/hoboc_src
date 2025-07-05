@@ -28,7 +28,7 @@ export default async function LessonPage({ params }: Params) {
   if (!lessonData) notFound();
 
   // Fetch topic data
-  const topicResponse = await getApiData(`/course-topics/?slug=${params.topicSlug}`);
+  const topicResponse = await getApiData(`/course-topics/?topic-slug=${params.topicSlug}`);
   let topicData: CoursesTopic | undefined;
 
   if (Array.isArray(topicResponse.data)) {

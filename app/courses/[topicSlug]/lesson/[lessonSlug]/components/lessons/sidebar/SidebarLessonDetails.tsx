@@ -1,5 +1,3 @@
-// components/lessons/sidebar/SidebarLessonDetails.tsx
-
 import { CoursesLesson } from "@/app/types/coursesType";
 import { FiClock, FiUser, FiBookmark } from "react-icons/fi";
 
@@ -8,6 +6,12 @@ export default function SidebarLessonDetails({
 }: {
   lessonData: CoursesLesson;
 }) {
+  const durationMinutes = lessonData.duration || 0;
+  const hours = Math.floor(durationMinutes / 60);
+  const minutes = durationMinutes % 60;
+  const formattedDuration =
+    hours > 0 ? `${hours} ساعت و ${minutes} دقیقه` : `${minutes} دقیقه`;
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h1 className="text-2xl font-bold text-gray-800">{lessonData.title}</h1>
@@ -27,7 +31,7 @@ export default function SidebarLessonDetails({
         <div className="flex items-center gap-2">
           <FiClock className="text-gray-500" size={14} />
           <span className="text-gray-500">مدت زمان:</span>
-          <span className="text-green-600">{lessonData.duration} دقیقه</span>
+          <span className="text-green-600">{formattedDuration}</span>
         </div>
 
         {lessonData.tags?.length > 0 && (
