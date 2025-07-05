@@ -115,7 +115,7 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-800 text-sm truncate">
+                      <h3 className="font-medium text-gray-800 text-base truncate">
                         {topic.title}
                       </h3>
                       <p className="text-xs text-gray-500 truncate">
@@ -127,7 +127,7 @@ export default function CourseTopics({ topics }: CourseTopicsProps) {
                         ? "bg-hoboc/10 text-hoboc-dark"
                         : "bg-gray-100 text-gray-500"
                     }`}>
-                      {topic.is_published ? "فعال" : "غیرفعال"}
+                      {/* {topic.is_published ? "فعال" : "غیرفعال"} */}
                     </span>
                   </a>
                 </li>
