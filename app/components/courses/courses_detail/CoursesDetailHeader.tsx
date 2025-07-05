@@ -25,7 +25,7 @@ const CoursesDetailHeader = ({ topic }: CoursesDetailHeaderProps) => {
         {topic.catchy_title}
       </Link>
 
-      <p className="text-md opacity-80 mt-2">{topic.description}</p>
+      {/* <p className="text-md opacity-80 mt-2">{topic.description}</p> */}
     </div>
   );
 };

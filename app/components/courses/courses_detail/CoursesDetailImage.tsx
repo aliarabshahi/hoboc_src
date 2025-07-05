@@ -32,10 +32,10 @@ const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
         priority
         unoptimized={process.env.NODE_ENV !== "production"}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
       <div className="absolute bottom-0 right-0 p-6">
-        <span className="badge badge-accent mb-2">متوسط</span>
-        <h2 className="text-2xl font-bold text-white">{topic.title}</h2>
+        {/* <span className="badge badge-accent mb-2">متوسط</span> */}
+        {/* <h2 className="text-2xl pr-6 font-bold text-white">{topic.title}</h2> */}
         {/* {topic.description && (
           <p className="text-white/80 text-sm mt-1">{topic.description}</p>
         )} */}
