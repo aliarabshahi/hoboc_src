@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { CoursesTopic } from "@/app/types/coursesType";
 
 interface CoursesDetailHeaderProps {
@@ -9,33 +10,22 @@ const CoursesDetailHeader = ({ topic }: CoursesDetailHeaderProps) => {
   if (!topic) {
     return (
       <div className="mb-8" dir="rtl">
-        <h1 className="text-2xl font-bold  text-hoboc  mt-2">هیچ موضوعی انتخاب نشده است</h1>
+        <h1 className="text-2xl font-bold text-hoboc mt-2">هیچ موضوعی انتخاب نشده است</h1>
       </div>
     );
   }
 
   return (
     <div className="mb-8" dir="rtl">
-      <h1 className="text-2xl text-hoboc font-bold mt-2">{topic.catchy_title}</h1>
-      <p className="text-md opacity-80 mt-2">{topic.description}</p>
+      <Link
+        href={`/courses/${topic.slug}`}
+        className="text-2xl text-hoboc font-bold mt-2 hover:text-hoboc-dark transition-colors"
+        aria-label={`رفتن به صفحه موضوع ${topic.title}`}
+      >
+        {topic.catchy_title}
+      </Link>
 
-      {/* <div className="flex items-center mt-4">
-        {course.instructor && (
-          <div className="flex items-center ml-6">
-            <span className="text-sm opacity-70">مدرس:</span>
-            <span className="font-medium mr-2">
-              {(course.instructor as any)?.user?.name || 'نامعلوم'}
-            </span>
-          </div>
-        )}
-        
-        <div className="flex items-center">
-          <span className="text-sm opacity-70">دسته‌بندی:</span>
-          <span className="font-medium mr-2">
-            {(course.topic as any)?.title || course.topic}
-          </span>
-        </div>
-      </div> */}
+      <p className="text-md opacity-80 mt-2">{topic.description}</p>
     </div>
   );
 };

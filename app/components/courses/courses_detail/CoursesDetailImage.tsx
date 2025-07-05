@@ -36,9 +36,9 @@ const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
       <div className="absolute bottom-0 right-0 p-6">
         <span className="badge badge-accent mb-2">متوسط</span>
         <h2 className="text-2xl font-bold text-white">{topic.title}</h2>
-        {topic.description && (
+        {/* {topic.description && (
           <p className="text-white/80 text-sm mt-1">{topic.description}</p>
-        )}
+        )} */}
       </div>
     </div>
   );
