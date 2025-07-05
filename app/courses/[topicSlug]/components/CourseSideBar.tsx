@@ -1,4 +1,3 @@
-// components/CourseSideBar.tsx
 import { CoursesTopic, CoursesLesson } from "@/app/types/coursesType";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,9 +19,12 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
   // Get instructor from first lesson that has one
   const instructor = lessons.find(lesson => lesson.instructor)?.instructor;
 
+  // Get first lesson slug
+  const firstLesson = lessons[0]?.slug;
+
   return (
     <div className="lg:w-80 xl:w-96 flex-shrink-0">
-      <div className="bg-base-100 rounded-box shadow-md p-6">
+      <div className="bg-base-100 rounded-box shadow-md p-6 lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
         {/* Back button */}
         <Link 
           href="/courses" 
@@ -75,10 +77,22 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           </div>
         </div>
 
-        {/* Start Course Button */}
-        <button className="btn bg-hoboc hover:bg-hoboc-dark text-white w-full mt-6 transition-colors">
-          شروع دوره
-        </button>
+        {/* Start Course Button - Now links to first lesson */}
+        {firstLesson ? (
+          <Link 
+            href={`/courses/${topic.slug}/lesson/${firstLesson}`}
+            className="btn bg-hoboc hover:bg-hoboc-dark text-white w-full mt-6 transition-colors"
+          >
+            شروع دوره
+          </Link>
+        ) : (
+          <button 
+            className="btn bg-gray-400 text-white w-full mt-6 cursor-not-allowed"
+            disabled
+          >
+            هیچ درسی موجود نیست
+          </button>
+        )}
 
         {/* Tags */}
         <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
