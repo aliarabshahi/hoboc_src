@@ -5,7 +5,6 @@ export interface ApiResponse<T> {
   results: T[];
 }
 
-
 export interface CoursesTopic {
   id: number;
   title: string;
@@ -33,7 +32,7 @@ export interface CoursesInstructor {
 
 export interface CoursesLesson {
   id: number;
-  topic: string | CoursesTopic; // slug or full object
+  topic: string | CoursesTopic;
   instructor: CoursesInstructor | null;
   tags: CoursesTag[];
   title: string;
@@ -45,7 +44,7 @@ export interface CoursesLesson {
   thumbnail: string | null;
   is_published: boolean;
   is_free: boolean;
-  duration: number; // in minutes
+  duration: number;
   created_at: string;
   updated_at: string;
 }
