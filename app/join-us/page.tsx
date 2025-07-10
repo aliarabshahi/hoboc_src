@@ -1,7 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import ResumeForm from "./components/ResumeForm";
 import ResumeImage from "./components/ResumeImage";
 
+function ResumeFormSkeleton() {
+  return (
+    <div className="w-full h-[500px] bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+  );
+}
+
 export default function ResumePage() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 py-12 px-6 sm:px-8 lg:px-12">
       <div className="max-w-5xl mx-auto">
@@ -11,9 +28,9 @@ export default function ResumePage() {
             <ResumeImage />
           </div>
 
-          {/* Form */}
+          {/* Form or Skeleton */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <ResumeForm />
+            {loading ? <ResumeFormSkeleton /> : <ResumeForm />}
           </div>
         </div>
       </div>
