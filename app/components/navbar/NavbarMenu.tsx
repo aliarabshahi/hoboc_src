@@ -1,9 +1,9 @@
 const navbarLinks = [
   { label: "کالج", href: "/courses/" },
   { label: "بلاگ", href: "#" },
-  { label: "استخدام", href: "#" },
+  { label: "استخدام", href: "/join-us/" },
   { label: "دیتاهاب", href: "#" },
-  { label: "سفارش پرژه", href: "#" },
+  { label: "سفارش پرژه", href: "/project-order/" },
   { label: "بوت‌کمپ", href: "#" },
   { label: "درباره ما", href: "/about/" },
 
