@@ -1,5 +1,7 @@
+// app/contact/page.tsx
 import ContactForm from "./components/ContactForm";
 import ContactImage from "./components/ContactImage";
+import ContactDetail from "./components/ContactDetail";
 
 export default function ContactPage() {
   return (
@@ -11,6 +13,7 @@ export default function ContactPage() {
           </div>
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
             <ContactForm />
+            <ContactDetail />
           </div>
         </div>
       </div>

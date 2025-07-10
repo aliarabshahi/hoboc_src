@@ -2,7 +2,13 @@
 import { useState } from "react";
 import { ContactUsRequest } from "@/app/types/formsType";
 import { postApiData } from "@/app/services/api/apiServerPost";
-import { FaEnvelope, FaUser, FaPhone, FaComment, FaPaperPlane } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaUser,
+  FaPhone,
+  FaComment,
+  FaPaperPlane,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function ContactForm() {
@@ -32,15 +38,19 @@ export default function ContactForm() {
   };
 
   return (
-    <motion.section 
+    <motion.section
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto"
+      className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 w-full"
     >
       <div className="mb-8 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">تماس با ما</h2>
-        <p className="text-gray-600 dark:text-gray-400">سوالات و پیشنهادات خود را با ما در میان بگذارید</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">
+          تماس با ما
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          سوالات و پیشنهادات خود را با ما در میان بگذارید
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -143,8 +153,8 @@ export default function ContactForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={`p-3 rounded-lg text-sm ${
-              message.startsWith("✅") 
-                ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200" 
+              message.startsWith("✅")
+                ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
                 : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
             }`}
           >
