@@ -8,6 +8,8 @@ import {
   FaPhone,
   FaComment,
   FaPaperPlane,
+  FaCheckCircle,
+  FaTimesCircle
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -31,7 +33,7 @@ export default function ContactForm() {
     setLoading(true);
     const { error } = await postApiData("/contact-us/", contact);
     setLoading(false);
-    setMessage(error ? `❌ ${error}` : "✅ پیام شما با موفقیت ارسال شد");
+    setMessage(error ? ` ${error}` : "پیام شما با موفقیت ارسال شد");
     if (!error) {
       setContact({ full_name: "", email: "", phone_number: "", message: "" });
     }
@@ -152,12 +154,17 @@ export default function ContactForm() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`p-3 rounded-lg text-sm ${
-              message.startsWith("✅")
-                ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
-                : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
+            className={`p-3 rounded-lg text-sm flex items-center gap-2 ${
+              !message.startsWith("پیام شما")
+                ? "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
+                : "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
             }`}
           >
+            {!message.startsWith("پیام شما") ? (
+              <FaTimesCircle className="flex-shrink-0" />
+            ) : (
+              <FaCheckCircle className="flex-shrink-0" />
+            )}
             {message}
           </motion.div>
         )}

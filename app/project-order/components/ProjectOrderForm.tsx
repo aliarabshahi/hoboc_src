@@ -9,6 +9,8 @@ import {
   FaFileAlt,
   FaMoneyBillWave,
   FaCalendarAlt,
+  FaCheckCircle,
+  FaTimesCircle
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -30,7 +32,7 @@ export default function ProjectOrderForm() {
     setLoading(true);
     const { error } = await postApiData("/project-orders/", projectOrder);
     setLoading(false);
-    setMessage(error ? `❌ ${error}` : "✅ سفارش شما با موفقیت ثبت شد");
+    setMessage(error ? error : "سفارش شما با موفقیت ثبت شد");
 
     if (!error) {
       setProjectOrder({
@@ -158,12 +160,17 @@ export default function ProjectOrderForm() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`p-3 rounded-lg text-sm ${
-              message.startsWith("✅")
+            className={`p-3 rounded-lg text-sm flex items-center gap-2 ${
+              message === "سفارش شما با موفقیت ثبت شد"
                 ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
                 : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
             }`}
           >
+            {message === "سفارش شما با موفقیت ثبت شد" ? (
+              <FaCheckCircle className="flex-shrink-0" />
+            ) : (
+              <FaTimesCircle className="flex-shrink-0" />
+            )}
             {message}
           </motion.div>
         )}
@@ -172,7 +179,6 @@ export default function ProjectOrderForm() {
   );
 }
 
-// ✅ Reusable Input Field Component
 function FormField({
   label,
   icon,

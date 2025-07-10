@@ -1,7 +1,18 @@
 "use client";
 import { useState } from "react";
 import { ResumeSubmissionRequest } from "@/app/types/formsType";
-import { FaUser, FaEnvelope, FaPhone, FaLinkedin, FaGithub, FaFilePdf, FaFileUpload, FaFileAlt } from "react-icons/fa";
+import { 
+  FaUser, 
+  FaEnvelope, 
+  FaPhone, 
+  FaLinkedin, 
+  FaGithub, 
+  FaFilePdf, 
+  FaFileUpload, 
+  FaFileAlt,
+  FaCheckCircle,
+  FaTimesCircle
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function ResumeForm() {
@@ -24,12 +35,12 @@ export default function ResumeForm() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.type !== "application/pdf") {
-        setMessage("❌ فقط فایل PDF قابل قبول است");
+        setMessage("فقط فایل PDF قابل قبول است");
         setResumeFile(null);
         return;
       }
       if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-        setMessage(`❌ حجم فایل نباید بیشتر از ${MAX_SIZE_MB} مگابایت باشد`);
+        setMessage(`حجم فایل نباید بیشتر از ${MAX_SIZE_MB} مگابایت باشد`);
         setResumeFile(null);
         return;
       }
@@ -43,7 +54,7 @@ export default function ResumeForm() {
     setLoading(true);
 
     if (!resumeFile) {
-      setMessage("❌ لطفاً فایل رزومه را انتخاب کنید");
+      setMessage("لطفاً فایل رزومه را انتخاب کنید");
       setLoading(false);
       return;
     }
@@ -67,7 +78,7 @@ export default function ResumeForm() {
         throw new Error(errorMsg);
       }
 
-      setMessage("✅ رزومه با موفقیت ارسال شد");
+      setMessage("رزومه با موفقیت ارسال شد");
       setResume({
         full_name: "",
         email: "",
@@ -78,7 +89,7 @@ export default function ResumeForm() {
       });
       setResumeFile(null);
     } catch (err: any) {
-      setMessage(`❌ ${err.message}`);
+      setMessage(err.message);
     } finally {
       setLoading(false);
     }
@@ -217,12 +228,17 @@ export default function ResumeForm() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className={`p-3 rounded-lg text-sm ${
-              message.startsWith("✅")
+            className={`p-3 rounded-lg text-sm flex items-center gap-2 ${
+              message === "رزومه با موفقیت ارسال شد"
                 ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
                 : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
             }`}
           >
+            {message === "رزومه با موفقیت ارسال شد" ? (
+              <FaCheckCircle className="flex-shrink-0" />
+            ) : (
+              <FaTimesCircle className="flex-shrink-0" />
+            )}
             {message}
           </motion.div>
         )}
@@ -231,7 +247,6 @@ export default function ResumeForm() {
   );
 }
 
-// ⬇️ Optional: Extracted input component for reuse
 function FormField({
   label,
   icon,
@@ -249,7 +264,9 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{label}</label>
+      <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+        {label}
+      </label>
       <div className="relative">
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
           {icon}
