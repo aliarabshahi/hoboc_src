@@ -36,7 +36,7 @@ export default function ContactForm() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-2xl mx-auto"
+      className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto"
     >
       <div className="mb-8 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">تماس با ما</h2>
@@ -56,7 +56,7 @@ export default function ContactForm() {
             <input
               type="text"
               placeholder="نام و نام خانوادگی"
-              className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
+              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
               value={contact.full_name}
               onChange={(e) => handleChange("full_name", e.target.value)}
               required
@@ -76,7 +76,7 @@ export default function ContactForm() {
             <input
               type="email"
               placeholder="ایمیل شما"
-              className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
+              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
               value={contact.email}
               onChange={(e) => handleChange("email", e.target.value)}
               required
@@ -96,7 +96,7 @@ export default function ContactForm() {
             <input
               type="tel"
               placeholder="مثلاً 09123456789"
-              className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
+              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
               value={contact.phone_number}
               onChange={(e) => handleChange("phone_number", e.target.value)}
               required
@@ -115,7 +115,7 @@ export default function ContactForm() {
             </div>
             <textarea
               placeholder="متن پیام..."
-              className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 h-32 transition"
+              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 h-32 transition"
               value={contact.message}
               onChange={(e) => handleChange("message", e.target.value)}
               required
@@ -123,7 +123,7 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Submit Button - Simplified */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
