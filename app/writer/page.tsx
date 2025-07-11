@@ -133,6 +133,18 @@ export default function BlogWriterPage() {
         formData.append("cover_image", coverImage);
       }
 
+      // Log the form data before posting
+      console.log("Submitting blog post with data:", {
+        title: postData.title,
+        slug: postData.slug,
+        content: postData.content.substring(0, 100) + (postData.content.length > 100 ? "..." : ""), // Show first 100 chars of content
+        category: postData.category,
+        writer: postData.writer,
+        tags: selectedTags,
+        is_published: postData.is_published,
+        hasCoverImage: !!coverImage
+      });
+
       // Post data
       const { error } = await postApiData("/posts/", formData);
       
