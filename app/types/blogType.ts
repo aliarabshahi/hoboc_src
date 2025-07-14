@@ -1,14 +1,13 @@
-export interface BlogWriter {
-  id: number;
-  name: string;
-  bio: string;
-  profile_picture: string | null;
-}
-
-export interface BlogCategory {
+export interface BlogTopic {
   id: number;
   title: string;
+  catchy_title?: string;
   slug: string;
+  description?: string;
+  image?: string;
+  logo_file?: string;
+  is_published: boolean;
+  priority: number;
 }
 
 export interface BlogTag {
@@ -17,27 +16,28 @@ export interface BlogTag {
   slug: string;
 }
 
-export interface BlogPostRequest {
-  title: string;
-  slug: string;
-  content: string;
-  cover_image?: string;
-  category: number;
-  writer: number;
-  tags: number[];
-  is_published: boolean;
+export interface BlogWriter {
+  id: number;
+  user: string; // String representation (like username)
+  name: string; // Computed field from backend
+  bio?: string;
+  profile_picture?: string;
 }
 
-export interface BlogPostResponse {
+export interface BlogPost {
   id: number;
+  topic: string; // This is a string because serializer returns `StringRelatedField`
+  writer?: BlogWriter | null;
   title: string;
   slug: string;
-  writer: BlogWriter;
-  content: string;
-  cover_image: string | null;
-  category: BlogCategory;
+  description?: string;
+  pdf_file?: string;
+  video_file?: string;
+  video_url?: string;
+  thumbnail?: string;
+  cover_image?: string;
   tags: BlogTag[];
-  is_published: boolean;
   created_at: string;
   updated_at: string;
+  is_published: boolean;
 }
