@@ -1,7 +1,7 @@
 import { BlogPost } from "@/app/types/blogType";
 import VideoPlayer from "./VideoPlayer";
 import { FiClock, FiUser, FiBookmark, FiCalendar } from "react-icons/fi";
-import { Link } from "lucide-react";
+import Link from "next/link"; // ✅ اصلاح اینجا
 
 interface BlogSidebarProps {
   postData: BlogPost;
@@ -52,6 +52,7 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
             </span>
           </div>
 
+          {/* Tags */}
           {postData.tags?.length > 0 && (
             <div>
               <div className="flex items-center text-gray-500 text-sm gap-2">
