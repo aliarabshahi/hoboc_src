@@ -13,10 +13,9 @@ interface Params {
 }
 
 export default async function BlogPostPage({ params }: Params) {
-  // Fetch blog post data
+  // Fetch blog post data (unchanged)
   const postResponse = await getApiData(`/blog-posts/?post-slug=${params.postSlug}`);
   let postData: BlogPost | undefined;
-
   if (Array.isArray(postResponse.data)) {
     postData = postResponse.data.find((p: BlogPost) => p.slug === params.postSlug);
   } else if (postResponse.data?.results) {
@@ -24,13 +23,11 @@ export default async function BlogPostPage({ params }: Params) {
   } else {
     postData = postResponse.data;
   }
-
   if (!postData) notFound();
 
-  // Fetch topic data
+  // Fetch topic data (unchanged)
   const topicResponse = await getApiData(`/blog-topics/?topic-slug=${params.topicSlug}`);
   let topicData: BlogTopic | undefined;
-
   if (Array.isArray(topicResponse.data)) {
     topicData = topicResponse.data.find((t: BlogTopic) => t.slug === params.topicSlug);
   } else if (topicResponse.data?.results) {
@@ -38,27 +35,17 @@ export default async function BlogPostPage({ params }: Params) {
   } else {
     topicData = topicResponse.data;
   }
-
   if (!topicData) notFound();
 
   return (
     <div dir="rtl" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Navigation Bar */}
+      {/* Navigation Bar (unchanged) */}
       <BlogNavigationBar topic={topicData} postTitle={postData.title} />
 
-      {/* Main Content */}
+      {/* Main Content - FLIPPED LAYOUT */}
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* PDF Content */}
-        <div className="flex-1 min-w-0 order-2 lg:order-1">
-          {postData.pdf_file && (
-            <div className="border rounded-lg shadow-lg overflow-hidden h-[80vh] w-full">
-              <PdfViewer pdfUrl={postData.pdf_file} />
-            </div>
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <div className="lg:w-80 xl:w-96 order-1 lg:order-2 flex-shrink-0">
+        {/* Sidebar (now on LEFT) */}
+        <div className="lg:w-80 xl:w-96 order-1 flex-shrink-0">
           <div className="sticky top-16 space-y-6">
             <BlogSidebar
               postData={postData}
@@ -66,6 +53,15 @@ export default async function BlogPostPage({ params }: Params) {
               currentPostSlug={params.postSlug}
             />
           </div>
+        </div>
+
+        {/* PDF (now on RIGHT) */}
+        <div className="flex-1 min-w-0 order-2">
+          {postData.pdf_file && (
+            <div className="border rounded-lg shadow-lg overflow-hidden h-[80vh] w-full">
+              <PdfViewer pdfUrl={postData.pdf_file} />
+            </div>
+          )}
         </div>
       </div>
     </div>

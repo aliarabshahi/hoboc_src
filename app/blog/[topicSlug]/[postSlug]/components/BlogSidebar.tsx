@@ -1,6 +1,6 @@
 import { BlogPost } from "@/app/types/blogType";
 import VideoPlayer from "./VideoPlayer";
-import { FiClock, FiUser, FiBookmark, FiCalendar } from "react-icons/fi";
+import { FiUser, FiCalendar, FiBookmark } from "react-icons/fi";
 import Link from "next/link";
 
 interface BlogSidebarProps {
@@ -11,52 +11,71 @@ interface BlogSidebarProps {
 
 export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
   return (
-    <div className="space-y-4">
-      {/* Post Info Card */}
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-        <h1 className="text-2xl font-bold text-gray-800">{postData.title}</h1>
-        <p className="text-gray-500 mt-3 leading-relaxed text-[15px]">
-          {postData.description}
-        </p>
+    <div className="space-y-6">
+      {/* Cover Image - Fixed size banner at top */}
+      {postData.cover_image && (
+        <div className="bg-white p-0 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <img
+            src={postData.cover_image}
+            alt={postData.title}
+            className="w-full h-48 object-cover"
+          />
+        </div>
+      )}
 
-        {/* Cover Image */}
-        {postData.cover_image && (
-          <div className="mt-4 rounded-lg overflow-hidden">
-            <img 
-              src={postData.cover_image} 
-              alt={postData.title}
-              className="w-full h-auto object-cover"
-            />
-          </div>
+      {/* Post Info Card */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-gray-800">{postData.title}</h1>
+
+        {/* Description */}
+        {postData.description && (
+          <p className="text-gray-500 leading-relaxed text-[15px]">
+            {postData.description}
+          </p>
         )}
 
-        {/* Compact Metadata Section */}
-        <div className="mt-3 space-y-2 text-[13px]">
+        {/* Metadata Section */}
+        <div className="space-y-3 pt-2 border-t border-gray-100">
+          {/* Author */}
           {postData.writer && (
-            <div className="flex items-center gap-2">
-              <FiUser className="text-gray-500" size={14} />
-              <span className="text-gray-500">نویسنده:</span>
-              <span className="text-green-600">
-                {postData.writer.name}
-              </span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-gray-600 text-sm">
+                <FiUser className="text-gray-500" size={14} />
+                <span>نویسنده:</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {postData.writer.profile_picture && (
+                  <img
+                    src={postData.writer.profile_picture}
+                    alt={postData.writer.name}
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                )}
+                <span className="text-green-600 text-sm">
+                  {postData.writer.name}
+                </span>
+              </div>
             </div>
           )}
 
-          <div className="flex items-center gap-2">
+          {/* Date */}
+          <div className="flex items-center gap-2 text-gray-600 text-sm">
             <FiCalendar className="text-gray-500" size={14} />
-            <span className="text-gray-500">تاریخ انتشار:</span>
-            <span className="text-green-600">
+            <span>تاریخ انتشار:</span>
+            <span className="text-gray-700">
               {new Date(postData.created_at).toLocaleDateString('fa-IR')}
             </span>
           </div>
 
+          {/* Tags */}
           {postData.tags?.length > 0 && (
-            <div>
-              <div className="flex items-center text-gray-500 text-[13px] gap-2">
+            <div className="pt-2">
+              <div className="flex items-center text-gray-600 text-sm gap-2">
                 <FiBookmark size={14} className="text-gray-500" />
                 <span>برچسب‌ها:</span>
               </div>
-              <div className="flex flex-wrap gap-2 mt-1" dir="ltr">
+              <div className="flex flex-wrap gap-2 mt-2" dir="ltr">
                 {postData.tags.map((tag) => (
                   <Link
                     href={`/blog/${topicSlug}?tag=${tag.slug}`}
