@@ -12,7 +12,7 @@ export default function VideoPlayer({ postData }: { postData: BlogPost }) {
           <video 
             controls 
             className="w-full h-full"
-            poster={postData.thumbnail}
+            poster={postData.thumbnail || postData.cover_image || undefined}
           >
             <source src={postData.video_file} type="video/mp4" />
             مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.

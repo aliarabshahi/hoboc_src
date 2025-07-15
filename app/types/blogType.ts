@@ -8,13 +8,12 @@ export interface ApiResponse<T> {
 export interface BlogTopic {
   id: number;
   title: string;
-  catchy_title?: string;
+  catchy_title: string;
   slug: string;
-  description?: string;
-  image?: string;
-  logo_file?: string;
+  description: string;
+  image: string;
+  logo_file: string;
   is_published: boolean;
-  priority: number;
 }
 
 export interface BlogTag {
@@ -25,27 +24,26 @@ export interface BlogTag {
 
 export interface BlogWriter {
   id: number;
-  user: string; // String representation (like username)
-  name: string; // Computed field from backend
-  bio?: string;
-  profile_picture?: string;
+  user: string;
+  name: string;
+  bio: string;
+  profile_picture: string;
 }
 
 export interface BlogPost {
-  topic_title: ReactNode;
   id: number;
-  topic: string; // This is a string because serializer returns `StringRelatedField`
-  writer?: BlogWriter | null;
+  topic: string | BlogTopic;
+  writer: BlogWriter | null;
+  tags: BlogTag[];
   title: string;
   slug: string;
-  description?: string;
-  pdf_file?: string;
-  video_file?: string;
-  video_url?: string;
-  thumbnail?: string;
-  cover_image?: string;
-  tags: BlogTag[];
+  description: string;
+  pdf_file: string | null;
+  video_file: string | null;
+  video_url: string | null;
+  thumbnail: string | null;
+  cover_image: string | null;
+  is_published: boolean;
   created_at: string;
   updated_at: string;
-  is_published: boolean;
 }
