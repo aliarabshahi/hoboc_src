@@ -32,6 +32,7 @@ export interface BlogWriter {
 }
 
 export interface BlogPost {
+  topic_title: ReactNode;
   id: number;
   topic: string; // This is a string because serializer returns `StringRelatedField`
   writer?: BlogWriter | null;
