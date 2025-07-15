@@ -5,13 +5,18 @@ import { ApiResponse, BlogPost, BlogTopic } from "@/app/types/blogType";
 import BlogPostCard from "./components/BlogPostCard";
 import BlogTopicsDropdown from "./components/BlogTopicsDropdown";
 
-async function TopicsList() {
+async function TopicsList({ selectedTopicSlug }: { selectedTopicSlug?: string }) {
   const topicsResponse = await getApiData("/blog-topics/");
   const topics: BlogTopic[] = Array.isArray(topicsResponse.data)
     ? topicsResponse.data
     : topicsResponse.data?.results || [];
 
-  return <BlogTopicsDropdown topics={topics} />;
+  return (
+    <BlogTopicsDropdown
+      topics={topics}
+      selectedTopicSlug={selectedTopicSlug}
+    />
+  );
 }
 
 async function BlogPostsList({ topicSlug }: { topicSlug?: string }) {
@@ -46,20 +51,32 @@ async function BlogPostsList({ topicSlug }: { topicSlug?: string }) {
   );
 }
 
-export default function BlogPage({
+export default async function BlogPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
   const selectedTopicSlug = searchParams.topic;
 
+  const topicsResponse = await getApiData("/blog-topics/");
+  const topics: BlogTopic[] = Array.isArray(topicsResponse.data)
+    ? topicsResponse.data
+    : topicsResponse.data?.results || [];
+
+  const selectedTopic = topics.find((t) => t.slug === selectedTopicSlug);
+  const title = selectedTopic
+    ? `مطالب بلاگ ${selectedTopic.catchy_title}`
+    : "مطالب بلاگ";
+
   return (
     <div dir="rtl" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <h1 className="text-3xl font-bold text-gray-800">مطالب بلاگ</h1>
+      <div className="mb-2">
+        <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
+      </div>
 
+      <div className="mb-8">
         <Suspense fallback={<div className="w-64 h-10 bg-gray-200 rounded-md animate-pulse" />}>
-          <TopicsList />
+          <TopicsList selectedTopicSlug={selectedTopicSlug} />
         </Suspense>
       </div>
 

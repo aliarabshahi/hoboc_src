@@ -2,44 +2,88 @@
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { BlogTopic } from "@/app/types/blogType";
-import { FiChevronDown } from "react-icons/fi";
+import { BsChevronDown } from "react-icons/bs";
+import { useState, useEffect, useRef } from "react";
 
-export default function BlogTopicsDropdown({ topics }: { topics: BlogTopic[] }) {
+export default function BlogTopicsDropdown({
+  topics,
+  selectedTopicSlug,
+}: {
+  topics: BlogTopic[];
+  selectedTopicSlug?: string;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentTopic = searchParams.get('topic');
+  const currentTopic = selectedTopicSlug || "";
 
-  const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newTopic = e.target.value;
+  const selectedTopic = topics.find((t) => t.slug === currentTopic);
+  const selectedTitle = selectedTopic?.catchy_title || "همه موضوعات";
+
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleSelect = (slug: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    
-    if (newTopic) {
-      params.set('topic', newTopic);
+    if (slug) {
+      params.set("topic", slug);
     } else {
-      params.delete('topic');
+      params.delete("topic");
     }
-    
+
     router.push(`${pathname}?${params.toString()}`);
+    setOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="relative w-full md:w-64">
-      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-        <FiChevronDown />
-      </div>
-      <select
-        value={currentTopic || ""}
-        onChange={handleTopicChange}
-        className="block w-full px-4 py-2 pr-10 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-hoboc focus:border-hoboc hover:border-gray-400 transition-colors duration-200"
+    <div
+      className="relative inline-block text-right z-50"
+      ref={dropdownRef}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="inline-flex justify-between items-center w-48 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 transition"
       >
-        <option value="">همه موضوعات</option>
-        {topics.map((topic) => (
-          <option key={topic.id} value={topic.slug}>
-            {topic.title}
-          </option>
-        ))}
-      </select>
+        {selectedTitle}
+        <BsChevronDown className="ml-2 text-gray-500" />
+      </button>
+
+      {open && (
+        <div className="absolute z-50 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="py-1">
+            <button
+              onClick={() => handleSelect("")}
+              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-right"
+            >
+              همه موضوعات
+            </button>
+            {topics.map((topic) => (
+              <button
+                key={topic.id}
+                onClick={() => handleSelect(topic.slug)}
+                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-right"
+              >
+                {topic.catchy_title}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
