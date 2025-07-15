@@ -45,19 +45,18 @@ export default function BlogTopicsDropdown({
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div
-      className="relative inline-block text-right z-50"
+      className="relative inline-block text-right z-50 pt-4"
       ref={dropdownRef}
     >
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="inline-flex justify-between items-center w-48 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 transition"
+        className="inline-flex justify-between items-center w-48 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 transition"
       >
         {selectedTitle}
         <BsChevronDown className="ml-2 text-gray-500" />
@@ -68,7 +67,7 @@ export default function BlogTopicsDropdown({
           <div className="py-1">
             <button
               onClick={() => handleSelect("")}
-              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-right"
+              className="block  w-full px-4 py-2 text-base text-gray-700 hover:bg-gray-100 text-right"
             >
               همه موضوعات
             </button>
@@ -76,7 +75,7 @@ export default function BlogTopicsDropdown({
               <button
                 key={topic.id}
                 onClick={() => handleSelect(topic.slug)}
-                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-right"
+                className="block w-full px-4 py-2 text-base text-gray-700 hover:bg-gray-100 text-right"
               >
                 {topic.catchy_title}
               </button>

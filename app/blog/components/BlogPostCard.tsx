@@ -19,11 +19,11 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
       <div className="p-5 flex flex-col flex-grow">
         <div className="mb-3 flex justify-start">
           <span className="inline-block px-2 py-1 text-xs font-medium text-hoboc-dark bg-hoboc/10 rounded-full">
-            {post.title}
+            {typeof post.topic === "string" ? post.topic : post.topic.title}
           </span>
         </div>
 
-        <h2 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
+        <h2 className="text-xl font-bold text-gray-650 mb-3 line-clamp-2">
           {post.title}
         </h2>
 
