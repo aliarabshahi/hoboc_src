@@ -83,7 +83,7 @@ export default function CoursesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 min-h-screen">
+<div className="container mx-auto px-4 py-8 -mt-4 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 min-h-screen bg-gray-50">
       {/* Sidebar topics - shows skeleton when loading */}
       <aside>
         {loading ? <TopicsSkeleton /> : <CourseTopics topics={topics} />}
