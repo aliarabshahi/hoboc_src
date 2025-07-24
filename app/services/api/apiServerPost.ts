@@ -5,7 +5,7 @@ export const postApiData = async <T>(
   body: Record<string, any>
 ): Promise<{ data: T | null; error?: string }> => {
   const baseUrl = 'http://localhost/hoboc/api';
-  const token = 'fb65966b2be41961bf8d41278c85782e3c0ee4a7';
+  const token = '4e496e0820b6515d1f62d989f8811d99a6aa451f';
 
   try {
     const res = await fetch(`${baseUrl}${endpoint}`, {
