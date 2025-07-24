@@ -17,7 +17,7 @@ interface CoursesDetailProps {
 const SkeletonLoader = () => (
   <div className="flex flex-col gap-6" dir="rtl">
     {/* Fake Header */}
-    <div className="h-14 w-1/5 bg-gray-200 rounded-lg animate-pulse" />
+    <div className="h-14 w-1/5 bg-gray-100 rounded-lg animate-pulse" />
 
     {/* Main Flex Container */}
     <div className="flex flex-col lg:flex-row gap-8">
