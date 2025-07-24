@@ -1,4 +1,5 @@
 import { MapPinCheck } from "lucide-react";
+import Link from "next/link";
 
 interface Props {
   shrink: boolean;
@@ -32,9 +33,11 @@ export default function NavbarLogin({ shrink }: Props) {
         <button className="btn btn-outline btn-sm text-hoboc-dark border-hoboc-dark hover:bg-[#e6f3f8] hover:text-hoboc-dark h-8">
           نقشه راه
         </button>
-        <button className="btn btn-sm bg-hoboc-dark text-white hover:bg-[#00587A]">
-          نوتی جات!
-        </button>
+        <Link href="/notifications" passHref>
+          <button className="btn btn-sm bg-hoboc-dark text-white hover:bg-[#00587A]">
+            نوتی جات!
+          </button>
+        </Link>
       </div>
     </div>
   );
