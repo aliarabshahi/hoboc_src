@@ -1,9 +1,7 @@
 import { RoadmapItem } from "./components/RoadmapItem";
 import { RoadmapLegend } from "./components/RoadmapLegend";
 import { RoadmapItem as RoadmapItemType, RoadmapLevel, RoadmapStatus }  from "@/app/types/roadmapType";
-
-const RoadmapPage = () => {
-  const roadmapData: RoadmapItemType[] = [
+const roadmapData: RoadmapItemType[] = [
     {
       id: '1',
       title: 'مفاهیم مقدماتی از مهندسی داده',
@@ -132,6 +130,8 @@ const RoadmapPage = () => {
       status: 'شروع‌نشده'
     }
   ];
+
+const RoadmapPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100/50 py-12 px-4 sm:px-6 lg:px-8 font-vazir">
       <div className="max-w-4xl mx-auto">
