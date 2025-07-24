@@ -1,4 +1,4 @@
-import { LogIn } from "lucide-react";
+import { MapPinCheck } from "lucide-react";
 
 interface Props {
   shrink: boolean;
@@ -11,8 +11,8 @@ export default function NavbarLogin({ shrink }: Props) {
         <div className=" h-4 w-px bg-gray-400"></div>
 
         <button className="text-hoboc-dark text-sm flex items-center gap-1  ">
-          <LogIn size={18} />
-          ورود
+          <MapPinCheck size={18} />
+          نقشه راه
         </button>
       </div>
     );
@@ -30,10 +30,10 @@ export default function NavbarLogin({ shrink }: Props) {
       {/* Full buttons - only shown on lg+ */}
       <div className="hidden lg:flex items-center gap-2">
         <button className="btn btn-outline btn-sm text-hoboc-dark border-hoboc-dark hover:bg-[#e6f3f8] hover:text-hoboc-dark h-8">
-          ورود
+          نقشه راه
         </button>
         <button className="btn btn-sm bg-hoboc-dark text-white hover:bg-[#00587A]">
-          عضویت
+          نوتی جات!
         </button>
       </div>
     </div>
