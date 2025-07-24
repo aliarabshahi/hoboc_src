@@ -48,7 +48,7 @@ const CoursesDetailContent = ({ course }: { course: any }) => {
 
   return (
     <div className="lg:w-2/3 mx-auto" dir="rtl">
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-700">
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-700 min-h-[200px]">
         <h2 className="text-xl font-bold mb-6 flex items-center ">
           <BsBook className="w-6 h-6 ml-2" />
           محتوای دوره

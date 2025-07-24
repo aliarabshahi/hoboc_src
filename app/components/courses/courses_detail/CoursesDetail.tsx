@@ -15,18 +15,20 @@ interface CoursesDetailProps {
 }
 
 const SkeletonLoader = () => (
-  <>
-    {/* Header skeleton */}
-    <div className="mb-8 h-20 bg-gray-200 rounded animate-pulse" dir="rtl"></div>
-    
-    {/* Content skeleton */}
-    <div className="flex flex-col lg:flex-row gap-8" dir="rtl">
-      <div className="lg:w-2/3 bg-gray-100 rounded-box p-6 h-64 animate-pulse"></div>
-      <div className="lg:w-1/3 flex flex-col gap-6">
-        <div className="relative aspect-video bg-gray-100 rounded-box animate-pulse"></div>
-      </div>
+  <div className="flex flex-col gap-6" dir="rtl">
+    {/* Fake Header */}
+    <div className="h-14 w-1/5 bg-gray-200 rounded-lg animate-pulse" />
+
+    {/* Main Flex Container */}
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Content block */}
+      <div className="lg:w-2/3 h-[200px] bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
+
+      {/* Image block */}
+      <div className="lg:w-1/3 h-[200px] aspect-video bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
     </div>
-  </>
+
+  </div>
 );
 
 const NoTopicSelected = () => (
