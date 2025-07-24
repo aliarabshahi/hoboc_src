@@ -1,5 +1,4 @@
 import { RoadmapLevel } from "@/app/types/roadmapType";
-import { motion } from "framer-motion";
 
 export const RoadmapLegend = () => {
   const levels: RoadmapLevel[] = ['مبتدی', 'متوسط', 'پیشرفته'];
@@ -18,28 +17,21 @@ export const RoadmapLegend = () => {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
-    >
-      <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-100 dark:border-gray-700">
+    <div className="mt-6">
+      {/* <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">
         راهنمای سطوح یادگیری
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      </h2> */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 px-6 py-4">
         {levels.map((level) => (
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <div
             key={level} 
-            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-full transition-colors ${getLevelColor(level)}`}
+            className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-sm ${getLevelColor(level)}`}
           >
-            <div className="w-3 h-3 rounded-full bg-white/30"></div>
-            <span className="font-medium">{level}</span>
-          </motion.div>
+            <div className="w-2.5 h-2.5 rounded-full bg-white/30"></div>
+            <span>{level}</span>
+          </div>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };

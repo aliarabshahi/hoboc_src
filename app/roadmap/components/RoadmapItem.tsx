@@ -2,7 +2,6 @@
 import { FiChevronDown, FiChevronUp, FiCheck, FiClock, FiAward } from 'react-icons/fi';
 import { useState } from 'react';
 import { RoadmapItem as RoadmapItemType, RoadmapLevel, RoadmapStatus } from "@/app/types/roadmapType";
-import { motion } from "framer-motion";
 
 interface RoadmapItemProps extends RoadmapItemType {}
 
@@ -19,11 +18,11 @@ export const RoadmapItem = ({
   const getStatusIcon = () => {
     switch (status) {
       case 'تکمیل شده':
-        return <FiCheck className="text-white" />;
+        return <FiCheck className="text-white text-sm" />;
       case 'در حال یادگیری':
-        return <FiClock className="text-white" />;
+        return <FiClock className="text-white text-sm" />;
       default:
-        return <FiAward className="text-white" />;
+        return <FiAward className="text-white text-sm" />;
     }
   };
 
@@ -52,49 +51,45 @@ export const RoadmapItem = ({
   };
 
   return (
-    <motion.div 
-      layout
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all"
-    >
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all">
       <div 
-        className="p-4 sm:p-6 cursor-pointer flex justify-between items-center"
+        className="p-3 sm:p-4 cursor-pointer flex justify-between items-center"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className="flex items-center gap-4">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getLevelColor()}`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${getLevelColor()}`}>
             {getStatusIcon()}
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">{title}</h3>
-            <p className="text-gray-600 dark:text-gray-300">{description}</p>
+            <h3 className="text-base font-medium text-gray-800 dark:text-white">
+              {title}
+
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
           </div>
         </div>
         <div className="text-gray-400">
-          {isExpanded ? <FiChevronUp size={24} /> : <FiChevronDown size={24} />}
+          {isExpanded ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />}
         </div>
       </div>
 
       {isExpanded && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="px-6 pb-6 pt-2 border-t border-gray-100 dark:border-gray-700"
-        >
-          <div className="mb-4">
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getLevelColor()} text-white`}>
+        <div className="px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <div className="mb-3">
+            <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${getLevelColor()} text-white`}>
               {level}
             </span>
           </div>
 
           {resources.length > 0 && (
-            <div className="mt-4">
-              <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-2">منابع یادگیری:</h4>
-              <ul className="space-y-2">
+            <div className="mt-3">
+              <h4 className="font-medium text-sm text-gray-700 dark:text-gray-300 mb-1.5">منابع یادگیری:</h4>
+              <ul className="space-y-1.5">
                 {resources.map((resource, idx) => (
                   <li key={idx}>
                     <a 
                       href={resource.url} 
-                      className="text-hoboc-dark dark:text-hoboc hover:underline flex items-center gap-2"
+                      className="text-sm text-hoboc-dark dark:text-hoboc hover:underline flex items-center gap-1.5"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -106,13 +101,13 @@ export const RoadmapItem = ({
             </div>
           )}
 
-          <div className="mt-6 flex justify-end">
-            <span className={`px-4 py-2 rounded-lg font-medium ${getStatusColor()}`}>
+          <div className="mt-4 flex justify-end">
+            <span className={`px-3 py-1.5 rounded-lg text-sm font-medium ${getStatusColor()}`}>
               {status}
             </span>
           </div>
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 };

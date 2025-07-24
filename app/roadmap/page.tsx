@@ -10,7 +10,7 @@ import { RoadmapItem as RoadmapItemType } from "@/app/types/roadmapType";
 function RoadmapSkeleton() {
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="w-full h-[800px] bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+      <div className="w-full h-[500px] bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
     </div>
   );
 }
@@ -37,7 +37,112 @@ const roadmapData: RoadmapItemType[] = [
       { title: 'داکر از صفر تا صد', url: '#' },
       { title: 'Docker Documentation', url: '#' }
     ]
-  }
+  },
+    {
+      id: '3',
+      title: 'لینوکس و خط فرمان شگفت‌انگیز آن',
+      description: 'کار با ترمینال لینوکس و دستورات اساسی',
+      level: 'مبتدی',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '4',
+      title: 'انجام یک پروژه‌ی ETL ساده با کرون‌جابزها',
+      description: 'پیاده‌سازی یک پروژه استخراج، تبدیل و بارگذاری داده',
+      level: 'متوسط',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '5',
+      title: 'آپاچی ایرفلو، یک سیستم مدیریت جریان داده',
+      description: 'یادگیری اورکستراسیون جریان‌های داده با Airflow',
+      level: 'متوسط',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '6',
+      title: 'آشنایی و کار عملی با الستیک و کیبانا',
+      description: 'جستجو و تجسم داده‌ها با Elasticsearch و Kibana',
+      level: 'متوسط',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '7',
+      title: 'گیت برای مدیریت ورژن کدها',
+      description: 'یادگیری سیستم کنترل نسخه Git',
+      level: 'مبتدی',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '8',
+      title: 'آشنایی و کار عملی با گیت‌هاب اکشنز',
+      description: 'اتوماسیون فرآیندها با GitHub Actions',
+      level: 'متوسط',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '9',
+      title: 'پوستگرس، پیشرفته‌ترین دیتابیس رایگان دنیا',
+      description: 'کار با PostgreSQL و ویژگی‌های پیشرفته آن',
+      level: 'متوسط',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '10',
+      title: 'آشنایی و کار با کلیک‌هاوس',
+      description: 'پردازش تحلیلی آنلاین با ClickHouse',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '11',
+      title: 'آپاچی کافکا، غولی در دنیای پردازش داده‌های استریم',
+      description: 'کار با سیستم پیام‌رسانی توزیع‌شده Kafka',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '12',
+      title: 'آپاچی فلینک، یکی از بهترین گزینه‌ها در دنیای پردازش استریم',
+      description: 'پردازش جریان‌های داده با Apache Flink',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '13',
+      title: 'آپاچی اسپارک، سرعت و قدرت همزمان در پردازش داده',
+      description: 'پردازش توزیع‌شده داده‌ها با Apache Spark',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '14',
+      title: 'طراحی و پیاده‌سازی یک دیتالیک‌هوز با دلتالیک',
+      description: 'مدیریت دریاچه داده با Delta Lake',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '15',
+      title: 'رایانش ابری برای مهندسی داده با آروان‌کلاد',
+      description: 'پیاده‌سازی راهکارهای ابری ایرانی',
+      level: 'متوسط',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '16',
+      title: 'رایانش ابری برای مهندسی داده با آمازون',
+      description: 'کار با سرویس‌های AWS برای مهندسی داده',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    },
+    {
+      id: '17',
+      title: 'کوبرنتیز، بهترین سیستم مدیریت کانتینرها',
+      description: 'اورکستراسیون کانتینرها با Kubernetes',
+      level: 'پیشرفته',
+      status: 'شروع‌نشده'
+    }
 ];
 
 export default function RoadmapPage() {
