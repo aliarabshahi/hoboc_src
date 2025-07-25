@@ -157,14 +157,24 @@ export default function NotificationForm() {
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
               <FaPhone className="text-hoboc" />
             </div>
-            <input
-              type="tel"
-              placeholder="مثلاً 09123456789"
-              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
-              value={notification.phone_number}
-              onChange={(e) => handleChange("phone_number", e.target.value)}
-              required
-            />
+<input
+  type="tel"
+  placeholder="مثلاً 09123456789"
+  pattern="^0.*$"
+  maxLength={12}
+  required
+  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
+  value={notification.phone_number}
+  onChange={(e) => handleChange("phone_number", e.target.value)}
+  onInvalid={(e) =>
+    (e.target as HTMLInputElement).setCustomValidity(
+      "The Phone Number must start with 0 And in English Please"
+    )
+  }
+  onInput={(e) =>
+    (e.target as HTMLInputElement).setCustomValidity("")
+  }
+/>
           </div>
         </div>
 

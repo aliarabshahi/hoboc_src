@@ -191,7 +191,9 @@ export default function ProjectOrderForm() {
           onChange={(v) =>
             setProjectOrder({ ...projectOrder, phone_number: v })
           }
-          required
+          required={true}
+          pattern="^0.*$"
+          customInvalidMessage="The Phone Number must start with 0 And in English Please"
         />
 
         {/* Project Description */}
@@ -253,13 +255,13 @@ export default function ProjectOrderForm() {
                 {MAX_SIZE_MB}MB )
               </p>
             </div>
-<input
-  type="file"
-  multiple
-  accept=".pdf,.docx,.txt,.csv,.json,.zip,.jpg,.png" // 👈 Add this
-  className="hidden"
-  onChange={handleFileChange}
-/>
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.docx,.txt,.csv,.json,.zip,.jpg,.png" // 👈 Add this
+              className="hidden"
+              onChange={handleFileChange}
+            />
           </label>
 
           {/* File List */}
@@ -331,7 +333,6 @@ export default function ProjectOrderForm() {
     </motion.section>
   );
 }
-
 function FormField({
   label,
   icon,
@@ -340,6 +341,8 @@ function FormField({
   onChange,
   type = "text",
   required = false,
+  pattern,
+  customInvalidMessage,
 }: {
   label: string;
   icon: React.ReactNode;
@@ -348,6 +351,8 @@ function FormField({
   onChange: (v: string) => void;
   type?: string;
   required?: boolean;
+  pattern?: string;
+  customInvalidMessage?: string;
 }) {
   return (
     <div>
@@ -365,6 +370,17 @@ function FormField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required={required}
+          pattern={pattern}
+          onInvalid={(e) => {
+            if (customInvalidMessage) {
+              (e.target as HTMLInputElement).setCustomValidity(
+                customInvalidMessage
+              );
+            }
+          }}
+          onInput={(e) => {
+            (e.target as HTMLInputElement).setCustomValidity("");
+          }}
         />
       </div>
     </div>

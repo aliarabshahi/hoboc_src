@@ -108,10 +108,20 @@ export default function ContactForm() {
             <input
               type="tel"
               placeholder="مثلاً 09123456789"
+              pattern="^0.*$"
+              maxLength={12}
+              required
               className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
               value={contact.phone_number}
               onChange={(e) => handleChange("phone_number", e.target.value)}
-              required
+              onInvalid={(e) =>
+                (e.target as HTMLInputElement).setCustomValidity(
+                  "The Phone Number must start with 0 And in English Please"
+                )
+              }
+              onInput={(e) =>
+                (e.target as HTMLInputElement).setCustomValidity("")
+              }
             />
           </div>
         </div>

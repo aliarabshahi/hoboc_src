@@ -133,14 +133,16 @@ export default function ResumeForm() {
         />
 
         {/* Phone */}
-        <FormField
-          label="شماره تماس"
-          icon={<FaPhone className="text-hoboc" />}
-          value={resume.phone_number}
-          onChange={(v) => setResume({ ...resume, phone_number: v })}
-          placeholder="مثلاً 09123456789"
-          type="tel"
-        />
+<FormField
+  label="شماره تماس"
+  icon={<FaPhone className="text-hoboc" />}
+  value={resume.phone_number}
+  onChange={(v) => setResume({ ...resume, phone_number: v })}
+  placeholder="مثلاً 09123456789"
+  type="tel"
+  pattern="^0.*$"
+  customInvalidMessage="The Phone Number must start with 0 And in English Please"
+/>
 
         {/* LinkedIn */}
         <FormField
@@ -261,6 +263,8 @@ function FormField({
   onChange,
   placeholder,
   type,
+  pattern,
+  customInvalidMessage,
 }: {
   label: string;
   icon: React.ReactNode;
@@ -268,6 +272,8 @@ function FormField({
   onChange: (v: string) => void;
   placeholder: string;
   type: string;
+  pattern?: string;
+  customInvalidMessage?: string;
 }) {
   return (
     <div>
@@ -284,7 +290,16 @@ function FormField({
           className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          required={label.includes("اختیاری") ? false : true}
+          required={!label.includes("اختیاری")}
+          pattern={pattern}
+          onInvalid={(e) => {
+            if (customInvalidMessage) {
+              (e.target as HTMLInputElement).setCustomValidity(customInvalidMessage);
+            }
+          }}
+          onInput={(e) => {
+            (e.target as HTMLInputElement).setCustomValidity("");
+          }}
         />
       </div>
     </div>
