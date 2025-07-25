@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { ResumeSubmissionRequest } from "@/app/types/formsType";
 import { postApiDataWithFile } from "@/app/services/api/apiClientPostDataWithFile";
@@ -56,17 +57,15 @@ export default function ResumeForm() {
     e.preventDefault();
     setLoading(true);
 
-    if (!resumeFile) {
-      setMessage("لطفاً فایل رزومه را انتخاب کنید");
-      setLoading(false);
-      return;
-    }
-
     const formData = new FormData();
     Object.entries(resume).forEach(([key, value]) => {
       if (value) formData.append(key, value);
     });
-    formData.append("resume_file", resumeFile);
+
+    // ✅ Only append resume_file if user selected it
+    if (resumeFile) {
+      formData.append("resume_file", resumeFile);
+    }
 
     try {
       const { error } = await postApiDataWithFile(
@@ -112,7 +111,6 @@ export default function ResumeForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Full Name */}
         <FormField
           label="نام کامل"
           icon={<FaUser className="text-hoboc" />}
@@ -122,7 +120,6 @@ export default function ResumeForm() {
           type="text"
         />
 
-        {/* Email */}
         <FormField
           label="ایمیل"
           icon={<FaEnvelope className="text-hoboc" />}
@@ -132,19 +129,17 @@ export default function ResumeForm() {
           type="email"
         />
 
-        {/* Phone */}
-<FormField
-  label="شماره تماس"
-  icon={<FaPhone className="text-hoboc" />}
-  value={resume.phone_number}
-  onChange={(v) => setResume({ ...resume, phone_number: v })}
-  placeholder="مثلاً 09123456789"
-  type="tel"
-  pattern="^0.*$"
-  customInvalidMessage="The Phone Number must start with 0 And in English Please"
-/>
+        <FormField
+          label="شماره تماس"
+          icon={<FaPhone className="text-hoboc" />}
+          value={resume.phone_number}
+          onChange={(v) => setResume({ ...resume, phone_number: v })}
+          placeholder="مثلاً 09123456789"
+          type="tel"
+          pattern="^0.*$"
+          customInvalidMessage="The Phone Number must start with 0 And in English Please"
+        />
 
-        {/* LinkedIn */}
         <FormField
           label="لینکدین (اختیاری)"
           icon={<FaLinkedin className="text-hoboc" />}
@@ -154,7 +149,6 @@ export default function ResumeForm() {
           type="url"
         />
 
-        {/* GitHub */}
         <FormField
           label="گیت‌هاب (اختیاری)"
           icon={<FaGithub className="text-hoboc" />}
@@ -164,7 +158,6 @@ export default function ResumeForm() {
           type="url"
         />
 
-        {/* Cover Letter */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             انگیزه‌نامه (اختیاری)
@@ -187,7 +180,7 @@ export default function ResumeForm() {
         {/* File Upload */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-            فایل رزومه (PDF)
+            فایل رزومه (PDF - اختیاری)
           </label>
           <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -205,7 +198,6 @@ export default function ResumeForm() {
               accept=".pdf"
               className="hidden"
               onChange={handleFileChange}
-              required
             />
           </label>
           {resumeFile && (
