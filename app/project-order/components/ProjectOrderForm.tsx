@@ -248,9 +248,9 @@ export default function ProjectOrderForm() {
                 <span className="font-semibold">برای آپلود کلیک کنید</span> یا
                 فایل‌ها را بکشید
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                 فرمت‌های مجاز: PDF, DOCX, TXT, CSV, JSON, ZIP, JPG, PNG (حداکثر{" "}
-                {MAX_SIZE_MB}MB در مجموع)
+                {MAX_SIZE_MB}MB )
               </p>
             </div>
 <input

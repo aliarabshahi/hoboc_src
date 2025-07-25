@@ -170,7 +170,7 @@ export default function RoadmapPage() {
             ) : (
               <Roadmap 
                 title="نقشه راه جامع مهندسی داده"
-                description="مسیر یادگیری مهارت‌های ضروری برای تبدیل شدن به یک مهندس داده حرفه‌ای"
+                description="مسیر یادگیری برای تبدیل شدن به یک مهندس داده حرفه‌ای"
                 roadmapData={roadmapData}
               />
             )}
