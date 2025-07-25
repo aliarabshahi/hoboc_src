@@ -15,6 +15,7 @@ export interface ProjectOrderRequest {
   project_description: string;
   budget?: string;
   deadline?: string;
+  files?: File[];
 }
 
 // 🧑‍💼 Resume Submission

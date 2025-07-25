@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ContactUsRequest } from "@/app/types/formsType";
-import { postApiData } from "@/app/services/api/apiServerPost";
+import { postApiData } from "@/app/services/api/apiClientPost";
 import {
   FaEnvelope,
   FaUser,
@@ -9,7 +9,7 @@ import {
   FaComment,
   FaPaperPlane,
   FaCheckCircle,
-  FaTimesCircle
+  FaTimesCircle,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 

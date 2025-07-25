@@ -1,7 +1,7 @@
 // app/notifications/components/NotificationForm.tsx
 "use client";
 import { useState, useEffect } from "react";
-import { postApiData } from "@/app/services/api/apiServerPost";
+import { postApiData } from "@/app/services/api/apiClientPost";
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import {
   FaUser,
@@ -190,23 +190,23 @@ export default function NotificationForm() {
             ))}
           </div>
           {notification.topics.length === 0 && (
-<p className="mt-3 text-sm text-center text-hoboc-dark font-bold">
-  لطفاً حداقل یک موضوع را انتخاب کنید
-</p>
+            <p className="mt-3 text-sm text-center text-hoboc-dark font-bold">
+              لطفاً حداقل یک موضوع را انتخاب کنید
+            </p>
           )}
         </div>
 
         {/* Submit Button */}
-<button
-  type="submit"
-  disabled={loading || notification.topics.length === 0}
-  className="w-full bg-hoboc hover:bg-hoboc-dark text-white font-medium py-3 px-6 rounded-lg transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
->
-  {loading ? (
-    <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-  ) : null}
-  {loading ? "در حال ارسال..." : "ارسال مشخصات"}
-</button>
+        <button
+          type="submit"
+          disabled={loading || notification.topics.length === 0}
+          className="w-full bg-hoboc hover:bg-hoboc-dark text-white font-medium py-3 px-6 rounded-lg transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          ) : null}
+          {loading ? "در حال ارسال..." : "ارسال مشخصات"}
+        </button>
 
         {/* Feedback Message */}
         {message && (

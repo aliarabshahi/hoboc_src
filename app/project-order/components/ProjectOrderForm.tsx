@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ProjectOrderRequest } from "@/app/types/formsType";
-import { postApiData } from "@/app/services/api/apiServerPost";
+import { postApiDataWithFile } from "@/app/services/api/apiClientPostDataWithFile";
 import {
   FaUser,
   FaEnvelope,
@@ -10,12 +10,34 @@ import {
   FaMoneyBillWave,
   FaCalendarAlt,
   FaCheckCircle,
-  FaTimesCircle
+  FaTimesCircle,
+  FaFileUpload,
+  FaFilePdf,
+  FaFileWord,
+  FaFileImage,
+  FaFileArchive,
+  FaFileCode,
+  FaFile,
+  FaTrash,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+const MAX_SIZE_MB = 20;
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/plain",
+  "text/csv",
+  "application/json",
+  "application/zip",
+  "image/jpeg",
+  "image/png",
+];
+
 export default function ProjectOrderForm() {
-  const [projectOrder, setProjectOrder] = useState<ProjectOrderRequest>({
+  const [projectOrder, setProjectOrder] = useState<
+    Omit<ProjectOrderRequest, "files">
+  >({
     full_name: "",
     email: "",
     phone_number: "",
@@ -24,17 +46,88 @@ export default function ProjectOrderForm() {
     deadline: "",
   });
 
+  const [files, setFiles] = useState<File[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newFiles = Array.from(e.target.files || []);
+
+    // Validate files
+    for (const file of newFiles) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setMessage(
+          `فرمت ${file.name} مجاز نیست (فرمت‌های مجاز: PDF, DOCX, TXT, CSV, JSON, ZIP, JPG, PNG)`
+        );
+        return;
+      }
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        setMessage(
+          `حجم فایل ${file.name} نباید بیشتر از ${MAX_SIZE_MB} مگابایت باشد`
+        );
+        return;
+      }
+    }
+
+    // Calculate total size
+    const totalSize = [...files, ...newFiles].reduce(
+      (acc, file) => acc + file.size,
+      0
+    );
+    if (totalSize > MAX_SIZE_MB * 1024 * 1024) {
+      setMessage(
+        `مجموع حجم فایل‌ها نباید بیشتر از ${MAX_SIZE_MB} مگابایت باشد`
+      );
+      return;
+    }
+
+    setFiles((prev) => [...prev, ...newFiles]);
+    setMessage("");
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const getFileIcon = (type: string) => {
+    if (type === "application/pdf")
+      return <FaFilePdf className="text-red-500" />;
+    if (
+      type ===
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+      return <FaFileWord className="text-blue-500" />;
+    if (type === "text/plain") return <FaFileAlt className="text-gray-500" />;
+    if (type === "text/csv" || type === "application/json")
+      return <FaFileCode className="text-yellow-500" />;
+    if (type === "application/zip")
+      return <FaFileArchive className="text-purple-500" />;
+    if (type.includes("image/"))
+      return <FaFileImage className="text-green-500" />;
+    return <FaFile className="text-gray-400" />;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await postApiData("/project-orders/", projectOrder);
-    setLoading(false);
-    setMessage(error ? error : "سفارش شما با موفقیت ثبت شد");
 
-    if (!error) {
+    const formData = new FormData();
+    Object.entries(projectOrder).forEach(([key, value]) => {
+      if (value) formData.append(key, value);
+    });
+
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      const { error } = await postApiDataWithFile("/project-orders/", formData);
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      setMessage("سفارش شما با موفقیت ثبت شد");
       setProjectOrder({
         full_name: "",
         email: "",
@@ -43,9 +136,13 @@ export default function ProjectOrderForm() {
         budget: "",
         deadline: "",
       });
+      setFiles([]);
+    } catch (err: any) {
+      setMessage(err.message);
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -138,6 +235,62 @@ export default function ProjectOrderForm() {
           value={projectOrder.deadline || ""}
           onChange={(v) => setProjectOrder({ ...projectOrder, deadline: v })}
         />
+
+        {/* File Upload Section */}
+        <div>
+          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            فایل‌های پروژه (اختیاری)
+          </label>
+          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <FaFileUpload className="w-8 h-8 mb-3 text-hoboc" />
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">برای آپلود کلیک کنید</span> یا
+                فایل‌ها را بکشید
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                فرمت‌های مجاز: PDF, DOCX, TXT, CSV, JSON, ZIP, JPG, PNG (حداکثر{" "}
+                {MAX_SIZE_MB}MB در مجموع)
+              </p>
+            </div>
+<input
+  type="file"
+  multiple
+  accept=".pdf,.docx,.txt,.csv,.json,.zip,.jpg,.png" // 👈 Add this
+  className="hidden"
+  onChange={handleFileChange}
+/>
+          </label>
+
+          {/* File List */}
+          {files.length > 0 && (
+            <div className="mt-4 space-y-2">
+              {files.map((file, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    {getFileIcon(file.type)}
+                    <span className="text-sm truncate max-w-xs">
+                      {file.name}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {(file.size / 1024 / 1024).toFixed(2)}MB
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeFile(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Submit */}
         <button

@@ -1,22 +1,25 @@
 "use client";
 import { useState } from "react";
 import { ResumeSubmissionRequest } from "@/app/types/formsType";
-import { 
-  FaUser, 
-  FaEnvelope, 
-  FaPhone, 
-  FaLinkedin, 
-  FaGithub, 
-  FaFilePdf, 
-  FaFileUpload, 
+import { postApiDataWithFile } from "@/app/services/api/apiClientPostDataWithFile";
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaLinkedin,
+  FaGithub,
+  FaFilePdf,
+  FaFileUpload,
   FaFileAlt,
   FaCheckCircle,
-  FaTimesCircle
+  FaTimesCircle,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function ResumeForm() {
-  const [resume, setResume] = useState<Omit<ResumeSubmissionRequest, "resume_file">>({
+  const [resume, setResume] = useState<
+    Omit<ResumeSubmissionRequest, "resume_file">
+  >({
     full_name: "",
     email: "",
     phone_number: "",
@@ -66,16 +69,13 @@ export default function ResumeForm() {
     formData.append("resume_file", resumeFile);
 
     try {
-      const res = await fetch("http://localhost/hoboc/api/resume-submissions/", {
-        method: "POST",
-        headers: { Authorization: "Token fb65966b2be41961bf8d41278c85782e3c0ee4a7" },
-        body: formData,
-      });
+      const { error } = await postApiDataWithFile(
+        "/resume-submissions/",
+        formData
+      );
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        const errorMsg = Object.values(errorData).flat().join(" | ");
-        throw new Error(errorMsg);
+      if (error) {
+        throw new Error(error);
       }
 
       setMessage("رزومه با موفقیت ارسال شد");
@@ -103,8 +103,12 @@ export default function ResumeForm() {
       className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto"
     >
       <div className="mb-8 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">ارسال رزومه</h2>
-        <p className="text-gray-600 dark:text-gray-400">فرم زیر را برای همکاری با ما تکمیل کنید</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">
+          ارسال رزومه
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          فرم زیر را برای همکاری با ما تکمیل کنید
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -171,7 +175,9 @@ export default function ResumeForm() {
               placeholder="دلایل خود برای همکاری با ما را بیان کنید"
               className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 h-32 transition"
               value={resume.cover_letter}
-              onChange={(e) => setResume({ ...resume, cover_letter: e.target.value })}
+              onChange={(e) =>
+                setResume({ ...resume, cover_letter: e.target.value })
+              }
             />
           </div>
         </div>
@@ -185,7 +191,8 @@ export default function ResumeForm() {
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <FaFileUpload className="w-8 h-8 mb-3 text-hoboc" />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">برای آپلود کلیک کنید</span> یا فایل را بکشید
+                <span className="font-semibold">برای آپلود کلیک کنید</span> یا
+                فایل را بکشید
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 فقط فایل‌های PDF (حداکثر {MAX_SIZE_MB}MB)
