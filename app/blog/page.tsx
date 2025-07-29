@@ -21,7 +21,7 @@ export default function BlogPage({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const topicsResponse = await getApiData("/blog-topics/");
+        const topicsResponse = await getApiData("/blog-topics/?page_size=30");
         const fetchedTopics: BlogTopic[] =
           Array.isArray(topicsResponse.data) ?
             topicsResponse.data : topicsResponse.data?.results || [];
