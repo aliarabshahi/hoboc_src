@@ -4,45 +4,34 @@ import { FiCalendar, FiUser } from "react-icons/fi";
 
 export default function BlogPostCard({ post }: { post: BlogPost }) {
   return (
-    <div className="relative h-full flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100">
+    <div className="bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col transition hover:shadow-md relative overflow-hidden">
       {post.cover_image && (
-        <div className="h-48 overflow-hidden relative">
+        <div className="h-40 w-full mb-4 rounded-lg overflow-hidden">
           <img
             src={post.cover_image}
             alt={post.title}
-            className="w-full h-full object-cover transition-transform duration-300"
+            className="object-cover w-full h-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
       )}
 
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="mb-3 flex justify-start">
-          <span className="inline-block px-2 py-1 text-xs font-medium text-hoboc-dark bg-hoboc/10 rounded-full">
-            {typeof post.topic === "string" ? post.topic : post.topic.title}
-          </span>
+      <span className="text-xs font-medium text-hoboc-dark bg-hoboc/10 rounded-full px-2 py-1 mb-2 w-max">
+        {typeof post.topic === "string" ? post.topic : post.topic.title}
+      </span>
+
+      <h3 className="text-lg font-bold text-gray-800 mb-1 line-clamp-2">{post.title}</h3>
+      <p className="text-gray-500 text-sm mb-3 line-clamp-3">{post.description}</p>
+
+      <div className="flex items-center justify-between text-sm text-gray-500 mt-auto pt-3 border-t border-hoboc/30">
+        <div className="flex items-center gap-2">
+          <FiUser size={14} className="text-hoboc" />
+          <span>{post.writer?.name || "ناشناس"}</span>
         </div>
-
-        <h2 className="text-xl font-bold text-gray-650 mb-3 line-clamp-2">
-          {post.title}
-        </h2>
-
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
-          {post.description}
-        </p>
-
-        <div className="flex items-center justify-between text-sm text-gray-500 mt-auto pt-3 border-t border-gray-100">
-          <div className="flex items-center gap-2">
-            <FiUser className="text-hoboc" size={14} />
-            <span>{post.writer?.name || "ناشناس"}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <FiCalendar className="text-hoboc" size={14} />
-            <time dateTime={post.created_at}>
-              {new Date(post.created_at).toLocaleDateString("fa-IR")}
-            </time>
-          </div>
+        <div className="flex items-center gap-2">
+          <FiCalendar size={14} className="text-hoboc" />
+          <time dateTime={post.created_at}>
+            {new Date(post.created_at).toLocaleDateString("fa-IR")}
+          </time>
         </div>
       </div>
 
