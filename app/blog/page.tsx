@@ -6,6 +6,7 @@ import { fetchApiData } from "../services/api/apiClientAxios";
 import { BlogPost, BlogTopic } from "@/app/types/blogType";
 import BlogPostCard from "./components/BlogPostCard";
 import BlogTopicsDropdown from "./components/BlogTopicsDropdown";
+import BlogCTABanner from "./components/BlogCTABanner";
 
 export default function BlogPage({
   searchParams,
@@ -90,17 +91,7 @@ export default function BlogPage({
       </section>
       {/* CTA Banner */}
 <section className="w-full bg-hoboc/10 py-10 mt-16">
-  <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-5">
-    <div>
-      <h2 className="font-bold text-2xl text-hoboc-dark mb-2" dir="rtl">مطالب جدید بلاگ را از دست ندهید!</h2>
-      <p className="text-hoboc-dark text-base" dir="rtl">
-        با دنبال کردن مقالات تخصصی، دانش خود را به‌روز کنید و با اطمینان سرمایه‌گذاری کنید.
-      </p>
-    </div>
-    <button className="btn bg-hoboc hover:bg-hoboc-dark text-white px-8 py-3 rounded-xl font-bold text-lg transition">
-      مشاهده همه مقالات
-    </button>
-  </div>
+  <BlogCTABanner />
 </section>
 
     </main>
