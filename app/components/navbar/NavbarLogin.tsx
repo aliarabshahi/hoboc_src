@@ -10,11 +10,12 @@ export default function NavbarLogin({ shrink }: Props) {
     return (
       <div className="flex items-center gap-2">
         <div className=" h-4 w-px bg-gray-400"></div>
-
-        <button className="text-hoboc-dark text-sm flex items-center gap-1  ">
-          <MapPinCheck size={18} />
-          نقشه راه
-        </button>
+        <Link href="/roadmap" passHref>
+          <button className="text-hoboc-dark text-sm flex items-center gap-1  ">
+            <MapPinCheck size={18} />
+            نقشه راه
+          </button>
+        </Link>
       </div>
     );
   }
