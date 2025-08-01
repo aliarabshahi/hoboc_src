@@ -11,6 +11,7 @@ import CoursesDetail from "./components/courses/courses_detail/CoursesDetail";
 import CoursesDetailWrapper from "./components/courses/courses_detail/CoursesDetailWrapper";
 import Looser from "./components/looser/Looser";
 import LatestBlogSection from "./components/blog/LatestBlogSection";
+import LatestLessonsSection from "./components/last-courses/LatestLessonsSection";
 
 export default function Home() {
   return (
@@ -23,6 +24,10 @@ export default function Home() {
       {/* <RowLessonsData /> */}
       <CoursesDetailWrapper />
       {/* <MainCoursesDetail /> */}
+      
+  <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+    <LatestLessonsSection />
+  </section>
 
       {/* LatestBlogSection with custom padding and rtl direction */}
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
