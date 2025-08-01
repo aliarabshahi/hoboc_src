@@ -1,123 +1,93 @@
+// app/courses/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
-import CourseTopics from "@/app/courses/components/CourseTopics";
-import CourseLessons from "@/app/courses/components/CourseLessons";
+import { useSearchParams } from "next/navigation";
 import { getApiData } from "@/app/services/api/apiServerFetch";
-import { CoursesTopic, CoursesLesson } from "@/app/types/coursesType";
-
-// Skeleton for topics sidebar
-function TopicsSkeleton() {
-  return (
-    <div className="w-full h-[500px] bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse mt-4" />
-  );
-}
-
-function LessonsSkeleton() {
-  return (
-    <div className="w-full max-w-4xl h-[600px] bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse mx-auto mt-4" />
-  );
-}
-
-
-type ApiResult<T> =
-  | { data: T[]; message?: string; error?: undefined }
-  | { data: null; error: string; message?: undefined }
-  | { data: T[]; message: string; error?: undefined };
-
+import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
+import CourseCard from "./components/CourseCard";
+import CourseTopicsFilter from "./components/CourseTopicsFilter";
 export default function CoursesPage() {
-  const [loading, setLoading] = useState(true);
-  const [topicsWithLessons, setTopicsWithLessons] = useState<{
-    topic: CoursesTopic;
-    lessons: CoursesLesson[];
-    error?: string;
-  }[]>([]);
   const [topics, setTopics] = useState<CoursesTopic[]>([]);
-  const [topicsError, setTopicsError] = useState<string | null>(null);
+  const [lessons, setLessons] = useState<CoursesLesson[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const searchParams = useSearchParams();
+  const selectedTopicSlug = searchParams.get("topic");
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const topic_api_response = (await getApiData("/course-topics/")) as ApiResult<CoursesTopic>;
+        const topicsRes = await getApiData("/course-topics/");
+        const topicsData: CoursesTopic[] =
+          Array.isArray(topicsRes.data) ? topicsRes.data : topicsRes.data?.results || [];
+        setTopics(topicsData);
 
-        if (!topic_api_response || topic_api_response.data === null) {
-          setTopicsError(topic_api_response?.error || "خطا در دریافت اطلاعات موضوعات دوره");
-          setLoading(false);
-          return;
+        let lessonsRes;
+        if (selectedTopicSlug) {
+          lessonsRes = await getApiData(`/course-lessons/?topic-slug=${selectedTopicSlug}`);
+        } else {
+          // Optional: نمایش همه‌ی درس‌ها وقتی موضوع انتخاب نشده
+          const allLessons: CoursesLesson[] = [];
+          for (const topic of topicsData) {
+            const res = await getApiData(`/course-lessons/?topic-slug=${topic.slug}`);
+            allLessons.push(...(res.data || []));
+          }
+          lessonsRes = { data: allLessons };
         }
 
-        setTopics(topic_api_response.data);
-
-        const topicsWithLessonsData = await Promise.all(
-          topic_api_response.data.map(async (topic) => {
-            const lessons_api_response = (await getApiData(
-              `/course-lessons/?topic-slug=${topic.slug}`
-            )) as ApiResult<CoursesLesson>;
-
-            return {
-              topic,
-              lessons: lessons_api_response.data || [],
-              error: lessons_api_response.error,
-            };
-          })
-        );
-
-        setTopicsWithLessons(topicsWithLessonsData);
-      } catch (error) {
-        setTopicsError("خطا در دریافت اطلاعات");
+        setLessons(lessonsRes.data || []);
+        setError(null);
+      } catch (err) {
+        setError("خطا در دریافت اطلاعات");
       } finally {
         setLoading(false);
       }
     };
 
-    const timer = setTimeout(() => fetchData(), 1500); // Simulated loading time
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (topicsError) {
-    return (
-      <div className="text-red-600 dark:text-red-400 text-center my-6 font-semibold text-lg">
-        {topicsError}
-      </div>
-    );
-  }
+    fetchData();
+  }, [selectedTopicSlug]);
 
   return (
-<div className="container mx-auto px-4 py-8 -mt-4 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 min-h-screen bg-gray-50">
-      {/* Sidebar topics - shows skeleton when loading */}
-      <aside>
-        {loading ? <TopicsSkeleton /> : <CourseTopics topics={topics} />}
-      </aside>
+    <main className="bg-gray-50 min-h-screen pb-16">
+      <section className="bg-white pt-16 pb-10 shadow rounded-b-xl">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-gray-800" dir="rtl">
+            دوره‌های آموزشی
+          </h1>
+          <p className="text-gray-600 md:text-lg" dir="rtl">
+            یادگیری حرفه‌ای با دوره‌های کاربردی و تخصصی
+          </p>
+        </div>
+      </section>
 
-      {/* Main lessons content - shows skeleton when loading */}
-      <main>
+      <section className="container mx-auto px-4 mt-10">
         {loading ? (
-          <LessonsSkeleton />
+          <div className="h-10 w-48 bg-gray-200 rounded-md animate-pulse mx-auto" />
         ) : (
-          <div className="space-y-16">
-            {topicsWithLessons.map(({ topic, lessons, error }, index) => (
-              <section 
-                key={topic.id} 
-                id={`topic-${topic.id}`} 
-                tabIndex={-1} 
-                className="scroll-mt-24 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hoboc focus-visible:ring-offset-4 focus-visible:rounded-md"
-              >
-                {error ? (
-                  <div className="text-red-600 dark:text-red-400 text-center my-6 font-semibold text-lg">
-                    {error || `خطا در دریافت اطلاعات درس‌های ${topic.title}`}
-                  </div>
-                ) : (
-                  <CourseLessons
-                    lessons_api_response={{ data: lessons }}
-                    topic={topic}
-                    noTopMargin={index === 0}
-                  />
-                )}
-              </section>
+          <CourseTopicsFilter topics={topics} selectedTopicSlug={selectedTopicSlug || ""} />
+        )}
+      </section>
+
+      <section className="container mx-auto px-4 mt-8">
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-[320px] bg-gray-200 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        ) : lessons.length === 0 ? (
+          <div className="text-center text-gray-500 mt-10">درسی یافت نشد.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {lessons.map((lesson) => (
+              <CourseCard key={lesson.id} lesson={lesson} />
             ))}
           </div>
         )}
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }

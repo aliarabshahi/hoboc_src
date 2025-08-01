@@ -31,6 +31,7 @@ export interface CoursesInstructor {
 }
 
 export interface CoursesLesson {
+  cover_image: any;
   id: number;
   topic: string | CoursesTopic;
   instructor: CoursesInstructor | null;
