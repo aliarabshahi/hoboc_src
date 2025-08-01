@@ -7,8 +7,27 @@ import { getApiData } from "@/app/services/api/apiServerFetch";
 import { BlogPost } from "@/app/types/blogType";
 import { ChevronRight } from "lucide-react";
 
+function SkeletonBlogCard() {
+  return (
+    <div
+      className="
+        min-w-[300px]
+        max-w-[300px]
+        h-[263px]   /* approximate total height of the blog card */
+        rounded-xl
+        bg-gray-200 dark:bg-gray-700
+        shadow-sm
+        animate-pulse
+        flex-shrink-0
+      "
+    />
+  );
+}
+
+
 export default function LatestBlogSection() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -16,9 +35,17 @@ export default function LatestBlogSection() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await getApiData("/blog-posts/?page_size=6&ordering=-created_at");
-      if (res.data) {
-        setPosts(res.data);
+      try {
+        const res = await getApiData(
+          "/blog-posts/?page_size=6&ordering=-created_at"
+        );
+        if (res.data) {
+          setPosts(res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchPosts();
@@ -26,7 +53,7 @@ export default function LatestBlogSection() {
 
   const scroll = (dir: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = 340; // Approx. card width + gap
+      const scrollAmount = 340;
       scrollRef.current.scrollBy({
         left: dir === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -36,7 +63,6 @@ export default function LatestBlogSection() {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return;
-
     setIsDragging(true);
     setStartX(e.pageX - scrollRef.current.offsetLeft);
     setScrollLeft(scrollRef.current.scrollLeft);
@@ -54,7 +80,7 @@ export default function LatestBlogSection() {
     if (!isDragging || !scrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust scroll speed
+    const walk = (x - startX) * 2;
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -63,7 +89,6 @@ export default function LatestBlogSection() {
       e.preventDefault();
       e.stopPropagation();
     }
-    // Otherwise, the Link inside BlogCardsMainPage will handle navigation
   };
 
   return (
@@ -75,17 +100,16 @@ export default function LatestBlogSection() {
             جدیدترین مقالات
           </h2>
 
-          {/* Changed from Link with text to Link wrapping a button with your classes */}
           <Link href="/blog" passHref>
-            <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-gray-500 hover:bg-hoboc transition">
-              بیشتر
+            <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-hoboc-dark hover:bg-hoboc transition">
+              مشاهده بیشتر
             </button>
           </Link>
         </div>
 
         {/* Arrows + Cards */}
         <div className="relative flex items-center">
-          {/* Left Arrow - Hidden on mobile */}
+          {/* Left Arrow */}
           <button
             onClick={() => scroll("left")}
             className="hidden md:block absolute -left-10 z-10 text-hoboc-dark hover:text-hoboc transition"
@@ -110,18 +134,22 @@ export default function LatestBlogSection() {
             onMouseUp={handleMouseUp}
             onMouseMove={handleMouseMove}
           >
-            {posts.map((post) => (
-              <div
-                key={post.id}
-                className="min-w-[300px] max-w-[300px] flex-shrink-0"
-                onClick={(e) => handleCardClick(e, post.id)}
-              >
-                <BlogCardsMainPage post={post} />
-              </div>
-            ))}
+            {loading
+              ? Array.from({ length: 6 }).map((_, i) => (
+                  <SkeletonBlogCard key={i} />
+                ))
+              : posts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="min-w-[300px] max-w-[300px] flex-shrink-0"
+                    onClick={(e) => handleCardClick(e, post.id)}
+                  >
+                    <BlogCardsMainPage post={post} />
+                  </div>
+                ))}
           </div>
 
-          {/* Right Arrow - Hidden on mobile */}
+          {/* Right Arrow */}
           <button
             onClick={() => scroll("right")}
             className="hidden md:block absolute -right-10 z-10 text-hoboc-dark hover:text-hoboc transition"

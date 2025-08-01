@@ -10,7 +10,7 @@ import MainCoursesDetail from "./components/courses/MainCoursesDetail";
 import CoursesDetail from "./components/courses/courses_detail/CoursesDetail";
 import CoursesDetailWrapper from "./components/courses/courses_detail/CoursesDetailWrapper";
 import Looser from "./components/looser/Looser";
-import LatestBlogSection from "./components/blog/LatestBlogSection";
+import LatestBlogSection from "./components/latest-blogs/LatestBlogSection";
 import LatestLessonsSection from "./components/last-courses/LatestLessonsSection";
 
 export default function Home() {

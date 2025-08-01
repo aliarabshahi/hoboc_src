@@ -7,8 +7,24 @@ import { CoursesLesson } from "@/app/types/coursesType";
 import { ChevronRight } from "lucide-react";
 import LessonCardsMainPage from "./LessonCardMainPage";
 
+function SkeletonLessonCard() {
+  return (
+    <div
+      className="
+        min-w-[300px]        /* match your card’s width */
+        max-w-[300px]
+        h-[418px]            /* total height ≈ 25.5rem (408px) – adjust if needed */
+        rounded-xl
+bg-gray-200 dark:bg-gray-700         animate-pulse
+        shadow-sm
+      "
+    />
+  );
+}
+
 export default function LatestLessonsSection() {
   const [lessons, setLessons] = useState<CoursesLesson[]>([]);
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -17,12 +33,18 @@ export default function LatestLessonsSection() {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const res = await getApiData("/course-lessons/?page_size=6&ordering=-created_at");
+        const res = await getApiData(
+          "/course-lessons/?page_size=6&ordering=-created_at"
+        );
         if (res.data) {
-          setLessons(Array.isArray(res.data) ? res.data : res.data.results || []);
+          setLessons(
+            Array.isArray(res.data) ? res.data : res.data.results || []
+          );
         }
       } catch (error) {
         console.error("Error fetching lessons:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchLessons();
@@ -71,15 +93,15 @@ export default function LatestLessonsSection() {
             جدیدترین درس ها
           </h2>
           <Link href="/courses" passHref>
-            <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-gray-500 hover:bg-hoboc transition">
-              بیشتر
+            <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-hoboc-dark hover:bg-hoboc transition">
+              مشاهده بیشتر
             </button>
           </Link>
         </div>
 
         {/* Arrows + Cards */}
         <div className="relative flex items-center">
-          {/* Left Arrow - matches blog layout */}
+          {/* Left Arrow */}
           <button
             onClick={() => scroll("left")}
             className="hidden md:block absolute -left-10 z-10 text-hoboc-dark hover:text-hoboc transition"
@@ -104,18 +126,24 @@ export default function LatestLessonsSection() {
             onMouseUp={handleMouseUp}
             onMouseMove={handleMouseMove}
           >
-            {lessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className="min-w-[300px] max-w-[300px] flex-shrink-0"
-                onClick={(e) => handleCardClick(e, lesson.id)}
-              >
-                <LessonCardsMainPage lesson={lesson} />
-              </div>
-            ))}
+            {loading
+              ? // Show 6 skeleton cards while loading
+                Array.from({ length: 6 }).map((_, i) => (
+                  <SkeletonLessonCard key={i} />
+                ))
+              : // Show loaded lessons
+                lessons.map((lesson) => (
+                  <div
+                    key={lesson.id}
+                    className="min-w-[300px] max-w-[300px] flex-shrink-0"
+                    onClick={(e) => handleCardClick(e, lesson.id)}
+                  >
+                    <LessonCardsMainPage lesson={lesson} />
+                  </div>
+                ))}
           </div>
 
-          {/* Right Arrow - matches blog layout */}
+          {/* Right Arrow */}
           <button
             onClick={() => scroll("right")}
             className="hidden md:block absolute -right-10 z-10 text-hoboc-dark hover:text-hoboc transition"
