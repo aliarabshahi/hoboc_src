@@ -1,4 +1,3 @@
-// app/courses/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,6 +6,14 @@ import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 import CourseCard from "./components/CourseCard";
 import CourseTopicsFilter from "./components/CourseTopicsFilter";
+
+// --- تابع اسکلتون ساده همون div قبلی ---
+function SkeletonCard() {
+  return (
+    <div className="h-[416px] bg-gray-200 rounded-xl animate-pulse" />
+  );
+}
+
 export default function CoursesPage() {
   const [topics, setTopics] = useState<CoursesTopic[]>([]);
   const [lessons, setLessons] = useState<CoursesLesson[]>([]);
@@ -75,7 +82,7 @@ export default function CoursesPage() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-[320px] bg-gray-200 rounded-xl animate-pulse" />
+              <SkeletonCard key={i} />
             ))}
           </div>
         ) : lessons.length === 0 ? (

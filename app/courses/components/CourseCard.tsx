@@ -1,4 +1,3 @@
-// app/courses/components/CourseCard.tsx
 "use client";
 
 import Link from "next/link";
@@ -46,22 +45,22 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
       {/* عنوان */}
       <Link 
         href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
-        className="text-lg font-bold text-gray-700 mb-1 line-clamp-2 hover:text-hoboc transition-colors"
+        className="text-lg font-bold text-gray-700 mb-0 line-clamp-2 hover:text-hoboc transition-colors"
       >
         {lesson.title}
       </Link>
 
       {/* توضیح */}
       {lesson.description && (
-        <p className="text-gray-500 text-sm mb-3 mt-1 line-clamp-3 leading-6">{lesson.description}</p>
+        <p className="text-gray-500 text-sm mb-3 mt-0 line-clamp-3 leading-6">{lesson.description}</p>
       )}
 
       {/* اطلاعات پایین */}
-      <div className="flex flex-col gap-0.5 mt-auto mb-4 pt-3 text-sm text-hoboc-dark">
+      <div className="flex justify-between items-center mt-auto mb-4 pt-1 text-sm text-hoboc-dark">
         {/* موضوع - با لینک جداگانه */}
         <Link 
           href={`/courses/${getTopicSlug()}`}
-          className="flex items-center gap-2 hover:text-hoboc transition-colors w-fit"
+          className="flex items-center gap-2 hover:text-hoboc transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
           <FiBookOpen size={14} />
@@ -75,12 +74,12 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
         </div>
 
         {/* مدرس */}
-        {lesson.instructor?.name && (
+        {/* {lesson.instructor?.name && (
           <div className="flex items-center gap-2">
             <FiUser size={14} />
             <span>مدرس: {lesson.instructor.name}</span>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* دکمه */}
