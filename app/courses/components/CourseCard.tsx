@@ -1,4 +1,3 @@
-// app/courses/components/CourseCard.tsx
 "use client";
 
 import Link from "next/link";
@@ -32,33 +31,22 @@ export default function CourseCard({
       : `${Math.floor(duration / 60)} ساعت و ${duration % 60} دقیقه`;
   };
 
-
-
   return (
     <div className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col justify-between transition hover:shadow-md relative overflow-hidden">
+      
+      {/* شماره درس (اختیاری) */}
+      {lessonNumber && showLessonNumber && (
+        <div className="absolute top-3 right-3 bg-hoboc text-white font-bold flex items-center justify-center rounded-xl shadow-md z-10 w-8 h-8 text-sm border border-hoboc-dark/20 transition-all hover:bg-hoboc-dark">
+          {lessonNumber}
+        </div>
+      )}
 
-      {/* شماره درس فقط وقتی موضوع انتخاب شده باشه */}
-{lessonNumber && showLessonNumber && (
-  <div className="
-    absolute top-3 right-3
-    bg-hoboc text-white 
-    font-bold
-    flex items-center justify-center 
-    rounded-xl shadow-md z-10
-    w-8 h-8 text-sm
-    border border-hoboc-dark/20
-    transition-all
-    hover:bg-hoboc-dark
-  ">
-    {lessonNumber}
-  </div>
-)}
-  {/* تصویر */}
-      {lesson.thumbnail && (
-        <Link
-          href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
-          className="h-40 w-full mb-4 rounded-lg overflow-hidden block"
-        >
+      {/* تصویر درس یا جایگزین آن */}
+      <Link
+        href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
+        className="h-40 w-full mb-4 rounded-lg overflow-hidden block"
+      >
+        {lesson.thumbnail ? (
           <Image
             src={lesson.thumbnail}
             alt={lesson.title}
@@ -68,10 +56,14 @@ export default function CourseCard({
             loading="lazy"
             unoptimized={lesson.thumbnail.startsWith("data:")}
           />
-        </Link>
-      )}
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-400 text-sm">
+            تصویری موجود نیست
+          </div>
+        )}
+      </Link>
 
-      {/* عنوان */}
+      {/* عنوان درس */}
       <Link
         href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
         className="text-lg font-bold text-gray-700 mb-0 line-clamp-2 hover:text-hoboc transition-colors"
@@ -79,12 +71,14 @@ export default function CourseCard({
         {lesson.title}
       </Link>
 
-      {/* توضیح */}
+      {/* توضیح کوتاه */}
       {lesson.description && (
-        <p className="text-gray-500 text-sm mb-3 mt-0 line-clamp-3 leading-6">{lesson.description}</p>
+        <p className="text-gray-500 text-sm mb-3 mt-0 line-clamp-3 leading-6">
+          {lesson.description}
+        </p>
       )}
 
-      {/* اطلاعات پایین */}
+      {/* اطلاعات پایین کارت */}
       <div className="flex justify-between items-center mt-auto mb-4 pt-1 text-sm text-hoboc-dark">
         <Link
           href={`/courses/${getTopicSlug()}`}
@@ -101,7 +95,7 @@ export default function CourseCard({
         </div>
       </div>
 
-      {/* دکمه */}
+      {/* دکمه مشاهده درس */}
       <Link
         href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
         className="block w-full select-none text-center py-3 rounded-xl font-bold

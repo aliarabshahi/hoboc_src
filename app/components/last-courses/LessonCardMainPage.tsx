@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image"; // ← just added this
+import Image from "next/image";
 import { FiBookOpen, FiClock } from "react-icons/fi";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 
@@ -31,22 +31,26 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
     <Link
       href={`/courses/${getTopicSlug(lesson)}/lesson/${lesson.slug}`}
       prefetch={false}
-      className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col justify-between transition hover:shadow-md relative overflow-hidden"
+      className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc
+                 flex flex-col justify-between transition hover:shadow-md relative overflow-hidden
+                 h-[418px] max-h-[418px]"
     >
-      {/* تصویر تامبنیل بالا */}
-      {lesson.thumbnail && (
-        <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl">
+      {/* تصویر یا جایگاه تصویر ثابت */}
+      <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-100 dark:bg-gray-800">
+        {lesson.thumbnail ? (
           <Image
             src={lesson.thumbnail}
             alt={lesson.title}
             className="object-cover w-full h-full"
-            width={400}    // minimum required by next/image, close to your previous design
-            height={160}   // h-40 = 160px
+            width={400}
+            height={160}
             loading="lazy"
             unoptimized={lesson.thumbnail.startsWith("data:")}
           />
-        </div>
-      )}
+        ) : (
+          <span className="text-gray-400 text-sm">تصویری موجود نیست</span>
+        )}
+      </div>
 
       {/* عنوان درس */}
       <h3 className="text-lg font-bold text-gray-700 mb-1 line-clamp-2">
