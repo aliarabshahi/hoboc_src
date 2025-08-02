@@ -1,3 +1,4 @@
+// components/vision/VisionTexts.tsx
 import Link from "next/link";
 import { BiSolidLeftArrow } from "react-icons/bi";
 
@@ -24,14 +25,13 @@ const visions = [
 
 export default function VisionTexts({ className }: { className?: string }) {
   return (
-    <div className={`${className} space-y-0.5`} dir="rtl"> {/* Changed to space-y-0.5 */}
+    <div className={`${className ?? ""} space-y-0.5`} dir="rtl">
       {visions.map((vision, index) => (
         <Link
           key={index}
           href={vision.link}
           className="flex items-center p-3 md:p-5 rounded-lg cursor-pointer group hover:bg-hoboc hover:text-white transition-colors"
         >
-          {/* Text Content - Keep all existing spacing here */}
           <div className="flex-grow space-y-1">
             <h3 className="text-xl md:text-2xl font-bold text-gray-800 group-hover:text-white">
               {vision.title}
@@ -44,7 +44,6 @@ export default function VisionTexts({ className }: { className?: string }) {
             </p>
           </div>
 
-          {/* Arrow Icon - Keep existing spacing */}
           <div className="w-6 md:w-8 flex justify-center items-center mr-3 md:mr-8">
             <BiSolidLeftArrow className="text-hoboc group-hover:text-white text-xs md:text-sm" />
           </div>
