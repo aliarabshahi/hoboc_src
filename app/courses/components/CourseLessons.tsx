@@ -1,4 +1,4 @@
-// The CoursesLessons and CoursesTopicsFilter was for old style of the courses page 
+// The CoursesLessons  was for old style of the courses page 
 
 // "use client";
 
