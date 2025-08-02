@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image"; // ← just added this
 import { FiBookOpen, FiClock } from "react-icons/fi";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 
@@ -35,11 +36,14 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
       {/* تصویر تامبنیل بالا */}
       {lesson.thumbnail && (
         <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl">
-          <img
+          <Image
             src={lesson.thumbnail}
             alt={lesson.title}
             className="object-cover w-full h-full"
+            width={400}    // minimum required by next/image, close to your previous design
+            height={160}   // h-40 = 160px
             loading="lazy"
+            unoptimized={lesson.thumbnail.startsWith("data:")}
           />
         </div>
       )}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image"; // 👈 ایمپورت افزودم
 import { FiBookOpen, FiClock, FiUser } from "react-icons/fi";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 
@@ -33,11 +34,15 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
           href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
           className="h-40 w-full mb-4 rounded-lg overflow-hidden block"
         >
-          <img
+          <Image
             src={lesson.thumbnail}
             alt={lesson.title}
             className="object-cover w-full h-full"
+            width={480}    // عدد مطابق با نیاز سایت. می‌تونی تغییر بدی!
+            height={160}   // عدد مطابق با نیاز سایت. می‌تونی تغییر بدی!
             loading="lazy"
+            // priority={false} // میشه برای اولین تصویر صفحه true بشه.
+            unoptimized={lesson.thumbnail.startsWith("data:")} // اگر base64 هست
           />
         </Link>
       )}

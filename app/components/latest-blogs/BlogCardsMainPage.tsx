@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image"; // ← just added this line
 import { BlogPost } from "@/app/types/blogType";
 import { FiCalendar, FiUser } from "react-icons/fi";
 
@@ -7,10 +8,13 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
     <div className="bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col transition hover:shadow-md relative overflow-hidden">
       {post.cover_image && (
         <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden">
-          <img
+          <Image
             src={post.cover_image}
             alt={post.title}
             className="object-cover w-full h-full rounded-t-xl"
+            width={400}    // minimum required by next/image, pick a number close to your card!
+            height={160}
+            unoptimized={post.cover_image.startsWith("data:")}
           />
         </div>
       )}

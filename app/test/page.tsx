@@ -1,4 +1,4 @@
-// app/page.tsx
+import Image from "next/image"; // <--- added import
 
 /**
  * Main Landing Page - Inspired by learning.emofid.com
@@ -91,11 +91,14 @@ export default function HomePage() {
               className="bg-white p-6 rounded-xl shadow-sm border border-hoboc flex flex-col overflow-hidden transition hover:shadow-md"
             >
               <div className="h-40 w-full mb-4 rounded-lg overflow-hidden flex items-center justify-center">
-                <img
+                <Image
                   src={course.image}
                   alt={course.title}
                   className="object-cover w-full h-full"
+                  width={400}
+                  height={160}
                   loading="lazy"
+                  unoptimized={course.image.startsWith("data:")}
                 />
               </div>
               <h3 className="text-lg font-bold text-gray-800 mb-1" dir="rtl">

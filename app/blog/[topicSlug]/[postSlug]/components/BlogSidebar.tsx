@@ -2,6 +2,7 @@ import { BlogPost } from "@/app/types/blogType";
 import VideoPlayer from "./VideoPlayer";
 import { FiUser, FiCalendar, FiBookmark } from "react-icons/fi";
 import Link from "next/link";
+import Image from "next/image"; // ✅ Import added
 
 interface BlogSidebarProps {
   postData: BlogPost;
@@ -15,10 +16,14 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
       {/* Cover Image - Fixed size banner at top */}
       {postData.cover_image && (
         <div className="bg-white p-0 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <img
+          <Image
             src={postData.cover_image}
             alt={postData.title}
             className="w-full h-48 object-cover"
+            width={640}    // عرض دلخواه بنر، متناسب با سایت. اعداد را می‌توانی تنظیم کنی
+            height={192}   // ارتفاع بنر
+            priority={true} // چون احتمالاً همیشه بالای سایدبار هست
+            unoptimized={postData.cover_image.startsWith("data:")}
           />
         </div>
       )}
@@ -46,10 +51,13 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
               </div>
               <div className="flex items-center gap-2">
                 {postData.writer.profile_picture && (
-                  <img
+                  <Image
                     src={postData.writer.profile_picture}
                     alt={postData.writer.name}
                     className="w-6 h-6 rounded-full object-cover"
+                    width={24} // 6 × 4px = 24px
+                    height={24}
+                    unoptimized={postData.writer.profile_picture.startsWith("data:")}
                   />
                 )}
                 <span className="text-green-600 text-sm">

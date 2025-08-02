@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost'], // For development
-    // For production, add your actual domain:
-    // domains: ['yourdomain.com', 'localhost'],
+    domains: [
+      'localhost', // for development (when you use localhost)
+      'images.unsplash.com', // Unsplash images support
+      // Add any other domains here, e.g.
+      // 'yourdomain.com',
+      // 'another.domain.com',
+    ],
   },
 };
 
