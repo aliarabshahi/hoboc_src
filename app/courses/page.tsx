@@ -6,8 +6,10 @@ import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 import CourseCard from "./components/CourseCard";
 import CourseTopicsFilter from "./components/CourseTopicsFilter";
+import CourseHeader from "./components/CourseHeader";
+import CourseCTABanner from "./components/CourseCTABanner";
 
-// --- تابع اسکلتون ساده همون div قبلی ---
+// --- تابع اسکلتون کارت ---
 function SkeletonCard() {
   return (
     <div className="h-[416px] bg-gray-200 rounded-xl animate-pulse" />
@@ -23,20 +25,32 @@ export default function CoursesPage() {
   const searchParams = useSearchParams();
   const selectedTopicSlug = searchParams.get("topic");
 
+  const selectedTopic = topics.find((t) => t.slug === selectedTopicSlug);
+  const title = selectedTopic
+    ? `دوره آموزشی ${selectedTopic.title || selectedTopic.catchy_title || ""}`
+    : "دوره‌های آموزشی";
+
+  const description =
+    "یادگیری حرفه‌ای با دوره‌های کاربردی علم داده و مهندسی داده برای ورود به بازار کار";
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const topicsRes = await getApiData("/course-topics/");
         const topicsData: CoursesTopic[] =
-          Array.isArray(topicsRes.data) ? topicsRes.data : topicsRes.data?.results || [];
+          Array.isArray(topicsRes.data)
+            ? topicsRes.data
+            : topicsRes.data?.results || [];
         setTopics(topicsData);
 
         let lessonsRes;
         if (selectedTopicSlug) {
-          lessonsRes = await getApiData(`/course-lessons/?topic-slug=${selectedTopicSlug}`);
+          lessonsRes = await getApiData(
+            `/course-lessons/?topic-slug=${selectedTopicSlug}`
+          );
         } else {
-          // Optional: نمایش همه‌ی درس‌ها وقتی موضوع انتخاب نشده
+          // نمایش همه‌ی درس‌ها وقتی موضوع انتخاب نشده
           const allLessons: CoursesLesson[] = [];
           for (const topic of topicsData) {
             const res = await getApiData(`/course-lessons/?topic-slug=${topic.slug}`);
@@ -59,25 +73,22 @@ export default function CoursesPage() {
 
   return (
     <main className="bg-gray-50 min-h-screen pb-16">
-      <section className="bg-white pt-16 pb-10 shadow rounded-b-xl">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-gray-800" dir="rtl">
-            دوره‌های آموزشی
-          </h1>
-          <p className="text-gray-600 md:text-lg" dir="rtl">
-            یادگیری حرفه‌ای با دوره‌های کاربردی و تخصصی
-          </p>
-        </div>
-      </section>
+      {/* Header Section */}
+      <CourseHeader title={title} description={description} />
 
+      {/* Topic Filter */}
       <section className="container mx-auto px-4 mt-10">
         {loading ? (
           <div className="h-10 w-48 bg-gray-200 rounded-md animate-pulse mx-auto" />
         ) : (
-          <CourseTopicsFilter topics={topics} selectedTopicSlug={selectedTopicSlug || ""} />
+          <CourseTopicsFilter
+            topics={topics}
+            selectedTopicSlug={selectedTopicSlug || ""}
+          />
         )}
       </section>
 
+      {/* Course Grid */}
       <section className="container mx-auto px-4 mt-8">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -86,7 +97,9 @@ export default function CoursesPage() {
             ))}
           </div>
         ) : lessons.length === 0 ? (
-          <div className="text-center text-gray-500 mt-10">درسی یافت نشد.</div>
+          <div className="text-center text-gray-500 mt-10">
+            درسی یافت نشد.
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map((lesson) => (
@@ -94,6 +107,11 @@ export default function CoursesPage() {
             ))}
           </div>
         )}
+      </section>
+
+      {/* CTA Banner */}
+      <section className="w-full bg-hoboc/10 py-10 mt-16">
+        <CourseCTABanner />
       </section>
     </main>
   );

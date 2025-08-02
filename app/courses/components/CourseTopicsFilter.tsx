@@ -47,7 +47,7 @@ export default function CourseTopicsFilter({
                 : "bg-gray-100 text-gray-700 hover:bg-hoboc hover:text-white"
             }`}
           >
-            {topic.catchy_title || topic.title}
+            {topic.title || topic.catchy_title}
           </button>
         );
       })}

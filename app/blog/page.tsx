@@ -7,6 +7,14 @@ import { BlogPost, BlogTopic } from "@/app/types/blogType";
 import BlogPostCard from "./components/BlogPostCard";
 import BlogTopicsDropdown from "./components/BlogTopicsDropdown";
 import BlogCTABanner from "./components/BlogCTABanner";
+import BlogHeader from "./components/BlogHeader"; // مسیر را با ساختار پروژه چک کن
+
+// ---- تابع اسکلتون بلاگ کارت ----
+function SkeletonBlogCard() {
+  return (
+    <div className="h-[360px] bg-gray-200 rounded-xl animate-pulse" />
+  );
+}
 
 export default function BlogPage({
   searchParams,
@@ -17,6 +25,7 @@ export default function BlogPage({
   const [topics, setTopics] = useState<BlogTopic[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [error, setError] = useState<string | null>(null);
+
   const selectedTopicSlug = searchParams.topic;
 
   useEffect(() => {
@@ -24,8 +33,9 @@ export default function BlogPage({
       try {
         const topicsResponse = await getApiData("/blog-topics/?page_size=30");
         const fetchedTopics: BlogTopic[] =
-          Array.isArray(topicsResponse.data) ?
-            topicsResponse.data : topicsResponse.data?.results || [];
+          Array.isArray(topicsResponse.data)
+            ? topicsResponse.data
+            : topicsResponse.data?.results || [];
         setTopics(fetchedTopics);
 
         const postsResponse = await fetchApiData<BlogPost>(
@@ -44,21 +54,17 @@ export default function BlogPage({
   }, [selectedTopicSlug]);
 
   const selectedTopic = topics.find((t) => t.slug === selectedTopicSlug);
-  const title = selectedTopic ? `مطالب بلاگ ${selectedTopic.catchy_title}` : "مطالب بلاگ";
+  const title = selectedTopic
+    ? `مطالب بلاگ ${selectedTopic.catchy_title || selectedTopic.title || selectedTopic.catchy_title || ""}`
+    : "مطالب بلاگ";
+
+  // توضیح قابل تنظیم زیر عنوان بلاگ
+  const description = "بلاگ تخصصی علم داده، مهندسی داده و تحلیل داده، کاربردی برای بازار کار و دنیای واقعی";
 
   return (
     <main className="bg-gray-50 min-h-screen">
-      {/* Hero */}
-      <section className="bg-white pt-16 pb-10 shadow rounded-b-xl">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-gray-800" dir="rtl">
-            {title}
-          </h1>
-          <p className="text-gray-600 md:text-lg" dir="rtl">
-            مقالات آموزشی در زمینه بورس، سرمایه‌گذاری و مهارت‌های مالی
-          </p>
-        </div>
-      </section>
+      {/* Blog Header */}
+      <BlogHeader title={title} description={description} />
 
       {/* Dropdown Filter */}
       <section className="container mx-auto px-4 mt-8 text-center">
@@ -74,7 +80,7 @@ export default function BlogPage({
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-[420px] bg-gray-200 rounded-xl animate-pulse" />
+              <SkeletonBlogCard key={i} />
             ))}
           </div>
         ) : posts.length === 0 ? (
@@ -90,10 +96,9 @@ export default function BlogPage({
         )}
       </section>
       {/* CTA Banner */}
-<section className="w-full bg-hoboc/10 py-10 mt-16">
-  <BlogCTABanner />
-</section>
-
+      <section className="w-full bg-hoboc/10 py-10 mt-16">
+        <BlogCTABanner />
+      </section>
     </main>
   );
 }
