@@ -1,24 +1,30 @@
+// app/courses/components/CourseCard.tsx
 "use client";
 
 import Link from "next/link";
-import Image from "next/image"; // 👈 ایمپورت افزودم
-import { FiBookOpen, FiClock, FiUser } from "react-icons/fi";
-import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
+import Image from "next/image";
+import { FiBookOpen, FiClock } from "react-icons/fi";
+import { CoursesLesson } from "@/app/types/coursesType";
 
-export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
-  // گرفتن اسلاگ موضوع
+export default function CourseCard({
+  lesson,
+  lessonNumber,
+  showLessonNumber = false,
+}: {
+  lesson: CoursesLesson;
+  lessonNumber?: number;
+  showLessonNumber?: boolean;
+}) {
   const getTopicSlug = (): string => {
     if (lesson.tags?.[0]?.slug) return lesson.tags[0].slug;
     if (lesson.topic && typeof lesson.topic !== "string") return lesson.topic.slug || "general";
     return "general";
   };
 
-  // عنوان موضوع
   const getTopicTitle = (): string => {
     return typeof lesson.topic === "string" ? lesson.topic : lesson.topic?.title || "بدون موضوع";
   };
 
-  // فرمت زمان
   const formatDuration = (duration: number | null): string => {
     if (!duration) return "زمان نامشخص";
     return duration < 60
@@ -26,11 +32,30 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
       : `${Math.floor(duration / 60)} ساعت و ${duration % 60} دقیقه`;
   };
 
+
+
   return (
     <div className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col justify-between transition hover:shadow-md relative overflow-hidden">
-      {/* تصویر */}
+
+      {/* شماره درس فقط وقتی موضوع انتخاب شده باشه */}
+{lessonNumber && showLessonNumber && (
+  <div className="
+    absolute top-3 right-3
+    bg-hoboc text-white 
+    font-bold
+    flex items-center justify-center 
+    rounded-xl shadow-md z-10
+    w-8 h-8 text-sm
+    border border-hoboc-dark/20
+    transition-all
+    hover:bg-hoboc-dark
+  ">
+    {lessonNumber}
+  </div>
+)}
+  {/* تصویر */}
       {lesson.thumbnail && (
-        <Link 
+        <Link
           href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
           className="h-40 w-full mb-4 rounded-lg overflow-hidden block"
         >
@@ -38,17 +63,16 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
             src={lesson.thumbnail}
             alt={lesson.title}
             className="object-cover w-full h-full"
-            width={480}    // عدد مطابق با نیاز سایت. می‌تونی تغییر بدی!
-            height={160}   // عدد مطابق با نیاز سایت. می‌تونی تغییر بدی!
+            width={480}
+            height={160}
             loading="lazy"
-            // priority={false} // میشه برای اولین تصویر صفحه true بشه.
-            unoptimized={lesson.thumbnail.startsWith("data:")} // اگر base64 هست
+            unoptimized={lesson.thumbnail.startsWith("data:")}
           />
         </Link>
       )}
 
       {/* عنوان */}
-      <Link 
+      <Link
         href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
         className="text-lg font-bold text-gray-700 mb-0 line-clamp-2 hover:text-hoboc transition-colors"
       >
@@ -62,8 +86,7 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
 
       {/* اطلاعات پایین */}
       <div className="flex justify-between items-center mt-auto mb-4 pt-1 text-sm text-hoboc-dark">
-        {/* موضوع - با لینک جداگانه */}
-        <Link 
+        <Link
           href={`/courses/${getTopicSlug()}`}
           className="flex items-center gap-2 hover:text-hoboc transition-colors"
           onClick={(e) => e.stopPropagation()}
@@ -72,28 +95,19 @@ export default function CourseCard({ lesson }: { lesson: CoursesLesson }) {
           <span>{getTopicTitle()}</span>
         </Link>
 
-        {/* زمان */}
         <div className="flex items-center gap-2">
           <FiClock size={14} />
           <span>{formatDuration(lesson.duration)}</span>
         </div>
-
-        {/* مدرس */}
-        {/* {lesson.instructor?.name && (
-          <div className="flex items-center gap-2">
-            <FiUser size={14} />
-            <span>مدرس: {lesson.instructor.name}</span>
-          </div>
-        )} */}
       </div>
 
       {/* دکمه */}
-      <Link 
+      <Link
         href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
         className="block w-full select-none text-center py-3 rounded-xl font-bold
-                 bg-white text-hoboc border border-hoboc
-                 hover:bg-hoboc hover:text-white
-                 transition-colors duration-200 shadow-sm"
+                   bg-white text-hoboc border border-hoboc
+                   hover:bg-hoboc hover:text-white
+                   transition-colors duration-200 shadow-sm"
       >
         مشاهده درس
       </Link>

@@ -99,9 +99,14 @@ export default function CoursesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {lessons.map((lesson) => (
-              <CourseCard key={lesson.id} lesson={lesson} />
-            ))}
+{lessons.map((lesson, index) => (
+  <CourseCard
+    key={lesson.id}
+    lesson={lesson}
+    lessonNumber={index + 1}
+    showLessonNumber={!!selectedTopicSlug} // فقط اگر موضوع انتخاب شده
+  />
+))}
           </div>
         )}
       </section>
