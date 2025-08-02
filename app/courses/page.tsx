@@ -37,6 +37,7 @@ export default function CoursesPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
+        // دریافت لیست همه موضوعات
         const topicsRes = await getApiData("/course-topics/");
         const topicsData: CoursesTopic[] =
           Array.isArray(topicsRes.data)
@@ -46,17 +47,13 @@ export default function CoursesPage() {
 
         let lessonsRes;
         if (selectedTopicSlug) {
+          // فقط درس‌های مرتبط با موضوع انتخاب‌شده را بگیر
           lessonsRes = await getApiData(
-            `/course-lessons/?topic-slug=${selectedTopicSlug}`
+            `/course-lessons/?topic-slug=${selectedTopicSlug}&ordering=created_at`
           );
         } else {
-          // نمایش همه‌ی درس‌ها وقتی موضوع انتخاب نشده
-          const allLessons: CoursesLesson[] = [];
-          for (const topic of topicsData) {
-            const res = await getApiData(`/course-lessons/?topic-slug=${topic.slug}`);
-            allLessons.push(...(res.data || []));
-          }
-          lessonsRes = { data: allLessons };
+          // وقتی هیچ موضوعی انتخاب نشده، کل درس‌ها را یکجا دریافت کن
+          lessonsRes = await getApiData("/course-lessons/");
         }
 
         setLessons(lessonsRes.data || []);
