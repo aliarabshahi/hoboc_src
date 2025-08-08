@@ -19,7 +19,9 @@ export default function Home() {
       {/* <Hero /> */}
       {/* <NewHero /> */}
 
-      <Vision />
+<section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+  <Vision />
+</section>
       {/* <CoursesCard /> */}
       {/* <RowLessonsData /> */}
       <CoursesDetailWrapper />

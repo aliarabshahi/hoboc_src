@@ -1,14 +1,13 @@
-// components/vision/VisionImage.tsx
 import Image from "next/image";
 
 export default function VisionImage({ className }: { className?: string }) {
   return (
-    <div className={className}>
+    <div className={`${className ?? ""}`}>
       <Image
-        src="/hero_images/hero_image55.svg"
+        src="/main/Education-bro (5).svg"
         alt="Vision Image"
-        width={600}
-        height={600}
+        width={1500}
+        height={1500}
         className="object-cover w-full h-full"
       />
     </div>
