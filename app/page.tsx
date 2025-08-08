@@ -17,19 +17,20 @@ export default function Home() {
   return (
     <main className="">
       {/* <Hero /> */}
-      {/* <NewHero /> */}
+      
+      <NewHero  />
 
-<section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
-  <Vision />
-</section>
+      <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+        <Vision />
+      </section>
       {/* <CoursesCard /> */}
       {/* <RowLessonsData /> */}
       <CoursesDetailWrapper />
       {/* <MainCoursesDetail /> */}
-      
-  <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
-    <LatestLessonsSection />
-  </section>
+
+      <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+        <LatestLessonsSection />
+      </section>
 
       {/* LatestBlogSection with custom padding and rtl direction */}
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
