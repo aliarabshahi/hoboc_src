@@ -13,6 +13,7 @@ import Looser from "./components/looser/Looser";
 import LatestBlogSection from "./components/latest-blogs/LatestBlogSection";
 import LatestLessonsSection from "./components/last-courses/LatestLessonsSection";
 import HeroBackgroundFooter from "./components/looser/HeroBackgroundFooter";
+import CallToAction from "./components/homepage/CallToAction";
 
 export default function Home() {
   return (
@@ -24,6 +25,8 @@ export default function Home() {
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
         <Vision />
       </section>
+              <CallToAction />
+
       {/* <CoursesCard /> */}
       {/* <RowLessonsData /> */}
       <CoursesDetailWrapper />
