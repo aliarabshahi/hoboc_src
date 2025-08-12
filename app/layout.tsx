@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import localFont from 'next/font/local';
+import Alert from "./components/alert/Alert";
 
 const vazir = localFont({
   src: [
@@ -35,6 +36,8 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className={`${vazir.variable}`}>
       <body className="font-sans bg-main-bg min-h-screen">
+              <Alert />
+        
         <Navbar />
         {children}
         <Footer />

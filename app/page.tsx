@@ -15,12 +15,10 @@ import LatestLessonsSection from "./components/last-courses/LatestLessonsSection
 import HeroBackgroundFooter from "./components/looser/HeroBackgroundFooter";
 import CallToAction from "./components/homepage/CallToAction";
 import Example from "./components/homepage/SecondaryFeatures";
-
 export default function Home() {
   return (
     <main className="">
       {/* <Hero /> */}
-      
       <NewHero  />
 
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
