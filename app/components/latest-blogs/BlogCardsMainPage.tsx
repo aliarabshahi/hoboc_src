@@ -12,7 +12,7 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
         overflow-hidden rounded-2xl bg-gray-900 
         px-6 pb-6 pt-64 sm:pt-48 lg:pt-64
         shadow-lg hover:shadow-xl transition
-        h-[380px]   /* ensures fixed height for all cards */
+        h-[340]   /* ensures fixed height for all cards */
       "
     >
       {/* پس‌زمینه عکس یا جایگزین */}

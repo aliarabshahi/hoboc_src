@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function SkeletonBlogCard() {
   return (
-    <div className="w-full h-[380px] rounded-2xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+    <div className="w-full h-[340px] rounded-2xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
   );
 }
 
@@ -63,7 +63,7 @@ export default function LatestBlogSection() {
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">
-            جدیدترین مقالات
+            آخرین مقالات
           </h2>
           <Link href="/blog">
             <button className="button button--gray text-white text-base font-medium px-4 py-2 rounded bg-hoboc-dark hover:bg-hoboc transition">

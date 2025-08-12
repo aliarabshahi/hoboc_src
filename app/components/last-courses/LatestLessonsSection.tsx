@@ -69,7 +69,7 @@ export default function LatestLessonsSection() {
           </h2>
           <Link href="/courses" passHref>
             <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-hoboc-dark hover:bg-hoboc transition">
-              مشاهده بیشتر
+              مشاهده همه
             </button>
           </Link>
         </div>
