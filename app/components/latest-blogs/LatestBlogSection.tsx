@@ -13,6 +13,14 @@ function SkeletonBlogCard() {
   );
 }
 
+function SkeletonArrowButton() {
+  return (
+    <div className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse">
+      <div className="w-6 h-6" />
+    </div>
+  );
+}
+
 export default function LatestBlogSection() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,9 +52,10 @@ export default function LatestBlogSection() {
     );
   };
 
-  const visiblePosts = loading ? 
-    Array.from({ length: 3 }) : 
-    posts.slice(currentIndex, currentIndex + 3);
+  // Explicitly type the visiblePosts array
+  const visiblePosts: (BlogPost | null)[] = loading 
+    ? Array(3).fill(null) 
+    : posts.slice(currentIndex, currentIndex + 3);
 
   return (
     <section className="w-full mt-16">
@@ -66,8 +75,8 @@ export default function LatestBlogSection() {
         {/* Blog cards grid */}
         <div className="grid gap-6 md:grid-cols-3">
           {visiblePosts.map((post, index) => (
-            <div key={loading ? index : post.id}>
-              {loading ? (
+            <div key={post?.id || index}>
+              {post === null ? (
                 <SkeletonBlogCard />
               ) : (
                 <BlogCardsMainPage post={post} />
@@ -77,24 +86,31 @@ export default function LatestBlogSection() {
         </div>
 
         {/* Navigation arrows */}
-        {!loading && posts.length > 3 && (
-          <div className="flex justify-center gap-8 mt-8">
-            <button
-              onClick={prevSlide}
-              className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
-              aria-label="مقالات قبلی"
-            >
-              <ChevronRight size={24} />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
-              aria-label="مقالات بعدی"
-            >
-              <ChevronLeft size={24} />
-            </button>
-          </div>
-        )}
+        <div className="flex justify-center gap-8 mt-8">
+          {loading ? (
+            <>
+              <SkeletonArrowButton />
+              <SkeletonArrowButton />
+            </>
+          ) : posts.length > 3 ? (
+            <>
+              <button
+                onClick={prevSlide}
+                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+                aria-label="مقالات قبلی"
+              >
+                <ChevronRight size={24} />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+                aria-label="مقالات بعدی"
+              >
+                <ChevronLeft size={24} />
+              </button>
+            </>
+          ) : null}
+        </div>
       </div>
     </section>
   );

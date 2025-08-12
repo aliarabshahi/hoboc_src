@@ -7,10 +7,19 @@ import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson }) {
   // گرفتن اسلاگ موضوع درس
   const getTopicSlug = (lesson: CoursesLesson): string => {
-    if (lesson.tags && Array.isArray(lesson.tags) && lesson.tags.length > 0 && lesson.tags[0].slug) {
+    if (
+      lesson.tags &&
+      Array.isArray(lesson.tags) &&
+      lesson.tags.length > 0 &&
+      lesson.tags[0].slug
+    ) {
       return lesson.tags[0].slug;
     }
-    if (lesson.topic && typeof lesson.topic !== "string" && (lesson.topic as CoursesTopic).slug) {
+    if (
+      lesson.topic &&
+      typeof lesson.topic !== "string" &&
+      (lesson.topic as CoursesTopic).slug
+    ) {
       return (lesson.topic as CoursesTopic).slug;
     }
     return "general";
@@ -24,7 +33,9 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
   // فرمت زمان درس
   const formatDuration = (duration: number | null): string => {
     if (!duration) return "زمان نامشخص";
-    return duration < 60 ? `${duration} دقیقه` : `${Math.floor(duration / 60)} ساعت و ${duration % 60} دقیقه`;
+    return duration < 60
+      ? `${duration} دقیقه`
+      : `${Math.floor(duration / 60)} ساعت و ${duration % 60} دقیقه`;
   };
 
   return (
@@ -36,19 +47,23 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
                  h-[418px] max-h-[418px]"
     >
       {/* تصویر یا جایگاه تصویر ثابت */}
-      <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-100 dark:bg-gray-800">
+      <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-100 dark:bg-gray-800 relative">
         {lesson.thumbnail ? (
-          <Image
-            src={lesson.thumbnail}
-            alt={lesson.title}
-            className="object-cover w-full h-full"
-            width={400}
-            height={160}
-            loading="lazy"
-            unoptimized={lesson.thumbnail.startsWith("data:")}
-          />
+          <>
+            <Image
+              src={lesson.thumbnail}
+              alt={lesson.title}
+              className="object-cover w-full h-full"
+              width={400}
+              height={160}
+              loading="lazy"
+              unoptimized={lesson.thumbnail.startsWith("data:")}
+            />
+            {/* شادو روی عکس — تغییر عدد شفافیت برای بیشتر/کمتر شدن سایه */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent pointer-events-none" />
+          </>
         ) : (
-          <span className="text-gray-400 text-sm">تصویری موجود نیست</span>
+          <span className="text-gray-400 text-sm z-10">تصویری موجود نیست</span>
         )}
       </div>
 

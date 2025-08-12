@@ -12,10 +12,11 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
         overflow-hidden rounded-2xl bg-gray-900 
         px-6 pb-6 pt-64 sm:pt-48 lg:pt-64
         shadow-lg hover:shadow-xl transition
+        h-[380px]   /* ensures fixed height for all cards */
       "
     >
-      {/* پس‌زمینه عکس */}
-      {post.cover_image && (
+      {/* پس‌زمینه عکس یا جایگزین */}
+      {post.cover_image ? (
         <Image
           src={post.cover_image}
           alt={post.title}
@@ -24,6 +25,8 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
           priority={false}
           unoptimized={post.cover_image.startsWith("data:")}
         />
+      ) : (
+        <div className="absolute inset-0 -z-10 size-full bg-gray-700" />
       )}
 
       {/* گرادینت تیره روی عکس */}
@@ -34,13 +37,10 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
 
       {/* اطلاعات نویسنده و تاریخ */}
       <div className="flex flex-wrap items-center gap-x-4 text-sm text-gray-300">
-        {/* نویسنده */}
         <div className="flex items-center gap-x-1">
           <FiUser size={14} className="text-gray-300" />
           <span>{post.writer?.name || "ناشناس"}</span>
         </div>
-
-        {/* تاریخ */}
         <div className="flex items-center gap-x-1">
           <FiCalendar size={14} className="text-gray-300" />
           <time dateTime={post.created_at}>

@@ -1,45 +1,37 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson } from "@/app/types/coursesType";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import LessonCardsMainPage from "./LessonCardMainPage";
 
 function SkeletonLessonCard() {
   return (
-    <div
-      className="
-        min-w-[300px]        /* match your card’s width */
-        max-w-[300px]
-        h-[418px]            /* total height ≈ 25.5rem (408px) – adjust if needed */
-        rounded-xl
-bg-gray-200 dark:bg-gray-700         animate-pulse
-        shadow-sm
-      "
-    />
+    <div className="w-full h-[418px] rounded-2xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+  );
+}
+
+function SkeletonArrowButton() {
+  return (
+    <div className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse">
+      <div className="w-6 h-6" />
+    </div>
   );
 }
 
 export default function LatestLessonsSection() {
   const [lessons, setLessons] = useState<CoursesLesson[]>([]);
   const [loading, setLoading] = useState(true);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const res = await getApiData(
-          "/course-lessons/?page_size=6&ordering=-created_at"
-        );
+        const res = await getApiData("/course-lessons/?page_size=6&ordering=-created_at");
         if (res.data) {
-          setLessons(
-            Array.isArray(res.data) ? res.data : res.data.results || []
-          );
+          setLessons(Array.isArray(res.data) ? res.data : res.data.results || []);
         }
       } catch (error) {
         console.error("Error fetching lessons:", error);
@@ -50,44 +42,27 @@ export default function LatestLessonsSection() {
     fetchLessons();
   }, []);
 
-  const scroll = (dir: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 340;
-      scrollRef.current.scrollBy({
-        left: dir === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex + 3 >= lessons.length ? 0 : prevIndex + 3
+    );
   };
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!scrollRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex - 3 < 0 ? lessons.length - (lessons.length % 3 || 3) : prevIndex - 3
+    );
   };
 
-  const handleMouseLeave = () => setIsDragging(false);
-  const handleMouseUp = () => setIsDragging(false);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleCardClick = (e: React.MouseEvent, lessonId: number) => {
-    if (isDragging) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
+  // Explicitly type the visibleLessons array
+  const visibleLessons: (CoursesLesson | null)[] = loading 
+    ? Array(3).fill(null) 
+    : lessons.slice(currentIndex, currentIndex + 3);
 
   return (
     <section className="w-full mt-16">
       <div className="container mx-auto px-4">
+        {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">
             جدیدترین درس ها
@@ -99,58 +74,44 @@ export default function LatestLessonsSection() {
           </Link>
         </div>
 
-        {/* Arrows + Cards */}
-        <div className="relative flex items-center">
-          {/* Left Arrow */}
-          <button
-            onClick={() => scroll("left")}
-            className="hidden md:block absolute -left-10 z-10 text-hoboc-dark hover:text-hoboc transition"
-            aria-label="Scroll left"
-          >
-            <ChevronRight className="rotate-180" size={32} />
-          </button>
+        {/* Lessons grid - matching blog section exactly */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {visibleLessons.map((lesson, index) => (
+            <div key={lesson?.id || index}>
+              {!lesson ? (
+                <SkeletonLessonCard />
+              ) : (
+                <LessonCardsMainPage lesson={lesson} />
+              )}
+            </div>
+          ))}
+        </div>
 
-          {/* Cards Container */}
-          <div
-            ref={scrollRef}
-            className="
-              flex gap-6 px-2 w-full 
-              overflow-x-auto sm:overflow-x-auto 
-              md:overflow-hidden 
-              pb-4 
-              scrollbar-thin scrollbar-thumb-hoboc-dark scrollbar-track-gray-100 
-              cursor-grab active:cursor-grabbing
-            "
-            onMouseDown={handleMouseDown}
-            onMouseLeave={handleMouseLeave}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-          >
-            {loading
-              ? // Show 6 skeleton cards while loading
-                Array.from({ length: 6 }).map((_, i) => (
-                  <SkeletonLessonCard key={i} />
-                ))
-              : // Show loaded lessons
-                lessons.map((lesson) => (
-                  <div
-                    key={lesson.id}
-                    className="min-w-[300px] max-w-[300px] flex-shrink-0"
-                    onClick={(e) => handleCardClick(e, lesson.id)}
-                  >
-                    <LessonCardsMainPage lesson={lesson} />
-                  </div>
-                ))}
-          </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={() => scroll("right")}
-            className="hidden md:block absolute -right-10 z-10 text-hoboc-dark hover:text-hoboc transition"
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={32} />
-          </button>
+        {/* Navigation arrows */}
+        <div className="flex justify-center gap-8 mt-8">
+          {loading ? (
+            <>
+              <SkeletonArrowButton />
+              <SkeletonArrowButton />
+            </>
+          ) : lessons.length > 3 ? (
+            <>
+              <button
+                onClick={prevSlide}
+                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+                aria-label="درس های قبلی"
+              >
+                <ChevronRight size={24} />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+                aria-label="درس های بعدی"
+              >
+                <ChevronLeft size={24} />
+              </button>
+            </>
+          ) : null}
         </div>
       </div>
     </section>
