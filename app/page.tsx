@@ -16,7 +16,7 @@ import HeroBackgroundFooter from "./components/looser/HeroBackgroundFooter";
 import CallToAction from "./components/homepage/CallToAction";
 import Example from "./components/homepage/SecondaryFeatures";
 import Testimonial from "./components/Testimonials";
-import Test from "./components/BackgroundWithPattern";
+import BackgroundWithPattern from "./components/BackgroundWithPattern";
 
 export default function Home() {
   return (
@@ -24,25 +24,39 @@ export default function Home() {
       {/* <Hero /> */}
       <NewHero />
 
-      <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+      <section className="container mx-auto px-4 md:px-8 lg:px-16" dir="rtl">
         <Vision />
+      
+
       </section>
-      <section className="my-20">
+
+            {/* Latest Lessons with Test background */}
+<section className="relative container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+  {/* Background */}
+  <div className="absolute inset-0 ">
+    <BackgroundWithPattern />
+  </div>
+
+  {/* Foreground lessons */}
+  <LatestLessonsSection />
+</section>
+
+      {/* <section className="my-20">
         <CallToAction />
-      </section>
+      </section> */}
 
       {/* <CoursesCard /> */}
       {/* <RowLessonsData /> */}
       {/* <CoursesDetailWrapper /> */}
       {/* <MainCoursesDetail /> */}
 
-      <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+      {/* <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
         <LatestLessonsSection />
-      </section>
-
+      </section> */}
+{/* 
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
       <Test />
-      </section>
+      </section> */}
 
 
       {/* <section className="my-20">
@@ -50,7 +64,7 @@ export default function Home() {
       </section> */}
 
       {/* LatestBlogSection with custom padding and rtl direction */}
-      <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+      <section className="container mx-auto px-4 md:px-8 lg:px-20"  dir="rtl">
         <LatestBlogSection />
       </section>
       <HeroBackgroundFooter />

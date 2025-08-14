@@ -60,60 +60,58 @@ export default function LatestLessonsSection() {
     : lessons.slice(currentIndex, currentIndex + 3);
 
   return (
-    <section className="w-full mt-16">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">
-            جدیدترین درس ها
-          </h2>
-          <Link href="/courses" passHref>
-            <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-hoboc-dark hover:bg-hoboc transition">
-              مشاهده همه
-            </button>
-          </Link>
-        </div>
-
-        {/* Lessons grid - matching blog section exactly */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {visibleLessons.map((lesson, index) => (
-            <div key={lesson?.id || index}>
-              {!lesson ? (
-                <SkeletonLessonCard />
-              ) : (
-                <LessonCardsMainPage lesson={lesson} />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation arrows */}
-        <div className="flex justify-center gap-8 mt-8">
-          {loading ? (
-            <>
-              <SkeletonArrowButton />
-              <SkeletonArrowButton />
-            </>
-          ) : lessons.length > 3 ? (
-            <>
-              <button
-                onClick={prevSlide}
-                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
-                aria-label="درس های قبلی"
-              >
-                <ChevronRight size={24} />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
-                aria-label="درس های بعدی"
-              >
-                <ChevronLeft size={24} />
-              </button>
-            </>
-          ) : null}
-        </div>
+    <div className="w-full mt-16">
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">
+          جدیدترین درس ها
+        </h2>
+        <Link href="/courses" passHref>
+          <button className="button button--gray mr-auto text-white text-base font-medium px-4 py-2 rounded bg-gray-800 hover:bg-hoboc transition">
+            مشاهده همه
+          </button>
+        </Link>
       </div>
-    </section>
+
+      {/* Lessons grid */}
+      <div className="grid gap-6 md:grid-cols-3 relative z-10 lg:pr-10">
+        {visibleLessons.map((lesson, index) => (
+          <div key={lesson?.id || index}>
+            {!lesson ? (
+              <SkeletonLessonCard />
+            ) : (
+              <LessonCardsMainPage lesson={lesson} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation arrows */}
+      <div className="flex justify-center gap-8 mt-8 relative z-10 lg:pr-10 ">
+        {loading ? (
+          <>
+            <SkeletonArrowButton />
+            <SkeletonArrowButton />
+          </>
+        ) : lessons.length > 3 ? (
+          <>
+            <button
+              onClick={prevSlide}
+              className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+              aria-label="درس های قبلی"
+            >
+              <ChevronRight size={24} />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+              aria-label="درس های بعدی"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          </>
+        ) : null}
+      </div>
+    </div>
   );
 }

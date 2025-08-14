@@ -41,77 +41,76 @@ export default function LatestBlogSection() {
   }, []);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex + 3 >= posts.length ? 0 : prevIndex + 3
     );
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex - 3 < 0 ? posts.length - (posts.length % 3 || 3) : prevIndex - 3
+    setCurrentIndex((prevIndex) =>
+      prevIndex - 3 < 0
+        ? posts.length - (posts.length % 3 || 3)
+        : prevIndex - 3
     );
   };
 
-  // Explicitly type the visiblePosts array
-  const visiblePosts: (BlogPost | null)[] = loading 
-    ? Array(3).fill(null) 
+  const visiblePosts: (BlogPost | null)[] = loading
+    ? Array(3).fill(null)
     : posts.slice(currentIndex, currentIndex + 3);
 
   return (
-    <section className="w-full mt-16">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">
-            آخرین مقالات
-          </h2>
-          <Link href="/blog">
-            <button className="button button--gray text-white text-base font-medium px-4 py-2 rounded bg-hoboc-dark hover:bg-hoboc transition">
-              مشاهده همه
-            </button>
-          </Link>
-        </div>
-
-        {/* Blog cards grid */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {visiblePosts.map((post, index) => (
-            <div key={post?.id || index}>
-              {post === null ? (
-                <SkeletonBlogCard />
-              ) : (
-                <BlogCardsMainPage post={post} />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation arrows */}
-        <div className="flex justify-center gap-8 mt-8">
-          {loading ? (
-            <>
-              <SkeletonArrowButton />
-              <SkeletonArrowButton />
-            </>
-          ) : posts.length > 3 ? (
-            <>
-              <button
-                onClick={prevSlide}
-                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
-                aria-label="مقالات قبلی"
-              >
-                <ChevronRight size={24} />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
-                aria-label="مقالات بعدی"
-              >
-                <ChevronLeft size={24} />
-              </button>
-            </>
-          ) : null}
-        </div>
+    <div className="w-full mt-16">
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">
+          آخرین مقالات
+        </h2>
+        <Link href="/blog">
+          <button className="button button--gray text-white text-base font-medium px-4 py-2 rounded bg-gray-800 hover:bg-hoboc transition">
+            مشاهده همه
+          </button>
+        </Link>
       </div>
-    </section>
+
+      {/* Blog cards grid */}
+      <div className="grid gap-6 md:grid-cols-3 relative z-10 lg:pr-10 ">
+        {visiblePosts.map((post, index) => (
+          <div key={post?.id || index}>
+            {post === null ? (
+              <SkeletonBlogCard />
+            ) : (
+              <BlogCardsMainPage post={post} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation arrows */}
+      <div className="flex justify-center gap-8 mt-8 relative z-10 lg:pr-10">
+        {loading ? (
+          <>
+            <SkeletonArrowButton />
+            <SkeletonArrowButton />
+          </>
+        ) : posts.length > 3 ? (
+          <>
+            <button
+              onClick={prevSlide}
+              className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+              aria-label="مقالات قبلی"
+            >
+              <ChevronRight size={24} />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition"
+              aria-label="مقالات بعدی"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          </>
+        ) : null}
+      </div>
+    </div>
   );
 }

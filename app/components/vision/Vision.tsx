@@ -14,7 +14,7 @@ export default function Vision() {
       </div>
 
       {/* Text side */}
-      <div className="w-full lg:flex-[2] flex items-center">
+      <div className="w-full lg:flex-[2] flex items-center pl-4">
         <VisionTexts />
       </div>
     </div>
