@@ -16,6 +16,8 @@ import HeroBackgroundFooter from "./components/looser/HeroBackgroundFooter";
 import CallToAction from "./components/homepage/CallToAction";
 import Example from "./components/homepage/SecondaryFeatures";
 import Testimonial from "./components/Testimonials";
+import Test from "./components/BackgroundWithPattern";
+
 export default function Home() {
   return (
     <main className="">
@@ -38,10 +40,14 @@ export default function Home() {
         <LatestLessonsSection />
       </section>
 
-
-      <section className="my-20">
-      <Testimonial />
+      <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
+      <Test />
       </section>
+
+
+      {/* <section className="my-20">
+      <Testimonial />
+      </section> */}
 
       {/* LatestBlogSection with custom padding and rtl direction */}
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
