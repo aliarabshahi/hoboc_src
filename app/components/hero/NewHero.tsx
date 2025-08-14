@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { IoPlayCircleSharp } from "react-icons/io5";
 
 export default function NewHero() {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
     <div className="bg-white relative z-0" dir="rtl">
-      <div className="relative isolate px-6 pt-10 lg:px-8">
+      <div className="relative isolate px-6 lg:px-8">
         {/* Top background blob */}
         <div
           aria-hidden="true"
@@ -26,44 +27,41 @@ export default function NewHero() {
         </div>
 
         {/* Content */}
-        <div className="mx-auto max-w-2xl py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-2xl pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-10 lg:pb-12">
           {/* Video trigger pill */}
-          <div className="hidden sm:mb-6 sm:flex sm:justify-center">
+          <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <button
               onClick={() => setShowVideo(true)}
-              className="relative rounded-full px-4 py-1.5 text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-hoboc transition hover:text-white hover:bg-hoboc-dark"
+              className="group flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium leading-6 
+                         text-gray-700 ring-1 ring-gray-900/10 transition-all duration-300 ease-out"
             >
-              ویدئو معرفی من رو ببین
+              <IoPlayCircleSharp
+                className="text-xl text-gray-500 transition-colors duration-300 group-hover:text-red-500 
+                           group-hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+              />
+              <span>ما کی هستیم؟!</span>
             </button>
           </div>
 
-          <div className="text-center space-y-6">
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 leading-snug sm:text-5xl">
+          <div className="text-center space-y-8">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-tight">
               از داده خام تا <span className="text-hoboc-dark">ارزش واقعی</span>
             </h1>
-            <p className="text-base font-medium text-gray-600 sm:text-lg leading-relaxed">
+            <p className="text-lg leading-8 text-gray-600">
               با ما مهارت‌های داده‌کاوی، مهندسی داده و تحلیل پیشرفته رو یاد بگیر
               تا بتونی از داده‌ها ارزش بسازی، پایپ‌لاین‌های بهینه طراحی کنی و
               کسب‌وکار رو با بینش‌های عمیق متحول کنی.
             </p>
 
-{/* Buttons */}
-<div className="flex flex-row-reverse items-center justify-center gap-x-4 pt-2">
-  <a
-    href="/courses"
-    className="rounded-md bg-hoboc-dark px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-hoboc focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark"
-  >
-    شروع یادگیری
-  </a>
-  <a
-    href="/services"
-    className="flex items-center text-sm font-semibold text-gray-900 hover:text-hoboc-dark transition"
-  >
-    خدمات داده
-    <span className="mr-1">←</span>
-  </a>
-</div>
-
+            {/* Button */}
+            <div className="flex items-center justify-center">
+              <a
+                href="/courses"
+                className="rounded-md bg-hoboc-dark px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-hoboc focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark transition-colors"
+              >
+                شروع یادگیری
+              </a>
+            </div>
           </div>
         </div>
 
@@ -85,21 +83,23 @@ export default function NewHero() {
         </div>
       </div>
 
-      {/* Simple video modal */}
+      {/* Video modal */}
       {showVideo && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center p-4">
-          <div className="bg-white rounded-lg max-w-3xl w-full overflow-hidden relative">
+        <div className="fixed inset-0 bg-black/90 z-50 flex justify-center items-center p-4">
+          <div className="relative w-full max-w-4xl rounded-xl overflow-hidden bg-gray-900">
             <button
               onClick={() => setShowVideo(false)}
-              className="absolute top-3 left-3 text-gray-500 hover:text-black text-xl font-bold"
+              className="absolute top-4 left-4 z-10 text-gray-300 hover:text-white text-2xl font-bold transition-colors"
             >
               ✕
             </button>
-            <div className="aspect-w-16 aspect-h-9">
+            <div className="aspect-w-16 aspect-h-9 w-full">
               <iframe
-                className="w-full h-[400px]"
+                className="w-full h-[400px] sm:h-[500px]"
                 src="https://www.youtube.com/embed/your-video-id"
                 title="معرفی من"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             </div>
