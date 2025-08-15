@@ -9,15 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "hoboc": "#1F9ECE",
+        hoboc: "#1F9ECE",
         "hoboc-dark": "#0076A6",
         "custom-blue-for-hero-bg": "#EFFAFD",
         "main-bg-courses": "#F5F8FA",
         "main-bg": "#FEFEFE",
-
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require("@tailwindcss/typography"), // ← needed for .prose
+  ],
 };
+
 export default config;
