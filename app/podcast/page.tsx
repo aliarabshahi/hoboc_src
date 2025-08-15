@@ -1,37 +1,27 @@
-import Link from "next/link"
-import { Container } from "./components/Container"
-import { EpisodePlayButton } from "./components/EpisodePlayButton"
-import { FormattedDate } from "./components/FormattedDate"
-import { type Episode } from "./lib/episodes"
-import { podcastEpisodes } from "./data/podcastEpisodes"
+import { Fragment } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { AboutSection } from "./components/AboutSection";
+import { AudioProvider } from "./components/AudioProvider";
+import { AudioPlayer } from "./components/player/AudioPlayer";
+import { Waveform } from "./components/Waveform";
+import posterImage from "./images/poster.png";
+import { Container } from "./components/Container";
+import { EpisodePlayButton } from "./components/EpisodePlayButton";
+import { FormattedDate } from "./components/FormattedDate";
+import { type Episode, getAllEpisodes } from "./lib/episodes";
 
-function PauseIcon(props: React.ComponentPropsWithoutRef<"svg">) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 10 10" {...props}>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M1.496 0a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H2.68a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5H1.496Zm5.82 0a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5H8.5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5H7.316Z"
-      />
-    </svg>
-  )
-}
+// ---------- ICONS (react-icons) ----------
+import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
+import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
 
-function PlayIcon(props: React.ComponentPropsWithoutRef<"svg">) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 10 10" {...props}>
-      <path d="M8.25 4.567a.5.5 0 0 1 0 .866l-7.5 4.33A.5.5 0 0 1 0 9.33V.67A.5.5 0 0 1 .75.237l7.5 4.33Z" />
-    </svg>
-  )
-}
-
+// ---------- EPISODE ENTRY ----------
 function EpisodeEntry({ episode }: { episode: Episode }) {
-  let date = new Date(episode.published)
-
+  let date = new Date(episode.published);
   return (
     <article
       aria-labelledby={`episode-${episode.id}-title`}
-      className="py-10 sm:py-12"
+      className="py-6 sm:py-8"
     >
       <Container>
         <div className="flex flex-col items-start">
@@ -54,13 +44,13 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
               className="flex items-center gap-x-3 text-sm/6 font-bold text-pink-500 hover:text-pink-700 active:text-pink-900"
               playing={
                 <>
-                  <PauseIcon className="h-2.5 w-2.5 fill-current" />
+                  <PauseIcon className="h-2.5 w-2.5" />
                   <span aria-hidden="true">Listen</span>
                 </>
               }
               paused={
                 <>
-                  <PlayIcon className="h-2.5 w-2.5 fill-current" />
+                  <PlayIcon className="h-2.5 w-2.5" />
                   <span aria-hidden="true">Listen</span>
                 </>
               }
@@ -82,22 +72,114 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
         </div>
       </Container>
     </article>
-  )
+  );
 }
 
-export default function PodcastPage() {
-  let episodes = podcastEpisodes
+// ---------- Right COLUMN COMPONENT ----------
+function RightColumn({ hosts }: { hosts: string[] }) {
+  return (
+    <aside className="w-full lg:w-1/2 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto">
+      {/* Waveform for mobile */}
+      <div className="block lg:hidden">
+        <Waveform className="h-20 w-full" />
+      </div>
+
+      <div className="px-6 py-10 lg:py-16 flex flex-col items-center lg:items-start">
+        <Link
+          href="/"
+          className="relative block w-48 sm:w-64 rounded-xl overflow-hidden bg-slate-200 shadow-xl"
+        >
+          <Image
+            src={posterImage}
+            alt="Podcast Poster"
+            className="w-full"
+            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 16rem, 12rem"
+            priority
+          />
+          <div className="absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset" />
+        </Link>
+
+        <div className="mt-8 text-center lg:text-left">
+          <p className="text-xl font-bold text-slate-900">
+            <Link href="/">Their Side</Link>
+          </p>
+          <p className="mt-3 text-lg font-medium text-slate-700">
+            Conversations with the most tragically misunderstood people of our
+            time.
+          </p>
+        </div>
+
+        <AboutSection className="mt-8" />
+
+        <h2 className="mt-8 flex items-center font-mono text-sm font-medium text-slate-900">
+          <PersonIcon className="h-3 w-auto text-slate-300" />
+          <span className="ml-2.5">Hosted by</span>
+        </h2>
+        <div className="mt-2 flex gap-6 text-sm font-bold text-slate-900">
+          {hosts.map((host, i) => (
+            <Fragment key={host}>
+              {i !== 0 && (
+                <span aria-hidden="true" className="text-slate-400">
+                  /
+                </span>
+              )}
+              {host}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+// ---------- Left COLUMN COMPONENT ----------
+function LeftColumn({ episodes }: { episodes: Episode[] }) {
+  return (
+    <main className="w-full lg:w-1/2 flex flex-col">
+      {/* Scrollable episode list */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Waveform for large screens */}
+        <div className="hidden lg:block sticky top-0 z-20 bg-white">
+          <Waveform className="h-20 w-full" />
+        </div>
+
+        <div className="pt-8 pb-6">
+          <Container>
+            <h1 className="text-2xl font-bold text-slate-900">Episodes</h1>
+          </Container>
+          <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
+            {episodes.map((episode) => (
+              <EpisodeEntry key={episode.id} episode={episode} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky audio player */}
+      <div
+        className="sticky bottom-0 bg-white border-t border-slate-200 z-10"
+        dir="ltr"
+      >
+        <AudioPlayer />
+      </div>
+    </main>
+  );
+}
+
+// ---------- MAIN PAGE ----------
+export default async function PodcastPage() {
+  const hosts = ["Eric Gordon", "Wes Mantooth"];
+  let episodes = await getAllEpisodes();
 
   return (
-    <div className="pt-16 pb-12 sm:pb-4 lg:pt-12">
-      <Container>
-        <h1 className="text-2xl/7 font-bold text-slate-900">Episodes</h1>
-      </Container>
-      <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
-        {episodes.map((episode) => (
-          <EpisodeEntry key={episode.id} episode={episode} />
-        ))}
+    <AudioProvider>
+      <div className="flex flex-col lg:flex-row h-auto">
+        {/* Right column: Poster, creator info, About */}
+        <RightColumn hosts={hosts} />
+
+        {/* Left column: Episodes list + Player */}
+        <LeftColumn episodes={episodes} />
       </div>
-    </div>
-  )
+    </AudioProvider>
+  );
 }
