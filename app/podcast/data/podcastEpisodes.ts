@@ -3,28 +3,28 @@ import { type Episode } from "../lib/episodes"
 export const podcastEpisodes: Episode[] = [
   {
     id: 1,
-    title: "1: Bill Lumbergh",
+    title: "مصاحبه با معمار داده",
     published: new Date("2022-02-24"),
     description:
-      "He’s going to need you to go ahead and come in on Saturday, mmmkay?",
+      "گفتگو درباره طراحی معماری داده‌های مقیاس‌پذیر و چالش‌های مدیریت پایپ‌لاین‌ها.",
     content: `
-      <p>In this episode, we talk about managing office politics with the infamous Bill Lumbergh. 
-      Expect TPS reports, passive-aggressive memos, and some monotonous 'mmmkays'.</p>
+      <p>در این قسمت با یک معمار داده با تجربه صحبت می‌کنیم که در مورد اصول طراحی معماری داده، 
+      بهینه‌سازی پردازش‌ها، و چگونگی ایجاد زیرساختی پایدار برای تحلیل‌های حجیم توضیح می‌دهد.</p>
     `,
     audio: {
-      src: "/episodes/episode-001.mp3", // Place the mp3 in /public/episodes/
+      src: "/episodes/episode-001.mp3", // فایل mp3 را در مسیر /public/episodes/ قرار دهید
       type: "audio/mpeg",
     },
   },
   {
     id: 2,
-    title: "2: Shooter McGavin",
+    title: "مهندس پایپ‌لاین داده",
     published: new Date("2022-02-17"),
     description:
-      "When golf-obsessed terrorists kidnapped his family, Shooter had only one solution: more golf.",
+      "بررسی بهترین روش‌ها برای ساخت و نگهداری پایپ‌لاین‌های داده در محیط‌های تولیدی.",
     content: `
-      <p>Shooter opens up about his golf philosophy, his rivalry with Happy Gilmore, 
-      and why putting is for people who can’t drive.</p>
+      <p>در این قسمت درباره ابزارها، فریم‌ورک‌ها، و تکنیک‌های نگهداری پایپ‌لاین‌های داده صحبت می‌کنیم، 
+      از Airflow و Spark گرفته تا استراتژی‌های مانیتورینگ و بازیابی.</p>
     `,
     audio: {
       src: "/episodes/episode-002.mp3",
@@ -33,12 +33,14 @@ export const podcastEpisodes: Episode[] = [
   },
   {
     id: 3,
-    title: "3: Darth Helmet",
+    title: "تحلیلگر داده و کشف بینش‌ها",
     published: new Date("2022-02-10"),
     description:
-      "The galaxy’s most petty villain tells us why size doesn’t matter… when it comes to spaceballs.",
+      "راهکارهای عملی برای استخراج بینش‌های ارزشمند از داده‌های خام.",
     content: `
-      <p>Lord Helmet discusses intergalactic intimidation, oversized headgear, and his fight against the Schwartz.</p>
+      <p>با یک تحلیلگر داده گفتگو می‌کنیم درباره روش‌های آماده‌سازی داده، 
+      تکنیک‌های مدل‌سازی آماری، و استفاده از مصورسازی داده برای به‌دست آوردن 
+      تصمیمات بهتر در کسب‌وکار.</p>
     `,
     audio: {
       src: "/episodes/episode-003.mp3",

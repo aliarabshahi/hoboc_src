@@ -47,10 +47,10 @@ export function AudioPlayer() {
       <div className="hidden md:block">
         <PlayButton player={player} />
       </div>
-      <div className="mb-[env(safe-area-inset-bottom)] flex flex-1 flex-col gap-3 overflow-hidden p-1">
+      <div className="mb-[env(safe-area-inset-bottom)] flex flex-1 flex-col gap-3 overflow-hidden p-1" dir="ltr">
         <Link
           href={`/${player.episode.id}`}
-          className="truncate text-center text-sm/6 font-bold md:text-left"
+          className="truncate text-center text-hoboc-dark text-sm/6 font-bold md:text-right"
           title={player.episode.title}
         >
           {player.episode.title}

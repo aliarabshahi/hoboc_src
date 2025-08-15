@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import { AboutSection } from "./components/AboutSection";
 import { AudioProvider } from "./components/AudioProvider";
 import { AudioPlayer } from "./components/player/AudioPlayer";
@@ -9,11 +11,21 @@ import posterImage from "./images/poster.png";
 import { Container } from "./components/Container";
 import { EpisodePlayButton } from "./components/EpisodePlayButton";
 import { FormattedDate } from "./components/FormattedDate";
-import { type Episode, getAllEpisodes } from "./lib/episodes";
+import { type Episode } from "./lib/episodes";
+import { podcastEpisodes } from "./data/podcastEpisodes";
 
 // ---------- ICONS (react-icons) ----------
 import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
 import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
+
+// ---------- HELPER FUNCTION ----------
+export function getEpisode(id: string) {
+  const episode = podcastEpisodes.find((ep) => ep.id.toString() === id);
+  if (!episode) {
+    notFound();
+  }
+  return episode;
+}
 
 // ---------- EPISODE ENTRY ----------
 function EpisodeEntry({ episode }: { episode: Episode }) {
@@ -45,13 +57,13 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
               playing={
                 <>
                   <PauseIcon className="h-2.5 w-2.5" />
-                  <span aria-hidden="true">Listen</span>
+                  <span aria-hidden="true">پخش</span>
                 </>
               }
               paused={
                 <>
                   <PlayIcon className="h-2.5 w-2.5" />
-                  <span aria-hidden="true">Listen</span>
+                  <span aria-hidden="true">پخش</span>
                 </>
               }
             />
@@ -64,9 +76,9 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
             <Link
               href={`/podcast/${episode.id}`}
               className="flex items-center text-sm/6 font-bold text-pink-500 hover:text-pink-700 active:text-pink-900"
-              aria-label={`Show notes for episode ${episode.title}`}
+              aria-label={`یادداشت‌های قسمت ${episode.title}`}
             >
-              Show notes
+              یادداشت‌ها
             </Link>
           </div>
         </div>
@@ -75,10 +87,10 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
   );
 }
 
-// ---------- Right COLUMN COMPONENT ----------
+// ---------- RIGHT COLUMN COMPONENT ----------
 function RightColumn({ hosts }: { hosts: string[] }) {
   return (
-    <aside className="w-full lg:w-1/2 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto">
+    <aside className="w-full lg:w-2/5 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto lg:pr-40 md:pr-12">
       {/* Waveform for mobile */}
       <div className="block lg:hidden">
         <Waveform className="h-20 w-full" />
@@ -87,25 +99,25 @@ function RightColumn({ hosts }: { hosts: string[] }) {
       <div className="px-6 py-10 lg:py-16 flex flex-col items-center lg:items-start">
         <Link
           href="/"
-          className="relative block w-48 sm:w-64 rounded-xl overflow-hidden bg-slate-200 shadow-xl"
+          className="relative block w-56 sm:w-72 rounded-xl overflow-hidden bg-slate-200 shadow-xl mx-auto"
         >
           <Image
             src={posterImage}
-            alt="Podcast Poster"
+            alt="پوستر پادکست داده"
             className="w-full"
-            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 16rem, 12rem"
+            sizes="(min-width: 1024px) 24rem, (min-width: 640px) 18rem, 14rem"
             priority
           />
           <div className="absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset" />
         </Link>
 
-        <div className="mt-8 text-center lg:text-left">
+        <div className="mt-8 text-center ">
           <p className="text-xl font-bold text-slate-900">
-            <Link href="/">Their Side</Link>
+            <Link href="/">دنیای داده</Link>
           </p>
           <p className="mt-3 text-lg font-medium text-slate-700">
-            Conversations with the most tragically misunderstood people of our
-            time.
+            گفتگو با مهندسان داده، تحلیلگران و متخصصان بیگ‌دیتا درباره
+            تکنولوژی‌ها، ابزارها و چالش‌های دنیای داده.
           </p>
         </div>
 
@@ -113,7 +125,7 @@ function RightColumn({ hosts }: { hosts: string[] }) {
 
         <h2 className="mt-8 flex items-center font-mono text-sm font-medium text-slate-900">
           <PersonIcon className="h-3 w-auto text-slate-300" />
-          <span className="ml-2.5">Hosted by</span>
+          <span className="mr-2.5">با اجرای</span>
         </h2>
         <div className="mt-2 flex gap-6 text-sm font-bold text-slate-900">
           {hosts.map((host, i) => (
@@ -132,10 +144,10 @@ function RightColumn({ hosts }: { hosts: string[] }) {
   );
 }
 
-// ---------- Left COLUMN COMPONENT ----------
+// ---------- LEFT COLUMN COMPONENT ----------
 function LeftColumn({ episodes }: { episodes: Episode[] }) {
   return (
-    <main className="w-full lg:w-1/2 flex flex-col">
+    <main className="w-full lg:w-3/5 flex flex-col">
       {/* Scrollable episode list */}
       <div className="flex-1 overflow-y-auto">
         {/* Waveform for large screens */}
@@ -145,7 +157,7 @@ function LeftColumn({ episodes }: { episodes: Episode[] }) {
 
         <div className="pt-8 pb-6">
           <Container>
-            <h1 className="text-2xl font-bold text-slate-900">Episodes</h1>
+            <h1 className="text-2xl font-bold text-slate-900">قسمت‌ها</h1>
           </Container>
           <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
             {episodes.map((episode) => (
@@ -167,9 +179,9 @@ function LeftColumn({ episodes }: { episodes: Episode[] }) {
 }
 
 // ---------- MAIN PAGE ----------
-export default async function PodcastPage() {
-  const hosts = ["Eric Gordon", "Wes Mantooth"];
-  let episodes = await getAllEpisodes();
+export default function PodcastPage() {
+  const hosts = ["مهندس داده حمید", "تحلیلگر داده رضا"];
+  const episodes = podcastEpisodes;
 
   return (
     <AudioProvider>

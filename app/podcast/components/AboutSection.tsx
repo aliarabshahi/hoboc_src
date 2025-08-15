@@ -15,7 +15,7 @@ export function AboutSection(props: React.ComponentPropsWithoutRef<'section'>) {
           colors={['fill-violet-300', 'fill-pink-300']}
           className="h-2.5 w-2.5"
         />
-        <span className="ml-2.5">About</span>
+        <span className="mr-2.5">درباره پادکست</span>
       </h2>
       <p
         className={clsx(
@@ -23,11 +23,11 @@ export function AboutSection(props: React.ComponentPropsWithoutRef<'section'>) {
           !isExpanded && 'lg:line-clamp-4',
         )}
       >
-        In this show, Eric and Wes dig deep to get to the facts with guests who
-        have been labeled villains by a society quick to judge, without actually
-        getting the full story. Tune in every Thursday to get to the truth with
-        another misunderstood outcast as they share the missing context in their
-        tragic tale.
+        در این برنامه، میزبانان ما به‌صورت عمیق وارد دنیای داده و مهندسی داده
+        می‌شوند. با متخصصان بیگ‌دیتا، تحلیلگران و مهندسان سیستم‌های داده گفتگو
+        می‌کنیم تا تجربه‌ها، چالش‌ها و راهکارهای عملی آن‌ها را بشنویم. هر هفته،
+        با موضوعات جدیدی از پردازش داده‌ها، یادگیری ماشین تا معماری پایپ‌لاین‌های داده
+        همراه ما باشید.
       </p>
       {!isExpanded && (
         <button
@@ -35,7 +35,7 @@ export function AboutSection(props: React.ComponentPropsWithoutRef<'section'>) {
           className="mt-2 hidden text-sm/6 font-bold text-pink-500 hover:text-pink-700 active:text-pink-900 lg:inline-block"
           onClick={() => setIsExpanded(true)}
         >
-          Show more
+          نمایش بیشتر
         </button>
       )}
     </section>
