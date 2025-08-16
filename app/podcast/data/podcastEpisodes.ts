@@ -12,7 +12,7 @@ export const podcastEpisodes: Episode[] = [
       بهینه‌سازی پردازش‌ها، و چگونگی ایجاد زیرساختی پایدار برای تحلیل‌های حجیم توضیح می‌دهد.</p>
     `,
     audio: {
-      src: "/episodes/episode-001.mp3", // فایل mp3 را در مسیر /public/episodes/ قرار دهید
+      src: "http://localhost/hoboc/media/yanni_blue.mp3", // فایل mp3 را در مسیر /public/episodes/ قرار دهید
       type: "audio/mpeg",
     },
   },
@@ -27,7 +27,7 @@ export const podcastEpisodes: Episode[] = [
       از Airflow و Spark گرفته تا استراتژی‌های مانیتورینگ و بازیابی.</p>
     `,
     audio: {
-      src: "/episodes/episode-002.mp3",
+      src: "http://localhost/hoboc/media/yanni_blue.mp3",
       type: "audio/mpeg",
     },
   },
@@ -43,7 +43,7 @@ export const podcastEpisodes: Episode[] = [
       تصمیمات بهتر در کسب‌وکار.</p>
     `,
     audio: {
-      src: "/episodes/episode-003.mp3",
+      src: "http://localhost/hoboc/media/yanni_blue.mp3",
       type: "audio/mpeg",
     },
   },
