@@ -1,74 +1,190 @@
-import { notFound } from "next/navigation"
+import { Fragment } from "react";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
-import { Container } from "../components/Container"
-import { EpisodePlayButton } from "../components/EpisodePlayButton"
-import { FormattedDate } from "../components/FormattedDate"
-import { PauseIcon } from "../components/PauseIcon"
-import { PlayIcon } from "../components/PlayIcon"
-import { podcastEpisodes } from "../data/podcastEpisodes"
+import { AboutSection } from "../components/AboutSection";
+import { AudioProvider } from "../components/AudioProvider";
+import { AudioPlayer } from "../components/player/AudioPlayer";
+import { Waveform } from "../components/Waveform";
+import posterImage from "../images/poster.png";
+import { Container } from "../components/Container";
+import { EpisodePlayButton } from "../components/EpisodePlayButton";
+import { FormattedDate } from "../components/FormattedDate";
+import { podcastEpisodes } from "../data/podcastEpisodes";
+import { type Episode } from "../lib/episodes";
 
+// ---------- ICONS (react-icons) ----------
+import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
+import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
+import { HiArrowUturnRight as BackIcon } from "react-icons/hi2";
+
+// ---------- HELPER FUNCTION ----------
 function getEpisode(id: string) {
-  const episode = podcastEpisodes.find((ep) => ep.id.toString() === id)
+  const episode = podcastEpisodes.find((ep) => ep.id.toString() === id);
   if (!episode) {
-    notFound()
+    notFound();
   }
-  return episode
+  return episode;
+}
+
+// ---------- RIGHT COLUMN COMPONENT ----------
+function RightColumn({ hosts }: { hosts: string[] }) {
+  return (
+    <aside className="w-full lg:w-2/5 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto lg:pr-40 md:pr-12">
+      {/* Waveform for mobile */}
+      <div className="block lg:hidden">
+        <Waveform className="h-20 w-full" />
+      </div>
+
+      <div className="px-6 py-10 lg:py-16 flex flex-col items-center lg:items-start">
+        <Link
+          href="/"
+          className="relative block w-56 sm:w-72 rounded-xl overflow-hidden bg-slate-200 shadow-xl mx-auto"
+        >
+          <Image
+            src={posterImage}
+            alt="پوستر پادکست داده"
+            className="w-full"
+            sizes="(min-width: 1024px) 24rem, (min-width: 640px) 18rem, 14rem"
+            priority
+          />
+          <div className="absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset" />
+        </Link>
+
+        <div className="mt-8 text-center ">
+          <p className="text-xl font-bold text-slate-900">
+            <Link href="/">دنیای داده</Link>
+          </p>
+          <p className="mt-3 text-lg font-medium text-slate-700">
+            گفتگو با مهندسان داده، تحلیلگران و متخصصان بیگ‌دیتا درباره
+            تکنولوژی‌ها، ابزارها و چالش‌های دنیای داده.
+          </p>
+        </div>
+
+        <AboutSection className="mt-8" />
+
+        <h2 className="mt-8 flex items-center font-mono text-sm font-medium text-slate-900">
+          <PersonIcon className="h-3 w-auto text-slate-300" />
+          <span className="mr-2.5">با اجرای</span>
+        </h2>
+        <div className="mt-2 flex gap-6 text-sm font-bold text-slate-900">
+          {hosts.map((host, i) => (
+            <Fragment key={host}>
+              {i !== 0 && (
+                <span aria-hidden="true" className="text-slate-400">
+                  /
+                </span>
+              )}
+              {host}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+// ---------- EPISODE DETAIL COMPONENT ----------
+function EpisodeDetail({ episode }: { episode: Episode }) {
+  const date = new Date(episode.published);
+
+  return (
+    <main className="w-full lg:w-3/5 flex flex-col">
+      {/* Scrollable episode content */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Waveform for large screens */}
+        <div className="hidden lg:block sticky top-0 z-20 bg-white">
+          <Waveform className="h-20 w-full" />
+        </div>
+
+        <div className="py-8 lg:py-16">
+          <Container>
+            {/* Back button */}
+            <div className="mb-6">
+              <Link
+                href="/podcast"
+                className="flex items-center gap-2 text-sm font-medium text-pink-600 hover:text-pink-800 transition-colors"
+              >
+                <BackIcon className="h-4 w-4" />
+                <span>بازگشت به همه قسمتها</span>
+              </Link>
+            </div>
+
+            <header className="flex flex-col">
+              <div className="flex items-start gap-6">
+                <EpisodePlayButton
+                  episode={episode}
+                  className="group relative flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-slate-700 hover:bg-slate-900 focus:ring-3 focus:ring-slate-700 focus:ring-offset-4 focus:outline-hidden"
+                  playing={
+                    <PauseIcon className="h-10 w-10 fill-white group-active:fill-white/80" />
+                  }
+                  paused={
+                    <PlayIcon className="h-10 w-10 fill-white group-active:fill-white/80" />
+                  }
+                />
+                <div className="flex flex-col">
+                  <h1 className="mt-2 text-4xl font-bold text-slate-900">
+                    {episode.title}
+                  </h1>
+                  <FormattedDate
+                    date={date}
+                    className="order-first font-mono text-sm/7 text-slate-500"
+                  />
+                  <p className="mt-3 text-lg/8 font-medium text-slate-700">
+                    {episode.description}
+                  </p>
+                </div>
+              </div>
+            </header>
+            <hr className="my-12 border-gray-200" />
+            <div
+              className="prose mt-14 prose-slate [&>h2]:mt-12 [&>h2]:flex [&>h2]:items-center [&>h2]:font-mono [&>h2]:text-sm/7 [&>h2]:font-medium [&>h2]:text-slate-900 [&>h2]:before:mr-3 [&>h2]:before:h-3 [&>h2]:before:w-1.5 [&>h2]:before:rounded-r-full [&>h2]:before:bg-cyan-200 [&>h2:nth-of-type(3n)]:before:bg-violet-200 [&>h2:nth-of-type(3n+2)]:before:bg-indigo-200 [&>ul]:mt-6 [&>ul]:list-['\\\\2013\\\\20'] [&>ul]:pl-5"
+              dangerouslySetInnerHTML={{ __html: episode.content }}
+            />
+          </Container>
+        </div>
+      </div>
+
+      {/* Sticky audio player */}
+      <div
+        className="sticky bottom-0 bg-white border-t border-slate-200 z-10"
+        dir="ltr"
+      >
+        <AudioPlayer />
+      </div>
+    </main>
+  );
 }
 
 export function generateMetadata({
   params,
 }: {
-  params: { episode: string }
+  params: { episode: string };
 }) {
-  const episode = getEpisode(params.episode)
+  const episode = getEpisode(params.episode);
   return {
     title: episode.title,
-  }
+  };
 }
 
 export default function EpisodePage({
   params,
 }: {
-  params: { episode: string }
+  params: { episode: string };
 }) {
-  const episode = getEpisode(params.episode)
-  const date = new Date(episode.published)
+  const hosts = ["مهندس داده حمید", "تحلیلگر داده رضا"];
+  const episode = getEpisode(params.episode);
 
   return (
-    <article className="py-16 lg:py-36">
-      <Container>
-        <header className="flex flex-col">
-          <div className="flex items-center gap-6">
-            <EpisodePlayButton
-              episode={episode}
-              className="group relative flex h-18 w-18 shrink-0 items-center justify-center rounded-full bg-slate-700 hover:bg-slate-900 focus:ring-3 focus:ring-slate-700 focus:ring-offset-4 focus:outline-hidden"
-              playing={
-                <PauseIcon className="h-9 w-9 fill-white group-active:fill-white/80" />
-              }
-              paused={
-                <PlayIcon className="h-9 w-9 fill-white group-active:fill-white/80" />
-              }
-            />
-            <div className="flex flex-col">
-              <h1 className="mt-2 text-4xl font-bold text-slate-900">
-                {episode.title}
-              </h1>
-              <FormattedDate
-                date={date}
-                className="order-first font-mono text-sm/7 text-slate-500"
-              />
-            </div>
-          </div>
-          <p className="mt-3 ml-24 text-lg/8 font-medium text-slate-700">
-            {episode.description}
-          </p>
-        </header>
-        <hr className="my-12 border-gray-200" />
-        <div
-          className="prose mt-14 prose-slate [&>h2]:mt-12 [&>h2]:flex [&>h2]:items-center [&>h2]:font-mono [&>h2]:text-sm/7 [&>h2]:font-medium [&>h2]:text-slate-900 [&>h2]:before:mr-3 [&>h2]:before:h-3 [&>h2]:before:w-1.5 [&>h2]:before:rounded-r-full [&>h2]:before:bg-cyan-200 [&>h2:nth-of-type(3n)]:before:bg-violet-200 [&>h2:nth-of-type(3n+2)]:before:bg-indigo-200 [&>ul]:mt-6 [&>ul]:list-['\\\\2013\\\\20'] [&>ul]:pl-5"
-          dangerouslySetInnerHTML={{ __html: episode.content }}
-        />
-      </Container>
-    </article>
-  )
+    <AudioProvider>
+      <div className="flex flex-col lg:flex-row h-auto">
+        {/* Right column: Poster, creator info, About */}
+        <RightColumn hosts={hosts} />
+
+        {/* Left column: Episode detail */}
+        <EpisodeDetail episode={episode} />
+      </div>
+    </AudioProvider>
+  );
 }

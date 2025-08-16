@@ -4,7 +4,7 @@ const navbarLinks = [
   { label: "استخدام", href: "/join-us/" },
   { label: "دیتاهاب", href: "#" },
   { label: "سفارش پرژه", href: "/project-order/" },
-  { label: "بوت‌کمپ", href: "#" },
+  { label: "پادکست", href: "/podcast/" },
   { label: "درباره ما", href: "/about/" },
 
 ];
