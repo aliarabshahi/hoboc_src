@@ -1,4 +1,22 @@
-// app/podcast/page.tsx
+// ---------- INLINE TYPES FOR jalaali-js ----------
+type JalaaliDate = {
+  jy: number; // Jalali year
+  jm: number; // Jalali month
+  jd: number; // Jalali day
+};
+
+interface JalaaliJs {
+  toJalaali: (date: Date | number, month?: number, day?: number) => JalaaliDate;
+  toGregorian: (jy: number, jm: number, jd: number) => { gy: number; gm: number; gd: number };
+  isLeapJalaaliYear: (jy: number) => boolean;
+  jalaaliMonthLength: (jy: number, jm: number) => number;
+}
+
+// Import the untyped module and cast it
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const jalaali: JalaaliJs = require("jalaali-js");
+
+// ---------- IMPORTS ----------
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,13 +29,35 @@ import { Waveform } from "./components/Waveform";
 import posterImage from "./images/poster.png";
 import { Container } from "./components/Container";
 import { EpisodePlayButton } from "./components/EpisodePlayButton";
-import { FormattedDate } from "./components/FormattedDate";
 
 import { getApiData } from "../services/api/apiServerFetch";
 import { PodcastEpisode } from "./lib/episodes";
 
 import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
 import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
+
+// ==== helper: convert English digits to Persian ====
+function toPersianDigits(strOrNum: string | number) {
+  return String(strOrNum).replace(/\d/g, (d) =>
+    "۰۱۲۳۴۵۶۷۸۹"[parseInt(d, 10)]
+  );
+}
+
+// ==== helper: format Jalali date with Persian digits ====
+function formatJalaliDate(isoDate: string) {
+  const gDate = new Date(isoDate);
+  const jDate = jalaali.toJalaali(gDate);
+  const monthNames = [
+    "فروردین", "اردیبهشت", "خرداد",
+    "تیر", "مرداد", "شهریور",
+    "مهر", "آبان", "آذر",
+    "دی", "بهمن", "اسفند"
+  ];
+  const day = toPersianDigits(jDate.jd);
+  const year = toPersianDigits(jDate.jy);
+  const month = monthNames[jDate.jm - 1];
+  return `${day} ${month} ${year}`;
+}
 
 // ---------- HELPER FUNCTION ----------
 function getEpisode(episodes: PodcastEpisode[], id: string) {
@@ -36,7 +76,8 @@ function EpisodeEntry({
   episode: PodcastEpisode;
   index: number;
 }) {
-  const date = new Date(episode.published_at);
+  const jalaliDate = formatJalaliDate(episode.published_at);
+
   return (
     <article
       aria-labelledby={`episode-${episode.id}-title`}
@@ -44,10 +85,13 @@ function EpisodeEntry({
     >
       <Container>
         <div className="flex flex-col items-start">
+          {/* Jalali Date above title */}
+          <div className="font-mono text-sm text-slate-500">{jalaliDate}</div>
+
           {/* Title with index before it */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mt-1">
             <span className="font-bold text-slate-900 font-mono">
-              {index.toString().padStart(2, "0")}
+              {toPersianDigits(index.toString().padStart(2, "0"))}
             </span>
             <h2
               id={`episode-${episode.id}-title`}
@@ -55,11 +99,6 @@ function EpisodeEntry({
             >
               <Link href={`/podcast/${episode.id}`}>{episode.title}</Link>
             </h2>
-          </div>
-
-          {/* Date */}
-          <div className="mt-1 font-mono text-sm/7 text-slate-500">
-            <FormattedDate date={date} />
           </div>
 
           {/* Description */}
@@ -163,7 +202,7 @@ function RightColumn({ hosts }: { hosts: string[] }) {
 
 // ---------- LEFT COLUMN COMPONENT ----------
 function LeftColumn({ episodes }: { episodes: PodcastEpisode[] }) {
-  const total = episodes.length; // for reverse numbering
+  const total = episodes.length;
   return (
     <main className="w-full lg:w-3/5 flex flex-col">
       <div className="flex-1 overflow-y-auto">
@@ -180,7 +219,7 @@ function LeftColumn({ episodes }: { episodes: PodcastEpisode[] }) {
               <EpisodeEntry
                 key={episode.id}
                 episode={episode}
-                index={total - i} // reverse numbering because API is latest first
+                index={total - i}
               />
             ))}
           </div>

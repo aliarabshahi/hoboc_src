@@ -1,4 +1,21 @@
-// app/podcast/[episode]/page.tsx
+// ---------- INLINE TYPES FOR jalaali-js ----------
+type JalaaliDate = {
+  jy: number; // Jalali year
+  jm: number; // Jalali month
+  jd: number; // Jalali day
+};
+
+interface JalaaliJs {
+  toJalaali: (date: Date | number, month?: number, day?: number) => JalaaliDate;
+  toGregorian: (jy: number, jm: number, jd: number) => { gy: number; gm: number; gd: number };
+  isLeapJalaaliYear: (jy: number) => boolean;
+  jalaaliMonthLength: (jy: number, jm: number) => number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const jalaali: JalaaliJs = require("jalaali-js");
+
+// ---------- IMPORTS ----------
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,27 +28,58 @@ import { Waveform } from "../components/Waveform";
 import posterImage from "../images/poster.png";
 import { Container } from "../components/Container";
 import { EpisodePlayButton } from "../components/EpisodePlayButton";
-import { FormattedDate } from "../components/FormattedDate";
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { PodcastEpisode } from "../lib/episodes";
 
-import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
-import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
-import { HiArrowUturnRight as BackIcon } from "react-icons/hi2";
+import {
+  HiOutlineUser as PersonIcon,
+  HiMiniPause as PauseIcon,
+  HiMiniPlay as PlayIcon,
+  HiArrowUturnRight as BackIcon,
+} from "react-icons/hi2";
+
+// ==== helper: convert English digits to Persian ====
+function toPersianDigits(strOrNum: string | number) {
+  return String(strOrNum).replace(/\d/g, (d) =>
+    "۰۱۲۳۴۵۶۷۸۹"[parseInt(d, 10)]
+  );
+}
+
+// ==== helper: format Jalali date with Persian digits ====
+function formatJalaliDate(isoDate: string) {
+  const gDate = new Date(isoDate);
+  const jDate = jalaali.toJalaali(gDate);
+  const monthNames = [
+    "فروردین", "اردیبهشت", "خرداد",
+    "تیر", "مرداد", "شهریور",
+    "مهر", "آبان", "آذر",
+    "دی", "بهمن", "اسفند"
+  ];
+  const day = toPersianDigits(jDate.jd);
+  const year = toPersianDigits(jDate.jy);
+  const month = monthNames[jDate.jm - 1];
+  return `${day} ${month} ${year}`;
+}
 
 // ---------- DATA FETCH ----------
-async function fetchEpisodeAndNumber(id: string) {
+async function fetchEpisodeAndNumber(id: string): Promise<{
+  episode: PodcastEpisode;
+  number: number;
+}> {
   const { data: listData, error: listError } = await getApiData(`/podcast-episodes/`);
+
   if (listError || !listData) {
     notFound();
   }
-  const episodes = (listData as PodcastEpisode[]).map((ep) => ({
+
+  const episodes: PodcastEpisode[] = (listData as PodcastEpisode[]).map((ep) => ({
     ...ep,
     audio: { ...ep.audio, src: ep.audio_file },
   }));
 
   const total = episodes.length;
   const indexInArray = episodes.findIndex((ep) => ep.id.toString() === id);
+
   if (indexInArray === -1) {
     notFound();
   }
@@ -99,8 +147,14 @@ function RightColumn({ hosts }: { hosts: string[] }) {
 }
 
 // ---------- EPISODE DETAIL ----------
-function EpisodeDetail({ episode, number }: { episode: PodcastEpisode; number: number }) {
-  const date = new Date(episode.published_at);
+function EpisodeDetail({
+  episode,
+  number,
+}: {
+  episode: PodcastEpisode;
+  number: number;
+}) {
+  const jalaliDate = formatJalaliDate(episode.published_at);
 
   return (
     <main className="w-full lg:w-3/5 flex flex-col">
@@ -135,17 +189,17 @@ function EpisodeDetail({ episode, number }: { episode: PodcastEpisode; number: n
                 />
                 <div className="flex flex-col">
                   <div className="flex items-center gap-3">
-                    <span className="font-bold  text-slate-900 font-mono">
-                      {number.toString().padStart(2, "0")}
+                    <span className="font-bold text-slate-900 font-mono">
+                      {toPersianDigits(number.toString().padStart(2, "0"))}
                     </span>
-                    <h1 className="mt-0 text-4xl  font-bold text-slate-900">
+                    <h1 className="mt-0 text-4xl font-bold text-slate-900">
                       {episode.title}
                     </h1>
                   </div>
-                  <FormattedDate
-                    date={date}
-                    className="order-first font-mono text-sm/7 text-slate-500"
-                  />
+                  {/* --- Jalali Date --- */}
+                  <div className="order-first font-mono text-sm/7 text-slate-500">
+                    {jalaliDate}
+                  </div>
                   <p className="mt-3 text-lg/8 font-medium text-slate-700">
                     {episode.description}
                   </p>
@@ -162,10 +216,7 @@ function EpisodeDetail({ episode, number }: { episode: PodcastEpisode; number: n
         </div>
       </div>
 
-      <div
-        className="sticky bottom-0 bg-white border-t border-slate-200 z-10"
-        dir="ltr"
-      >
+      <div className="sticky bottom-0 bg-white border-t border-slate-200 z-10" dir="ltr">
         <AudioPlayer />
       </div>
     </main>
@@ -173,13 +224,21 @@ function EpisodeDetail({ episode, number }: { episode: PodcastEpisode; number: n
 }
 
 // ---------- METADATA ----------
-export async function generateMetadata({ params }: { params: { episode: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { episode: string };
+}) {
   const { episode } = await fetchEpisodeAndNumber(params.episode);
   return { title: episode.title };
 }
 
 // ---------- PAGE ----------
-export default async function EpisodePage({ params }: { params: { episode: string } }) {
+export default async function EpisodePage({
+  params,
+}: {
+  params: { episode: string };
+}) {
   const hosts = ["مهندس داده حمید", "تحلیلگر داده رضا"];
   const { episode, number } = await fetchEpisodeAndNumber(params.episode);
 
