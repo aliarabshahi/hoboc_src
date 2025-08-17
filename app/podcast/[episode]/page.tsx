@@ -1,3 +1,4 @@
+// app/podcast/[episode]/page.tsx
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,28 +12,40 @@ import posterImage from "../images/poster.png";
 import { Container } from "../components/Container";
 import { EpisodePlayButton } from "../components/EpisodePlayButton";
 import { FormattedDate } from "../components/FormattedDate";
-import { podcastEpisodes } from "../data/podcastEpisodes";
-import { type Episode } from "../lib/episodes";
+import { getApiData } from "@/app/services/api/apiServerFetch";
+import { PodcastEpisode } from "../lib/episodes";
 
-// ---------- ICONS (react-icons) ----------
 import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
 import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
 import { HiArrowUturnRight as BackIcon } from "react-icons/hi2";
 
-// ---------- HELPER FUNCTION ----------
-function getEpisode(id: string) {
-  const episode = podcastEpisodes.find((ep) => ep.id.toString() === id);
-  if (!episode) {
+// ---------- DATA FETCH ----------
+async function fetchEpisodeAndNumber(id: string) {
+  const { data: listData, error: listError } = await getApiData(`/podcast-episodes/`);
+  if (listError || !listData) {
     notFound();
   }
-  return episode;
+  const episodes = (listData as PodcastEpisode[]).map((ep) => ({
+    ...ep,
+    audio: { ...ep.audio, src: ep.audio_file },
+  }));
+
+  const total = episodes.length;
+  const indexInArray = episodes.findIndex((ep) => ep.id.toString() === id);
+  if (indexInArray === -1) {
+    notFound();
+  }
+
+  const episode = episodes[indexInArray];
+  const number = total - indexInArray; // reverse numbering
+
+  return { episode, number };
 }
 
-// ---------- RIGHT COLUMN COMPONENT ----------
+// ---------- RIGHT COLUMN ----------
 function RightColumn({ hosts }: { hosts: string[] }) {
   return (
     <aside className="w-full lg:w-2/5 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto lg:pr-40 md:pr-12">
-      {/* Waveform for mobile */}
       <div className="block lg:hidden">
         <Waveform className="h-20 w-full" />
       </div>
@@ -52,7 +65,7 @@ function RightColumn({ hosts }: { hosts: string[] }) {
           <div className="absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset" />
         </Link>
 
-        <div className="mt-8 text-center ">
+        <div className="mt-8 text-center">
           <p className="text-xl font-bold text-slate-900">
             <Link href="/">دنیای داده</Link>
           </p>
@@ -85,22 +98,19 @@ function RightColumn({ hosts }: { hosts: string[] }) {
   );
 }
 
-// ---------- EPISODE DETAIL COMPONENT ----------
-function EpisodeDetail({ episode }: { episode: Episode }) {
-  const date = new Date(episode.published);
+// ---------- EPISODE DETAIL ----------
+function EpisodeDetail({ episode, number }: { episode: PodcastEpisode; number: number }) {
+  const date = new Date(episode.published_at);
 
   return (
     <main className="w-full lg:w-3/5 flex flex-col">
-      {/* Scrollable episode content */}
       <div className="flex-1 overflow-y-auto">
-        {/* Waveform for large screens */}
         <div className="hidden lg:block sticky top-0 z-20 bg-white">
           <Waveform className="h-20 w-full" />
         </div>
 
         <div className="py-8 lg:py-16">
           <Container>
-            {/* Back button */}
             <div className="mb-6">
               <Link
                 href="/podcast"
@@ -124,9 +134,14 @@ function EpisodeDetail({ episode }: { episode: Episode }) {
                   }
                 />
                 <div className="flex flex-col">
-                  <h1 className="mt-2 text-4xl font-bold text-slate-900">
-                    {episode.title}
-                  </h1>
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold  text-slate-900 font-mono">
+                      {number.toString().padStart(2, "0")}
+                    </span>
+                    <h1 className="mt-0 text-4xl  font-bold text-slate-900">
+                      {episode.title}
+                    </h1>
+                  </div>
                   <FormattedDate
                     date={date}
                     className="order-first font-mono text-sm/7 text-slate-500"
@@ -137,6 +152,7 @@ function EpisodeDetail({ episode }: { episode: Episode }) {
                 </div>
               </div>
             </header>
+
             <hr className="my-12 border-gray-200" />
             <div
               className="prose mt-14 prose-slate [&>h2]:mt-12 [&>h2]:flex [&>h2]:items-center [&>h2]:font-mono [&>h2]:text-sm/7 [&>h2]:font-medium [&>h2]:text-slate-900 [&>h2]:before:mr-3 [&>h2]:before:h-3 [&>h2]:before:w-1.5 [&>h2]:before:rounded-r-full [&>h2]:before:bg-cyan-200 [&>h2:nth-of-type(3n)]:before:bg-violet-200 [&>h2:nth-of-type(3n+2)]:before:bg-indigo-200 [&>ul]:mt-6 [&>ul]:list-['\\\\2013\\\\20'] [&>ul]:pl-5"
@@ -146,7 +162,6 @@ function EpisodeDetail({ episode }: { episode: Episode }) {
         </div>
       </div>
 
-      {/* Sticky audio player */}
       <div
         className="sticky bottom-0 bg-white border-t border-slate-200 z-10"
         dir="ltr"
@@ -157,33 +172,22 @@ function EpisodeDetail({ episode }: { episode: Episode }) {
   );
 }
 
-export function generateMetadata({
-  params,
-}: {
-  params: { episode: string };
-}) {
-  const episode = getEpisode(params.episode);
-  return {
-    title: episode.title,
-  };
+// ---------- METADATA ----------
+export async function generateMetadata({ params }: { params: { episode: string } }) {
+  const { episode } = await fetchEpisodeAndNumber(params.episode);
+  return { title: episode.title };
 }
 
-export default function EpisodePage({
-  params,
-}: {
-  params: { episode: string };
-}) {
+// ---------- PAGE ----------
+export default async function EpisodePage({ params }: { params: { episode: string } }) {
   const hosts = ["مهندس داده حمید", "تحلیلگر داده رضا"];
-  const episode = getEpisode(params.episode);
+  const { episode, number } = await fetchEpisodeAndNumber(params.episode);
 
   return (
     <AudioProvider>
       <div className="flex flex-col lg:flex-row h-auto">
-        {/* Right column: Poster, creator info, About */}
         <RightColumn hosts={hosts} />
-
-        {/* Left column: Episode detail */}
-        <EpisodeDetail episode={episode} />
+        <EpisodeDetail episode={episode} number={number} />
       </div>
     </AudioProvider>
   );

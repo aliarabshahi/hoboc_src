@@ -1,3 +1,4 @@
+// app/podcast/page.tsx
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,16 +12,16 @@ import posterImage from "./images/poster.png";
 import { Container } from "./components/Container";
 import { EpisodePlayButton } from "./components/EpisodePlayButton";
 import { FormattedDate } from "./components/FormattedDate";
-import { type Episode } from "./lib/episodes";
-import { podcastEpisodes } from "./data/podcastEpisodes";
 
-// ---------- ICONS (react-icons) ----------
+import { getApiData } from "../services/api/apiServerFetch";
+import { PodcastEpisode } from "./lib/episodes";
+
 import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
 import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
 
 // ---------- HELPER FUNCTION ----------
-export function getEpisode(id: string) {
-  const episode = podcastEpisodes.find((ep) => ep.id.toString() === id);
+function getEpisode(episodes: PodcastEpisode[], id: string) {
+  const episode = episodes.find((ep) => ep.id.toString() === id);
   if (!episode) {
     notFound();
   }
@@ -28,8 +29,14 @@ export function getEpisode(id: string) {
 }
 
 // ---------- EPISODE ENTRY ----------
-function EpisodeEntry({ episode }: { episode: Episode }) {
-  let date = new Date(episode.published);
+function EpisodeEntry({
+  episode,
+  index,
+}: {
+  episode: PodcastEpisode;
+  index: number;
+}) {
+  const date = new Date(episode.published_at);
   return (
     <article
       aria-labelledby={`episode-${episode.id}-title`}
@@ -37,19 +44,30 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
     >
       <Container>
         <div className="flex flex-col items-start">
-          <h2
-            id={`episode-${episode.id}-title`}
-            className="mt-2 text-lg font-bold text-slate-900"
-          >
-            <Link href={`/podcast/${episode.id}`}>{episode.title}</Link>
-          </h2>
-          <FormattedDate
-            date={date}
-            className="order-first font-mono text-sm/7 text-slate-500"
-          />
-          <p className="mt-1 text-base/7 text-slate-700">
+          {/* Title with index before it */}
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-slate-900 font-mono">
+              {index.toString().padStart(2, "0")}
+            </span>
+            <h2
+              id={`episode-${episode.id}-title`}
+              className="text-lg font-bold text-slate-900"
+            >
+              <Link href={`/podcast/${episode.id}`}>{episode.title}</Link>
+            </h2>
+          </div>
+
+          {/* Date */}
+          <div className="mt-1 font-mono text-sm/7 text-slate-500">
+            <FormattedDate date={date} />
+          </div>
+
+          {/* Description */}
+          <p className="mt-2 text-base/7 text-slate-700">
             {episode.description}
           </p>
+
+          {/* Controls */}
           <div className="mt-4 flex items-center gap-4">
             <EpisodePlayButton
               episode={episode}
@@ -91,7 +109,6 @@ function EpisodeEntry({ episode }: { episode: Episode }) {
 function RightColumn({ hosts }: { hosts: string[] }) {
   return (
     <aside className="w-full lg:w-2/5 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto lg:pr-40 md:pr-12">
-      {/* Waveform for mobile */}
       <div className="block lg:hidden">
         <Waveform className="h-20 w-full" />
       </div>
@@ -111,7 +128,7 @@ function RightColumn({ hosts }: { hosts: string[] }) {
           <div className="absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset" />
         </Link>
 
-        <div className="mt-8 text-center ">
+        <div className="mt-8 text-center">
           <p className="text-xl font-bold text-slate-900">
             <Link href="/">دنیای داده</Link>
           </p>
@@ -145,12 +162,11 @@ function RightColumn({ hosts }: { hosts: string[] }) {
 }
 
 // ---------- LEFT COLUMN COMPONENT ----------
-function LeftColumn({ episodes }: { episodes: Episode[] }) {
+function LeftColumn({ episodes }: { episodes: PodcastEpisode[] }) {
+  const total = episodes.length; // for reverse numbering
   return (
     <main className="w-full lg:w-3/5 flex flex-col">
-      {/* Scrollable episode list */}
       <div className="flex-1 overflow-y-auto">
-        {/* Waveform for large screens */}
         <div className="hidden lg:block sticky top-0 z-20 bg-white">
           <Waveform className="h-20 w-full" />
         </div>
@@ -160,14 +176,17 @@ function LeftColumn({ episodes }: { episodes: Episode[] }) {
             <h1 className="text-2xl font-bold text-slate-900">قسمت‌ها</h1>
           </Container>
           <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
-            {episodes.map((episode) => (
-              <EpisodeEntry key={episode.id} episode={episode} />
+            {episodes.map((episode, i) => (
+              <EpisodeEntry
+                key={episode.id}
+                episode={episode}
+                index={total - i} // reverse numbering because API is latest first
+              />
             ))}
           </div>
         </div>
       </div>
 
-      {/* Sticky audio player */}
       <div
         className="sticky bottom-0 bg-white border-t border-slate-200 z-10"
         dir="ltr"
@@ -179,17 +198,36 @@ function LeftColumn({ episodes }: { episodes: Episode[] }) {
 }
 
 // ---------- MAIN PAGE ----------
-export default function PodcastPage() {
+export default async function PodcastPage() {
   const hosts = ["مهندس داده حمید", "تحلیلگر داده رضا"];
-  const episodes = podcastEpisodes;
+  const { data, error } = await getApiData("/podcast-episodes/");
+
+  if (error) {
+    return (
+      <div className="alert alert-error text-center mt-8">{error}</div>
+    );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="alert alert-info text-center mt-8">
+        قسمتی برای نمایش وجود ندارد
+      </div>
+    );
+  }
+
+  const episodes = (data as PodcastEpisode[]).map((ep) => ({
+    ...ep,
+    audio: {
+      ...ep.audio,
+      src: ep.audio_file,
+    },
+  }));
 
   return (
     <AudioProvider>
       <div className="flex flex-col lg:flex-row h-auto">
-        {/* Right column: Poster, creator info, About */}
         <RightColumn hosts={hosts} />
-
-        {/* Left column: Episodes list + Player */}
         <LeftColumn episodes={episodes} />
       </div>
     </AudioProvider>
