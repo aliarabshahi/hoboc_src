@@ -9,9 +9,9 @@ export default function NavbarLogin({ shrink }: Props) {
   if (shrink) {
     return (
       <div className="flex items-center gap-2">
-        <div className=" h-4 w-px bg-gray-400"></div>
+        <div className="h-4 w-px bg-gray-400"></div>
         <Link href="/roadmap" passHref>
-          <button className="text-hoboc-dark text-sm flex items-center gap-1  ">
+          <button className="text-hoboc-dark text-sm flex items-center gap-1">
             <MapPinCheck size={18} />
             نقشه راه
           </button>
@@ -22,12 +22,14 @@ export default function NavbarLogin({ shrink }: Props) {
 
   // Desktop version (lg screens and up)
   return (
-    <div className="flex items-center gap-4 text-md ">
+    <div className="flex items-center gap-4 text-md">
       {/* Company login - hidden on small/mid */}
+      {/*
       <a href="#" className="text-gray-500 hidden lg:block">
         ورود به بخش شرکت‌ها
       </a>
       <div className="hidden lg:block w-px h-4 bg-gray-400"></div>
+      */}
 
       {/* Full buttons - only shown on lg+ */}
       <div className="hidden lg:flex items-center gap-2">

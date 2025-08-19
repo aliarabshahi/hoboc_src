@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className={`${vazir.variable}`}>
       <body className="font-sans bg-main-bg min-h-screen">
-              <Alert />
+              {/* <Alert /> */}
         
         <Navbar />
         {children}
