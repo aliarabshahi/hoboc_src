@@ -1,3 +1,4 @@
+// components/vision/VisionImage.tsx
 import Image from "next/image";
 
 export default function VisionImage({ className }: { className?: string }) {
@@ -11,6 +12,7 @@ export default function VisionImage({ className }: { className?: string }) {
         width={1500}
         height={1500}
         className="object-contain w-full h-auto"
+        priority
       />
     </div>
   );

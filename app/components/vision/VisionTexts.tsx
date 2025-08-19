@@ -1,54 +1,77 @@
 // components/vision/VisionTexts.tsx
+"use client";
+
 import Link from "next/link";
-import { BiSolidLeftArrow } from "react-icons/bi";
+import { 
+  FaChalkboardTeacher, 
+  FaProjectDiagram, 
+  FaSitemap, 
+  FaPodcast,
+  FaArrowLeft
+} from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const visions = [
   {
     title: "آموزش و رشد حرفه‌ای",
-    description: "مهارت‌های عملی و بازارمحور داده‌کاوی، مهندسی داده و تحلیل پیشرفته رو با ما یاد بگیر و به سطح بعدی برس.",
-    linkText: "کلیک کن، شروع کن!",
     link: "/courses",
+    icon: FaChalkboardTeacher,
   },
   {
     title: "همکاری تو پروژه‌ها",
-    description: "بی‌صبرانه منتظریم تو رو تو تیم داده‌محورمون داشته باشیم! پروژه‌های جذاب و چالش‌برانگیز منتظر توئه.",
-    linkText: "بزن بریم!",
     link: "/join-us",
+    icon: FaProjectDiagram,
   },
   {
-    title: "طراحی پایپ‌لاین‌های داده",
-    description: "از داده‌های خام تا تحلیل‌های طلایی؛ همراهتیم پایپ‌لاین‌هایی بسازیم که کسب‌وکارت رو متحول کنه.",
-    linkText: "پروژه‌ات رو ثبت کن",
+    title: "سفارش پروژه",
     link: "/services",
+    icon: FaSitemap,
+  },
+  {
+    title: "پادکست",
+    link: "/podcast",
+    icon: FaPodcast,
   },
 ];
 
-export default function VisionTexts({ className }: { className?: string }) {
+export default function VisionTexts() {
   return (
-    <div className={`${className ?? ""} space-y-0.5`} dir="rtl">
-      {visions.map((vision, index) => (
-        <Link
-          key={index}
-          href={vision.link}
-          className="flex items-center p-3 md:p-5 rounded-lg cursor-pointer group hover:bg-hoboc hover:text-white transition-colors"
-        >
-          <div className="flex-grow space-y-1">
-            <h3 className="text-xl md:text-xl font-bold text-gray-800 group-hover:text-white">
-              {vision.title}
-            </h3>
-            <p className="text-xs md:text-sm text-gray-600 group-hover:text-white">
-              {vision.description}
-            </p>
-            <p className="text-xs md:text-sm text-hoboc-dark border-b border-hoboc group-hover:text-white group-hover:border-white inline-block">
-              {vision.linkText}
-            </p>
-          </div>
+    <div className="space-y-4 w-full" dir="rtl">
+      {visions.map((vision, index) => {
+        const Icon = vision.icon;
+        return (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            viewport={{ once: true }}
+          >
+            <Link
+              href={vision.link}
+              className="flex items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
+            >
+              {/* Icon with subtle animation */}
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                className="w-12 h-12 flex justify-center items-center rounded-lg bg-gray-100 text-hoboc"
+              >
+                <Icon size={20} />
+              </motion.div>
 
-          <div className="w-6 md:w-8 flex justify-center items-center mr-3 md:mr-8">
-            <BiSolidLeftArrow className="text-hoboc group-hover:text-white text-xs md:text-sm" />
-          </div>
-        </Link>
-      ))}
+              {/* Text content */}
+              <div className="flex-1 mr-4">
+                <h3 className="text-lg font-bold text-gray-800">
+                  {vision.title}
+                </h3>
+              </div>
+
+              {/* Arrow indicator */}
+              <FaArrowLeft className="text-gray-400 text-sm" />
+            </Link>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
