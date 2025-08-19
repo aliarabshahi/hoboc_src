@@ -7,47 +7,28 @@ interface CourseHeaderProps {
 
 const CourseHeader: React.FC<CourseHeaderProps> = ({ title, description }) => {
   return (
-    <section className="relative isolate overflow-hidden pt-16 pb-10 shadow rounded-b-xl bg-white">
-      {/* LEFT gradient blob */}
-      <div
-        aria-hidden="true"
-        className="absolute top-1/2 right-[max(-7rem,calc(50%-52rem))] -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-      >
-        <div
-          style={{
-            clipPath:
-              "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-          }}
-          className="aspect-[577/310] w-[36rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-        />
+    <section className="relative isolate overflow-hidden pt-20 pb-16 shadow-sm rounded-b-2xl">
+      
+      {/* Background blobs */}
+      <div className="absolute inset-0 -z-10">
+        {/* Green */}
+        <div className="absolute top-[-20%] left-[-10%] w-[30rem] h-[30rem] bg-[#A3DC9A] rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-[pulse_10s_ease-in-out_infinite]" />
+        {/* Yellow */}
+        <div className="absolute top-[10%] right-[-10%] w-[25rem] h-[25rem] bg-[#DEE791] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-[pulse_12s_ease-in-out_infinite]" />
+        {/* Cream */}
+        <div className="absolute bottom-[-10%] left-[15%] w-[28rem] h-[28rem] bg-[#FFF9BD] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-[pulse_11s_ease-in-out_infinite]" />
+        {/* Peach */}
+        <div className="absolute bottom-[-15%] left-[-5%] w-[26rem] h-[26rem] bg-[#FFD6BA] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-[pulse_13s_ease-in-out_infinite]" />
+        {/* Rose */}
+        <div className="absolute bottom-[5%] right-[15%] w-[22rem] h-[22rem] bg-[#F9A8D4] rounded-full mix-blend-multiply filter blur-3xl opacity-25 animate-[pulse_14s_ease-in-out_infinite]" />
       </div>
 
-      {/* RIGHT gradient blob */}
-      <div
-        aria-hidden="true"
-        className="absolute top-1/2 right-[max(45rem,calc(50%+8rem))] -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-      >
-        <div
-          style={{
-            clipPath:
-              "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-          }}
-          className="aspect-[577/310] w-[36rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-        />
-      </div>
-
-      {/* CONTENT */}
-      <div className="container mx-auto px-4 text-center relative z-10">
-        <h1
-          className="text-3xl md:text-4xl font-bold mb-2 text-gray-800 drop-shadow-sm"
-          dir="rtl"
-        >
+      {/* Content */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-20 text-center relative z-10" dir="rtl">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 tracking-tight">
           {title}
         </h1>
-        <p
-          className="text-gray-600 md:text-lg max-w-2xl mx-auto drop-shadow-sm"
-          dir="rtl"
-        >
+        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
           {description}
         </p>
       </div>
