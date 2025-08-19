@@ -34,7 +34,7 @@ export default function HeroBackgroundFooter() {
         className="absolute inset-x-0 -bottom-20 -z-10 transform-gpu overflow-hidden blur-3xl pointer-events-none sm:-bottom-28"
       >
         <div
-          className="relative right-[calc(50%-rem)] aspect-[1275/678] w-[50rem] translate-x-1/2 rotate-[20deg] 
+          className="relative right-[calc(50%-rem)] aspect-[1400/678] w-[50rem] translate-x-1/2 rotate-[20deg] 
           bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 
           sm:right-[calc(50%-30rem)] sm:w-[80rem]"
           style={{
