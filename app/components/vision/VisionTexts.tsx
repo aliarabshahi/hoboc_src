@@ -7,7 +7,7 @@ import {
   FaProjectDiagram, 
   FaSitemap, 
   FaPodcast,
-  FaArrowLeft
+  FaArrowLeft 
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -16,27 +16,39 @@ const visions = [
     title: "آموزش و رشد حرفه‌ای",
     link: "/courses",
     icon: FaChalkboardTeacher,
+    iconColor: "text-blue-500",
+    bgColor: "bg-blue-50",
+    hoverColor: "hover:bg-blue-100"
   },
   {
     title: "همکاری تو پروژه‌ها",
     link: "/join-us",
     icon: FaProjectDiagram,
+    iconColor: "text-purple-500",
+    bgColor: "bg-purple-50",
+    hoverColor: "hover:bg-purple-100"
   },
   {
     title: "سفارش پروژه",
     link: "/services",
     icon: FaSitemap,
+    iconColor: "text-green-500",
+    bgColor: "bg-green-50",
+    hoverColor: "hover:bg-green-100"
   },
   {
     title: "پادکست",
     link: "/podcast",
     icon: FaPodcast,
+    iconColor: "text-orange-500",
+    bgColor: "bg-orange-50",
+    hoverColor: "hover:bg-orange-100"
   },
 ];
 
 export default function VisionTexts() {
   return (
-    <div className="space-y-4 w-full" dir="rtl">
+    <div className="space-y-3 w-full" dir="rtl">
       {visions.map((vision, index) => {
         const Icon = vision.icon;
         return (
@@ -49,14 +61,14 @@ export default function VisionTexts() {
           >
             <Link
               href={vision.link}
-              className="flex items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
+              className={`flex items-center p-4 rounded-lg transition-colors duration-200 border border-gray-100 ${vision.hoverColor}`}
             >
-              {/* Icon with subtle animation */}
+              {/* Animated colorful icon */}
               <motion.div 
-                whileHover={{ scale: 1.1 }}
-                className="w-12 h-12 flex justify-center items-center rounded-lg bg-gray-100 text-hoboc"
+                whileHover={{ scale: 1.15, rotate: 5 }}
+                className={`w-12 h-12 flex justify-center items-center rounded-lg ${vision.bgColor} ${vision.iconColor}`}
               >
-                <Icon size={20} />
+                <Icon size={20} className="opacity-90" />
               </motion.div>
 
               {/* Text content */}
@@ -66,8 +78,8 @@ export default function VisionTexts() {
                 </h3>
               </div>
 
-              {/* Arrow indicator */}
-              <FaArrowLeft className="text-gray-400 text-sm" />
+              {/* Arrow indicator - colored on hover */}
+              <FaArrowLeft className="text-gray-400 group-hover:text-current text-sm" />
             </Link>
           </motion.div>
         );
