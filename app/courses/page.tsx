@@ -8,11 +8,10 @@ import CourseCard from "./components/CourseCard";
 import CourseTopicsFilter from "./components/CourseTopicsFilter";
 import CourseHeader from "./components/CourseHeader";
 import CourseCTABanner from "./components/CourseCTABanner";
-
 // --- تابع اسکلتون کارت ---
 function SkeletonCard() {
   return (
-    <div className="h-[416px] bg-gray-200 rounded-xl animate-pulse" />
+    <div className="h-[420px] bg-gray-200 rounded-xl animate-pulse" />
   );
 }
 
@@ -69,12 +68,14 @@ export default function CoursesPage() {
   }, [selectedTopicSlug]);
 
   return (
-    <main className="bg-gray-50 min-h-screen pb-16">
+    <main className=" min-h-screen pb-16">
       {/* Header Section */}
       <CourseHeader title={title} description={description} />
-
       {/* Topic Filter */}
-      <section className="container mx-auto px-4 mt-10">
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-10"
+        dir="rtl"
+      >
         {loading ? (
           <div className="h-10 w-48 bg-gray-200 rounded-md animate-pulse mx-auto" />
         ) : (
@@ -86,7 +87,10 @@ export default function CoursesPage() {
       </section>
 
       {/* Course Grid */}
-      <section className="container mx-auto px-4 mt-8">
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-8"
+        dir="rtl"
+      >
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
@@ -99,22 +103,26 @@ export default function CoursesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-{lessons.map((lesson, index) => (
-  <CourseCard
-    key={lesson.id}
-    lesson={lesson}
-    lessonNumber={index + 1}
-    showLessonNumber={!!selectedTopicSlug} // فقط اگر موضوع انتخاب شده
-  />
-))}
+            {lessons.map((lesson, index) => (
+              <CourseCard
+                key={lesson.id}
+                lesson={lesson}
+                lessonNumber={index + 1}
+                showLessonNumber={!!selectedTopicSlug}
+              />
+            ))}
           </div>
         )}
       </section>
 
-      {/* CTA Banner */}
-      <section className="w-full bg-hoboc/10 py-10 mt-16">
+      {/* CTA or Bottom Padding
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-16"
+        dir="rtl"
+      >
         <CourseCTABanner />
-      </section>
+      </section> */}
+
     </main>
   );
 }

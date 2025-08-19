@@ -7,19 +7,15 @@ import { createPortal } from "react-dom";
 export default function NewHero() {
   const [showVideo, setShowVideo] = useState(false);
 
-  // 🔒 Lock background scroll when modal is open
+  // 🚫 قفل اسکرول صفحه هنگام باز بودن ویدیو
   useEffect(() => {
-    if (showVideo) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = showVideo ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [showVideo]);
 
-  // Modal content rendered via portal
+  // نمایش ویدیو با Portal
   const modal = showVideo
     ? createPortal(
         <div className="fixed inset-0 bg-black/60 z-[2147483647] flex justify-center items-center p-4">
@@ -34,7 +30,7 @@ export default function NewHero() {
               <iframe
                 className="w-full h-[400px] sm:h-[500px]"
                 src="https://www.youtube.com/embed/your-video-id"
-                title="معرفی من"
+                title="ویدیو معرفی"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -42,14 +38,14 @@ export default function NewHero() {
             </div>
           </div>
         </div>,
-        document.body // ← outside all stacking contexts
+        document.body
       )
     : null;
 
   return (
     <div className="bg-white relative z-0" dir="rtl">
       <div className="relative isolate px-6 lg:px-8">
-        {/* Top background blob */}
+        {/* دکور بالایی */}
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl pointer-events-none sm:-top-60"
@@ -66,9 +62,9 @@ export default function NewHero() {
           />
         </div>
 
-        {/* Content */}
+        {/* محتوای اصلی */}
         <div className="mx-auto max-w-2xl pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-10 lg:pb-12">
-          {/* Video trigger pill */}
+          {/* دکمه نمایش ویدیو */}
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <button
               onClick={() => setShowVideo(true)}
@@ -79,33 +75,31 @@ export default function NewHero() {
                 className="text-xl text-gray-500 transition-colors duration-300 group-hover:text-red-500 
                            group-hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
               />
-              <span>ما کی هستیم؟!</span>
+              <span>معرفی کوتاه ما</span>
             </button>
           </div>
 
           <div className="text-center space-y-8">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-tight">
-              از داده خام تا <span className="text-hoboc-dark">ارزش واقعی</span>
+              از داده خام تا{" "}
+              <span className="text-hoboc-dark">ارزش واقعی</span>
             </h1>
             <p className="text-lg leading-8 text-gray-600">
-              با ما مهارت‌های داده‌کاوی، مهندسی داده و تحلیل پیشرفته رو یاد بگیر
-              تا بتونی از داده‌ها ارزش بسازی، پایپ‌لاین‌های بهینه طراحی کنی و
-              کسب‌وکار رو با بینش‌های عمیق متحول کنی.
-            </p>
+داستانِ تبدیل داده به تصمیم آغاز می‌شود؛ اینجا یاد می‌گیری با داده‌کاوی، مهندسی داده و هوش مصنوعی از دل داده‌ها بینش بسازی و ایده‌هات رو به نتیجه‌های واقعی برسونی.            </p>
 
-            {/* Button */}
+            {/* دکمه اصلی */}
             <div className="flex items-center justify-center">
               <a
                 href="/courses"
-                className="rounded-md bg-hoboc-dark px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-hoboc focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark transition-colors"
+                className="rounded-md bg-hoboc px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-hoboc-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark transition-colors"
               >
-                شروع یادگیری
+                شروع مسیر یادگیری
               </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom background blob */}
+        {/* دکور پایینی */}
         <div
           aria-hidden="true"
           className="absolute inset-x-0 top-[calc(100%-8rem)] 
@@ -123,7 +117,7 @@ export default function NewHero() {
         </div>
       </div>
 
-      {modal} {/* Portal rendering into body */}
+      {modal}
     </div>
   );
 }

@@ -2,15 +2,14 @@
 
 export default function BlogCTABanner() {
   return (
-    <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-5">
-      <div>
-              <h2 className="font-bold text-2xl text-hoboc-dark mb-2" dir="rtl">همین حالا مسیر یادگیری خود را شروع کنید!</h2>
-              <p className="text-hoboc-dark text-base" dir="rtl">
-                با ثبت‌نام و حضور در دوره‌های آموزشی، حرفه‌ای شوید و وارد بازار کار شوید.
-              </p>      </div>
-      <button className="btn bg-hoboc hover:bg-hoboc-dark text-white px-8 py-3 rounded-xl font-bold text-lg transition">
-        مشاهده همه مقالات
-      </button>
+    <div className="container mx-auto px-4 flex flex-col items-center text-center py-10">
+      <h2 className="font-bold text-3xl text-hoboc-dark mb-4" dir="rtl">
+        داستان تازه‌ای قراره شروع بشه!
+      </h2>
+      <p className="text-hoboc text-lg max-w-2xl" dir="rtl">
+        اینجا جاییه برای ماجراجوها؛ همونایی که می‌خوان از دل داده‌ها دنیاهای
+        جدید بسازن. آماده‌ای؟ چون قراره با هم کلی چیز باحال کشف کنیم! 🚀
+      </p>
     </div>
   );
 }

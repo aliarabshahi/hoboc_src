@@ -7,12 +7,12 @@ import { BlogPost, BlogTopic } from "@/app/types/blogType";
 import BlogPostCard from "./components/BlogPostCard";
 import BlogTopicsDropdown from "./components/BlogTopicsDropdown";
 import BlogCTABanner from "./components/BlogCTABanner";
-import BlogHeader from "./components/BlogHeader"; // مسیر را با ساختار پروژه چک کن
+import BlogHeader from "./components/BlogHeader";
 
 // ---- تابع اسکلتون بلاگ کارت ----
 function SkeletonBlogCard() {
   return (
-    <div className="h-[360px] bg-gray-200 rounded-xl animate-pulse" />
+    <div className="h-[320px] bg-gray-200 rounded-xl animate-pulse" />
   );
 }
 
@@ -55,28 +55,37 @@ export default function BlogPage({
 
   const selectedTopic = topics.find((t) => t.slug === selectedTopicSlug);
   const title = selectedTopic
-    ? `مطالب بلاگ ${selectedTopic.catchy_title || selectedTopic.title || selectedTopic.catchy_title || ""}`
+    ? `مطالب بلاگ ${selectedTopic.catchy_title || selectedTopic.title || ""}`
     : "مطالب بلاگ";
 
-  // توضیح قابل تنظیم زیر عنوان بلاگ
-  const description = "بلاگ تخصصی علم داده، مهندسی داده و تحلیل داده، کاربردی برای بازار کار و دنیای واقعی";
+  const description =
+    "بلاگ تخصصی علم داده، مهندسی داده و تحلیل داده، کاربردی برای بازار کار و دنیای واقعی";
 
   return (
-    <main className="bg-gray-50 min-h-screen">
+    <main className="min-h-screen pb-16">
       {/* Blog Header */}
       <BlogHeader title={title} description={description} />
 
       {/* Dropdown Filter */}
-      <section className="container mx-auto px-4 mt-8 text-center">
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-8 text-center"
+        dir="rtl"
+      >
         {loading ? (
           <div className="h-10 w-48 bg-gray-200 rounded-md animate-pulse mx-auto" />
         ) : (
-          <BlogTopicsDropdown topics={topics} selectedTopicSlug={selectedTopicSlug} />
+          <BlogTopicsDropdown
+            topics={topics}
+            selectedTopicSlug={selectedTopicSlug}
+          />
         )}
       </section>
 
       {/* Blog Grid */}
-      <section className="container mx-auto px-4 mt-10 mb-16">
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-10"
+        dir="rtl"
+      >
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
@@ -95,10 +104,14 @@ export default function BlogPage({
           </div>
         )}
       </section>
-      {/* CTA Banner */}
-      <section className="w-full bg-hoboc/10 py-10 mt-16">
+
+      {/* CTA or Bottom Padding
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-16"
+        dir="rtl"
+      >
         <BlogCTABanner />
-      </section>
+      </section> */}
     </main>
   );
 }

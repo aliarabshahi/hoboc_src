@@ -3,10 +3,10 @@
 
 import Link from "next/link";
 import { 
-  FaChalkboardTeacher, 
+  FaBookOpen, 
   FaProjectDiagram, 
-  FaSitemap, 
-  FaPodcast,
+  FaHandshake, 
+  FaHeadphonesAlt,
   FaArrowLeft 
 } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -15,13 +15,13 @@ const visions = [
   {
     title: "آموزش و رشد حرفه‌ای",
     link: "/courses",
-    icon: FaChalkboardTeacher,
+    icon: FaBookOpen,
     iconColor: "text-blue-500",
-    bgColor: "bg-blue-50",
+    bgColor: "bg-hoboc-50",
     hoverColor: "hover:bg-blue-100"
   },
   {
-    title: "همکاری تو پروژه‌ها",
+    title: "همکاری با ما",
     link: "/join-us",
     icon: FaProjectDiagram,
     iconColor: "text-purple-500",
@@ -30,8 +30,8 @@ const visions = [
   },
   {
     title: "سفارش پروژه",
-    link: "/services",
-    icon: FaSitemap,
+    link: "/join-us",
+    icon: FaHandshake,
     iconColor: "text-green-500",
     bgColor: "bg-green-50",
     hoverColor: "hover:bg-green-100"
@@ -39,7 +39,7 @@ const visions = [
   {
     title: "پادکست",
     link: "/podcast",
-    icon: FaPodcast,
+    icon: FaHeadphonesAlt,
     iconColor: "text-orange-500",
     bgColor: "bg-orange-50",
     hoverColor: "hover:bg-orange-100"

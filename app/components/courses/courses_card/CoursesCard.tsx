@@ -32,7 +32,7 @@ const CoursesCard = async () => {
             دوره‌های آموزشی
           </h2>
 
-          <CourseTopicList />
+          {/* <CourseTopicList /> */}
           <CoursesLessonList courses={courses} />
         </div>
       </div>

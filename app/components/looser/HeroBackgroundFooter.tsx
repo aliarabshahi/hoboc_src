@@ -6,10 +6,10 @@ export default function HeroBackgroundFooter() {
       {/* Main content */}
       <div className="relative isolate px-6 pt-8 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-24 lg:pb-14">
         <div className="mx-auto max-w-2xl text-center space-y-6">
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 leading-snug sm:text-5xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 leading-snug sm:text-5xl pr-8">
             <span className="text-hoboc-dark">داده‌ها</span> زندگی می‌کنند!
           </h1>
-          <p className="text-base font-medium text-gray-600 sm:text-lg leading-relaxed">
+          <p className="text-base font-medium text-gray-600 sm:text-lg leading-relaxed pr-4">
             در دنیای امروز، داده‌ها نفس می‌کشند و داستان‌ها می‌گویند. ما به شما یاد می‌دهیم 
             چگونه این داستان‌ها را بخوانید و از آنها زندگی‌های بهتری بسازید.
             <br />
@@ -18,12 +18,12 @@ export default function HeroBackgroundFooter() {
 
           {/* Single larger button */}
           <div className="pt-4">
-            <a
-              href="/contact"
-              className="inline-block rounded-lg bg-hoboc-dark px-6 py-2 text-md font-semibold text-white shadow-sm hover:bg-hoboc focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark transition-transform hover:scale-105"
-            >
-              تماس با ما
-            </a>
+<a
+  href="/contact"
+  className="rounded-md bg-hoboc px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-hoboc-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark transition-colors"
+>
+  تماس با ما
+</a>
           </div>
         </div>
       </div>
