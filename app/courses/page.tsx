@@ -7,7 +7,8 @@ import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 import CourseCard from "./components/CourseCard";
 import CourseTopicsFilter from "./components/CourseTopicsFilter";
 import CourseHeader from "./components/CourseHeader";
-import CourseCTABanner from "./components/CourseCTABanner";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 // --- تابع اسکلتون کارت ---
 function SkeletonCard() {
   return (
@@ -20,6 +21,9 @@ export default function CoursesPage() {
   const [lessons, setLessons] = useState<CoursesLesson[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 9;
 
   const searchParams = useSearchParams();
   const selectedTopicSlug = searchParams.get("topic");
@@ -36,7 +40,6 @@ export default function CoursesPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // دریافت لیست همه موضوعات
         const topicsRes = await getApiData("/course-topics/");
         const topicsData: CoursesTopic[] =
           Array.isArray(topicsRes.data)
@@ -46,12 +49,10 @@ export default function CoursesPage() {
 
         let lessonsRes;
         if (selectedTopicSlug) {
-          // فقط درس‌های مرتبط با موضوع انتخاب‌شده را بگیر
           lessonsRes = await getApiData(
             `/course-lessons/?topic-slug=${selectedTopicSlug}&ordering=created_at`
           );
         } else {
-          // وقتی هیچ موضوعی انتخاب نشده، کل درس‌ها را یکجا دریافت کن
           lessonsRes = await getApiData("/course-lessons/");
         }
 
@@ -67,10 +68,36 @@ export default function CoursesPage() {
     fetchData();
   }, [selectedTopicSlug]);
 
+  // وقتی موضوع عوض شد صفحه به اول برگرده
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [selectedTopicSlug]);
+
+  const totalPages = Math.ceil(lessons.length / pageSize);
+  const currentLessons = lessons.slice(
+    currentPage * pageSize,
+    currentPage * pageSize + pageSize
+  );
+
+  const nextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage((p) => p + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((p) => p - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <main className=" min-h-screen pb-16">
+    <main className="min-h-screen pb-16">
       {/* Header Section */}
       <CourseHeader title={title} description={description} />
+
       {/* Topic Filter */}
       <section
         className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-10"
@@ -93,7 +120,7 @@ export default function CoursesPage() {
       >
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
+            {[...Array(pageSize)].map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </div>
@@ -102,27 +129,41 @@ export default function CoursesPage() {
             درسی یافت نشد.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {lessons.map((lesson, index) => (
-              <CourseCard
-                key={lesson.id}
-                lesson={lesson}
-                lessonNumber={index + 1}
-                showLessonNumber={!!selectedTopicSlug}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentLessons.map((lesson, index) => (
+                <CourseCard
+                  key={lesson.id}
+                  lesson={lesson}
+                  lessonNumber={currentPage * pageSize + index + 1}
+                  showLessonNumber={!!selectedTopicSlug}
+                />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-8 mt-10">
+                <button
+                  onClick={prevPage}
+                  disabled={currentPage === 0}
+                  className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition disabled:opacity-50"
+                  aria-label="صفحه قبلی"
+                >
+                  <ChevronRight size={24} />
+                </button>
+                <button
+                  onClick={nextPage}
+                  disabled={currentPage === totalPages - 1}
+                  className="p-2 rounded-full bg-gray-100 text-hoboc-dark hover:bg-gray-200 transition disabled:opacity-50"
+                  aria-label="صفحه بعدی"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
-
-      {/* CTA or Bottom Padding
-      <section
-        className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-16"
-        dir="rtl"
-      >
-        <CourseCTABanner />
-      </section> */}
-
     </main>
   );
 }
