@@ -16,23 +16,23 @@ const visions = [
     title: "آموزش و رشد حرفه‌ای",
     link: "/courses",
     icon: FaBookOpen,
-    iconColor: "text-blue-500",
-    bgColor: "bg-hoboc-50",
-    hoverColor: "hover:bg-blue-100"
+    iconColor: "text-cyan-400",
+    bgColor: "bg-cyan-50",
+    hoverColor: "hover:bg-cyan-100"
   },
   {
     title: "همکاری با ما",
     link: "/join-us",
     icon: FaProjectDiagram,
-    iconColor: "text-purple-500",
-    bgColor: "bg-purple-50",
-    hoverColor: "hover:bg-purple-100"
+    iconColor: "text-rose-400",
+    bgColor: "bg-rose-50",
+    hoverColor: "hover:bg-rose-100"
   },
   {
     title: "سفارش پروژه",
     link: "/join-us",
     icon: FaHandshake,
-    iconColor: "text-green-500",
+    iconColor: "text-green-400",
     bgColor: "bg-green-50",
     hoverColor: "hover:bg-green-100"
   },
@@ -40,9 +40,9 @@ const visions = [
     title: "پادکست",
     link: "/podcast",
     icon: FaHeadphonesAlt,
-    iconColor: "text-orange-500",
-    bgColor: "bg-orange-50",
-    hoverColor: "hover:bg-orange-100"
+    iconColor: "text-pink-400",
+    bgColor: "bg-pink-50",
+    hoverColor: "hover:bg-pink-100"
   },
 ];
 
@@ -68,7 +68,7 @@ export default function VisionTexts() {
                 whileHover={{ scale: 1.15, rotate: 5 }}
                 className={`w-12 h-12 flex justify-center items-center rounded-lg ${vision.bgColor} ${vision.iconColor}`}
               >
-                <Icon size={20} className="opacity-90" />
+                <Icon size={25} className="opacity-90" />
               </motion.div>
 
               {/* Text content */}
