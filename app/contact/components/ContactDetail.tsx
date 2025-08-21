@@ -4,7 +4,7 @@ import { FaPhone, FaEnvelope, FaLinkedin, FaGithub, FaYoutube, FaTelegram } from
 
 export default function ContactDetail() {
   return (
-    <div className="w-full bg-hoboc rounded-lg shadow-lg p-6 mt-8">
+    <div className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] rounded-lg shadow-lg p-6 mt-8">
       <h3 className="text-xl font-bold text-white mb-8 text-center">اطلاعات تماس</h3>
       
       <div className="flex flex-row-reverse justify-between items-center gap-8">

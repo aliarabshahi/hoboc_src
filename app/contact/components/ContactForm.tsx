@@ -146,19 +146,18 @@ export default function ContactForm() {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-hoboc hover:bg-hoboc-dark text-white font-medium py-3 px-6 rounded-lg transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-          ) : (
-            <FaPaperPlane className="text-sm" />
-          )}
-          {loading ? "در حال ارسال..." : "ارسال پیام"}
-        </button>
-
+<button
+  type="submit"
+  disabled={loading}
+  className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] hover:from-[#1a8abc] hover:to-[#e066a6] text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+>
+  {loading ? (
+    <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+  ) : (
+    <FaPaperPlane className="text-sm" />
+  )}
+  {loading ? "در حال ارسال..." : "ارسال پیام"}
+</button>
         {/* Feedback Message */}
         {message && (
           <motion.div
