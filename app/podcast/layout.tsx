@@ -16,7 +16,7 @@ export default function PodcastLayout({
         <SharedRightColumn hosts={hosts} showWaveformOnMobile={true} />
         <main className="w-full lg:w-3/5 flex flex-col">
           {/* Always show waveform at the top on large screens */}
-          <div className="hidden lg:block sticky top-0 z-20 bg-white">
+          <div className="hidden lg:block  top-0 z-20 bg-white">
             <Waveform className="h-20 w-full" />
           </div>
           {children}
