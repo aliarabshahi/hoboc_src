@@ -1,4 +1,3 @@
-// components/vision/VisionImage.tsx
 import Image from "next/image";
 
 export default function VisionImage({ className }: { className?: string }) {

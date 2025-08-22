@@ -1,21 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { BlogPost } from "@/app/types/blogType";
 import { FiCalendar, FiUser } from "react-icons/fi";
 
-export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
+/** Single blog card with thumbnail, meta, and title */
+export default function LatestBlogsCard({ post }: { post: BlogPost }) {
   return (
     <article
       dir="rtl"
-      className="
-        relative isolate flex flex-col justify-end 
-        overflow-hidden rounded-2xl bg-gray-900 
-        px-6 pb-6 pt-64 sm:pt-48 lg:pt-64
-        shadow-lg hover:shadow-xl transition
-        h-[340]   /* ensures fixed height for all cards */
-      "
+      className="relative isolate flex flex-col justify-end 
+                 overflow-hidden rounded-2xl bg-gray-900 
+                 px-6 pb-6 pt-64 sm:pt-48 lg:pt-64
+                 shadow-lg hover:shadow-xl transition
+                 h-[340px]"
     >
-      {/* پس‌زمینه عکس یا جایگزین */}
+      {/* Cover image or fallback color */}
       {post.cover_image ? (
         <Image
           src={post.cover_image}
@@ -29,13 +30,13 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
         <div className="absolute inset-0 -z-10 size-full bg-gray-700" />
       )}
 
-      {/* گرادینت تیره روی عکس */}
+      {/* Dark gradient overlay */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
 
-      {/* حلقه حاشیه روشن */}
+      {/* Light inner ring */}
       <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
 
-      {/* اطلاعات نویسنده و تاریخ */}
+      {/* Meta: author & date */}
       <div className="flex flex-wrap items-center gap-x-4 text-sm text-gray-300">
         <div className="flex items-center gap-x-1">
           <FiUser size={14} className="text-gray-300" />
@@ -49,7 +50,7 @@ export default function BlogCardsMainPage({ post }: { post: BlogPost }) {
         </div>
       </div>
 
-      {/* عنوان بلاگ */}
+      {/* Blog title */}
       <h3 className="mt-3 text-lg font-semibold text-white line-clamp-2 leading-7">
         <Link
           href={`/blog/${post.topic}/${post.slug}`}

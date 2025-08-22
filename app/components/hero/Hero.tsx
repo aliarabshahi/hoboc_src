@@ -1,34 +1,32 @@
-import React from "react";
+"use client";
 
-const HomeHero: React.FC = () => {
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import HeroVideoModal from "./HeroVideoModal";
+import HeroTopDecoration from "./HeroTopDecoration";
+import HeroBottomDecoration from "./HeroBottomDecoration";
+import HeroMainContent from "./HeroMainContent";
+
+export default function Hero() {
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = showVideo ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showVideo]);
+
   return (
-    <div className="hero  bg-cyan-100 pt-24 pb-24">
-      <div className="hero-content text-center">
-        <div className="max-w-lg">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800" dir="rtl">از بیت تا بینش</h1>
-          
-          <p className="py-6 text-base md:text-lg text-gray-700" dir="rtl">
-            جایی که داده‌ی خام به بینش تبدیل می‌شود.
-          </p>
-
-          <p className="text-sm text-gray-400" dir="ltr">
-            Head Of Bits, Origin of Clarity
-          </p>
-
-          <button className="btn bg-hoboc-dark text-lg text-white hover:bg-hoboc-dark/90 min-w-32 mt-6">
-            عضویت
-          </button>
-
-          <div className="flex flex-wrap justify-center items-center gap-x-2 gap-y-1 text-sm mt-4" dir="rtl">
-            <span className="text-center text-gray-500">تو ام می‌خوای این کاره شی؟!</span>
-            <a href="#" className="text-hoboc hover:text-hoboc/80 transition-colors text-center">
-              شروع آموزش
-            </a>
-          </div>
-        </div>
+    <div className="bg-white relative z-0" dir="rtl">
+      <div className="relative isolate px-6 lg:px-8">
+        <HeroTopDecoration />
+        <HeroMainContent onVideoOpen={() => setShowVideo(true)} />
+        <HeroBottomDecoration />
       </div>
+
+      {showVideo &&
+        createPortal(<HeroVideoModal onClose={() => setShowVideo(false)} />, document.body)}
     </div>
   );
-};
-
-export default HomeHero;
+}

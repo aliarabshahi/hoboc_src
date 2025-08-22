@@ -1,36 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { FiBookOpen, FiClock } from "react-icons/fi";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 
-// کارت درس ویژه صفحه اصلی سایت
-export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson }) {
-  // گرفتن اسلاگ موضوع درس
+export default function LatestLessonsCard({ lesson }: { lesson: CoursesLesson }) {
   const getTopicSlug = (lesson: CoursesLesson): string => {
-    if (
-      lesson.tags &&
-      Array.isArray(lesson.tags) &&
-      lesson.tags.length > 0 &&
-      lesson.tags[0].slug
-    ) {
-      return lesson.tags[0].slug;
-    }
-    if (
-      lesson.topic &&
-      typeof lesson.topic !== "string" &&
-      (lesson.topic as CoursesTopic).slug
-    ) {
+    if (lesson.tags?.[0]?.slug) return lesson.tags[0].slug;
+    if (lesson.topic && typeof lesson.topic !== "string" && (lesson.topic as CoursesTopic).slug) {
       return (lesson.topic as CoursesTopic).slug;
     }
     return "general";
   };
 
-  // نمایش عنوان موضوع
   const getTopicTitle = (topic: string | CoursesTopic): string => {
     return typeof topic === "string" ? topic : topic?.title || "بدون موضوع";
   };
 
-  // فرمت زمان درس
   const formatDuration = (duration: number | null): string => {
     if (!duration) return "زمان نامشخص";
     return duration < 60
@@ -43,10 +30,10 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
       href={`/courses/${getTopicSlug(lesson)}/lesson/${lesson.slug}`}
       prefetch={false}
       className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc
-                 flex flex-col justify-between transition hover:shadow-md relative overflow-hidden
-                 h-[418px] max-h-[418px]"
+                 flex flex-col justify-between transition hover:shadow-md 
+                 relative overflow-hidden h-[418px] max-h-[418px]"
     >
-      {/* تصویر یا جایگاه تصویر ثابت */}
+      {/* Thumbnail */}
       <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-100 dark:bg-gray-800 relative">
         {lesson.thumbnail ? (
           <>
@@ -59,7 +46,6 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
               loading="lazy"
               unoptimized={lesson.thumbnail.startsWith("data:")}
             />
-            {/* شادو روی عکس — تغییر عدد شفافیت برای بیشتر/کمتر شدن سایه */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent pointer-events-none" />
           </>
         ) : (
@@ -67,19 +53,17 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
         )}
       </div>
 
-      {/* عنوان درس */}
-      <h3 className="text-lg font-bold text-gray-700 mb-1 line-clamp-2">
-        {lesson.title}
-      </h3>
+      {/* Title */}
+      <h3 className="text-lg font-bold text-gray-700 mb-1 line-clamp-2">{lesson.title}</h3>
 
-      {/* توضیح کوتاه درس */}
+      {/* Short description */}
       {lesson.description && (
         <p className="text-gray-500 text-sm mb-3 mt-1 line-clamp-3 leading-6">
           {lesson.description}
         </p>
       )}
 
-      {/* اطلاعات درس با آیکون */}
+      {/* Meta info */}
       <div className="flex items-center justify-between text-sm text-hoboc-dark mt-auto mb-5 pt-3">
         <div className="flex items-center gap-2">
           <FiBookOpen size={14} />
@@ -91,10 +75,10 @@ export default function LessonCardsMainPage({ lesson }: { lesson: CoursesLesson 
         </div>
       </div>
 
-      {/* دکمه مشاهده دوره پایین کارت */}
+      {/* Call-to-action */}
       <div className="mt-auto">
         <div
-          className="block w-full select-none text-center py-3 rounded-xl font-bold
+          className="block w-full text-center py-3 rounded-xl font-bold
                      bg-white text-hoboc border border-hoboc
                      group-hover:bg-hoboc group-hover:text-white
                      transition-colors duration-200 shadow-sm"

@@ -1,69 +1,52 @@
-// app/page.tsx
 import Hero from "./components/hero/Hero";
-import NewHero from "./components/hero/NewHero";
-
 import Vision from "./components/vision/Vision";
-
-import MainCoursesDetail from "./components/courses/MainCoursesDetail";
-import CoursesDetail from "./components/courses/courses_detail/CoursesDetail";
 import CoursesDetailWrapper from "./components/courses/courses_detail/CoursesDetailWrapper";
-import Looser from "./components/looser/Looser";
-import LatestBlogSection from "./components/latest-blogs/LatestBlogSection";
-import LatestLessonsSection from "./components/last-courses/LatestLessonsSection";
-import HeroBackgroundFooter from "./components/looser/HeroBackgroundFooter";
-import Example from "./components/homepage/SecondaryFeatures";
-import Testimonial from "./components/Testimonials";
+import LatestBlogs from "./components/latest-blogs/LatestBlogs";
+import LatestLessons from "./components/last-lessons/LatestLessons";
+import InspiringQuote from "./components/inspire/InspiringQuote";
+import FinalWord from "./components/final-word/FinalWord";
 import BackgroundWithPattern from "./components/BackgroundWithPattern";
 
 export default function Home() {
   return (
     <main className="">
-      {/* <Hero /> */}
-      <NewHero />
+      {/* Main hero section */}
+      <Hero />
 
+      {/* Vision section with container padding */}
       <section className="container mx-auto px-4 md:px-8 lg:px-16" dir="rtl">
         <Vision />
-      
-
       </section>
 
-            {/* Latest Lessons with Test background */}
-<section className="relative container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
-  {/* Background */}
-  <div className="absolute inset-0 ">
-    <BackgroundWithPattern />
-  </div>
+      {/* Latest Lessons section with patterned background */}
+      <section
+        className="relative container mx-auto px-4 md:px-8 lg:px-20"
+        dir="rtl"
+      >
+        {/* Background pattern */}
+        <div className="absolute inset-0">
+          <BackgroundWithPattern />
+        </div>
 
-  {/* Foreground lessons */}
-  <LatestLessonsSection />
-</section>
+        {/* Lessons content */}
+        <LatestLessons />
+      </section>
 
+      {/* Inspiring Quote section  */}
+      <section className="my-20 container mx-auto px-4 md:px-8 lg:px-20">
+        <InspiringQuote />
+      </section>
 
+      {/* Courses detail section (currently commented out) */}
+      {/* <CoursesDetailWrapper /> */}
 
-      {/* <MainCoursesDetail /> */}
-
-      {/* <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
-        <LatestLessonsSection />
-      </section> */}
-{/* 
+      {/* Latest blog posts section */}
       <section className="container mx-auto px-4 md:px-8 lg:px-20" dir="rtl">
-      <Test />
-      </section> */}
-
-
-      {/* <section className="my-20">
-      <Testimonial />
-      </section> */}
-            <CoursesDetailWrapper />
-
-      {/* LatestBlogSection with custom padding and rtl direction */}
-      <section className="container mx-auto px-4 md:px-8 lg:px-20"  dir="rtl">
-        <LatestBlogSection />
+        <LatestBlogs />
       </section>
-      <HeroBackgroundFooter />
-      {/* <Example /> */}
-      {/* <Looser /> */}
 
+      {/* FinalWord section */}
+      <FinalWord />
     </main>
   );
 }
