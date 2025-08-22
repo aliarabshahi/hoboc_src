@@ -1,6 +1,5 @@
 // app/podcast/[episode]/components/EpisodeLeftColumn.tsx
 import Link from "next/link";
-import { Waveform } from "../../components/Waveform";
 import { Container } from "../../components/Container";
 import { AudioPlayer } from "../../components/player/AudioPlayer";
 import { EpisodePlayButton } from "../../components/EpisodePlayButton";
@@ -19,10 +18,7 @@ export default function EpisodeLeftColumn({ episode, number }: EpisodeLeftColumn
   return (
     <>
       <div className="flex-1 overflow-y-auto">
-        <div className="hidden lg:block sticky top-0 z-20 bg-white">
-          <Waveform className="h-20 w-full" />
-        </div>
-
+        {/* Removed the waveform from here since it's now in the layout */}
         <div className="py-8 lg:py-16">
           <Container>
             <div className="mb-6">

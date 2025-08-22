@@ -1,6 +1,7 @@
 // app/podcast/layout.tsx
 import { AudioProvider } from "./components/AudioProvider";
 import SharedRightColumn from "./components/SharedRightColumn";
+import { Waveform } from "./components/Waveform";
 
 export default function PodcastLayout({
   children,
@@ -14,6 +15,10 @@ export default function PodcastLayout({
       <div className="flex flex-col lg:flex-row h-auto">
         <SharedRightColumn hosts={hosts} showWaveformOnMobile={true} />
         <main className="w-full lg:w-3/5 flex flex-col">
+          {/* Always show waveform at the top on large screens */}
+          <div className="hidden lg:block sticky top-0 z-20 bg-white">
+            <Waveform className="h-20 w-full" />
+          </div>
           {children}
         </main>
       </div>
