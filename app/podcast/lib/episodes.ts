@@ -6,7 +6,7 @@ export interface PodcastEpisode {
   title: string
   slug: string
   description: string
-  content: string
+  content: string,
   audio: {
     src: string
     type: string

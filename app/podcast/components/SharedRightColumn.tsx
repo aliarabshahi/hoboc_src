@@ -1,21 +1,28 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Fragment } from 'react';
-import { AboutSection } from '../AboutSection';
-import { Waveform } from '../Waveform';
-import posterImage from '../../images/poster.png';
-import { HiOutlineUser as PersonIcon } from 'react-icons/hi2';
+// app/podcast/components/SharedRightColumn.tsx
+import Image from "next/image";
+import Link from "next/link";
+import { Fragment } from "react";
+import { AboutSection } from "./AboutSection";
+import { Waveform } from "./Waveform";
+import posterImage from "../images/poster.png";
+import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
 
-interface PodcastRightColumnProps {
+interface SharedRightColumnProps {
   hosts: string[];
+  showWaveformOnMobile?: boolean;
 }
 
-export default function PodcastRightColumn({ hosts }: PodcastRightColumnProps) {
+export default function SharedRightColumn({ 
+  hosts, 
+  showWaveformOnMobile = true 
+}: SharedRightColumnProps) {
   return (
     <aside className="w-full lg:w-2/5 bg-slate-50 border-b lg:border-b-0 lg:border-e border-slate-200 overflow-y-auto lg:pr-40 md:pr-12">
-      <div className="block lg:hidden">
-        <Waveform className="h-20 w-full" />
-      </div>
+      {showWaveformOnMobile && (
+        <div className="block lg:hidden">
+          <Waveform className="h-20 w-full" />
+        </div>
+      )}
 
       <div className="px-6 py-10 lg:py-16 flex flex-col items-center lg:items-start">
         <Link

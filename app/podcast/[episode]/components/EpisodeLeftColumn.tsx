@@ -1,4 +1,4 @@
-// app/podcast/[episode]/components/main-page/EpisodeLeftColumn.tsx
+// app/podcast/[episode]/components/EpisodeLeftColumn.tsx
 import Link from "next/link";
 import { Waveform } from "../../components/Waveform";
 import { Container } from "../../components/Container";
@@ -17,7 +17,7 @@ export default function EpisodeLeftColumn({ episode, number }: EpisodeLeftColumn
   const jalaliDate = formatJalaliDate(episode.published_at);
 
   return (
-    <main className="w-full lg:w-3/5 flex flex-col">
+    <>
       <div className="flex-1 overflow-y-auto">
         <div className="hidden lg:block sticky top-0 z-20 bg-white">
           <Waveform className="h-20 w-full" />
@@ -78,6 +78,6 @@ export default function EpisodeLeftColumn({ episode, number }: EpisodeLeftColumn
       <div className="sticky bottom-0 bg-white border-t border-slate-200 z-10" dir="ltr">
         <AudioPlayer />
       </div>
-    </main>
+    </>
   );
 }
