@@ -1,3 +1,4 @@
+// app/podcast/components/main-page/EpisodeList.tsx
 import { PodcastEpisode } from '../../lib/episodes';
 import EpisodeEntry from './EpisodeEntry';
 import { Container } from '../Container';
@@ -9,6 +10,18 @@ interface EpisodeListProps {
 
 export default function EpisodeList({ episodes, title = "قسمت‌ها" }: EpisodeListProps) {
   const total = episodes.length;
+
+  if (episodes.length === 0) {
+    return (
+      <div className="pt-8 pb-6">
+        <Container>
+          <div className="text-center text-slate-500 py-8">
+            قسمتی برای نمایش وجود ندارد
+          </div>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-8 pb-6">
