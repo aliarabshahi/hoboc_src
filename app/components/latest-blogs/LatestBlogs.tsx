@@ -33,7 +33,7 @@ export default function LatestBlogs() {
       <div className="flex items-center justify-between mb-6 relative z-10">
         <h2 className="text-xl md:text-2xl font-bold text-hoboc-dark">آخرین مقالات</h2>
         <Link href="/blog">
-          <button className="button button--gray text-white text-base font-medium px-4 py-2 rounded bg-gray-800 hover:bg-hoboc transition">
+          <button className="button button--gray text-white text-base font-medium px-4 py-2 rounded bg-gray-800 hover:bg-hoboc-dark transition">
             مشاهده همه
           </button>
         </Link>

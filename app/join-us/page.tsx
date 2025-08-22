@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ResumeForm from "./components/ResumeForm";
-import ResumeImage from "./components/ResumeImage";
+import JoinUsForm from "./components/JoinUsForm";
+import JoinUsImage from "./components/JoinUsImage";
 
 function ResumeFormSkeleton() {
   return (
@@ -25,12 +25,12 @@ export default function ResumePage() {
         <div className="flex flex-col lg:flex-row items-start gap-6">
           {/* Image */}
           <div className="w-full lg:w-1/2 order-1 lg:order-2 lg:sticky lg:top-0 self-start">
-            <ResumeImage />
+            <JoinUsImage />
           </div>
 
           {/* Form or Skeleton */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            {loading ? <ResumeFormSkeleton /> : <ResumeForm />}
+            {loading ? <ResumeFormSkeleton /> : <JoinUsForm />}
           </div>
         </div>
       </div>

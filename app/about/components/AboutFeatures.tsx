@@ -1,6 +1,6 @@
 import { FaHandsHelping, FaRocket, FaUserGraduate } from "react-icons/fa";
 
-export default function Features() {
+export default function AboutFeatures() {
   return (
     <div className="grid gap-10 md:grid-cols-3 text-center text-gray-700 dark:text-gray-200">
       <div className="p-6 bg-gradient-to-br from-[#1f9ece08] to-[#f477b810] dark:from-[#1f9ece15] dark:to-[#f477b815] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">

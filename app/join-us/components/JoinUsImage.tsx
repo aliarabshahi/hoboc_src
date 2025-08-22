@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-export default function ResumeImage() {
+export default function JoinUsImage() {
   return (
     <div className="w-full h-full flex items-start justify-start">
       <Image

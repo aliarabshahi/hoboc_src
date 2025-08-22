@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-export default function ResumeForm() {
+export default function JoinUsForm() {
   const [resume, setResume] = useState<
     Omit<ResumeSubmissionRequest, "resume_file">
   >({

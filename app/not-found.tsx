@@ -3,9 +3,20 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-hoboc/10 flex flex-col items-center justify-center p-4">
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-white to-[#fdeaf4] overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 -z-10">
+        {/* Stronger pinkish gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f477b815] via-[#f477b810] to-transparent" />
+
+        {/* Larger, bolder blurred circles */}
+        <div className="absolute top-10 left-10 w-64 h-64 bg-[#F477B8] rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
+        <div className="absolute bottom-16 right-10 w-64 h-64 bg-[#F477B8] rounded-full mix-blend-multiply filter blur-3xl opacity-25" />
+        <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#1F9ECE] rounded-full mix-blend-multiply filter blur-3xl opacity-10" />
+      </div>
+
       <div className="max-w-2xl mx-auto text-center">
-        {/* تصویر */}
+        {/* IMAGE */}
         <div className="w-full max-w-md mx-auto mb-8">
           <Image
             src="/hero_images/404_not_found2.svg"
@@ -16,31 +27,31 @@ export default function NotFound() {
           />
         </div>
 
-        {/* محتوا */}
-        <h1 className="text-5xl font-bold text-hoboc-dark mb-4">404</h1>
+        {/* CONTENT */}
+        <h1 className="text-5xl font-bold text-gray-700 mb-4">404</h1>
         <h2 className="text-3xl font-semibold text-gray-800 mb-6">گم شدی دوست من؟</h2>
         <p className="text-lg text-gray-600 mb-8">
           به نظر میاد صفحه‌ای که دنبالشی یا وجود نداره یا یه جای دیگه رفته!<br />
           نگران نباش، می‌تونیم کمکت کنیم که برگردی به مسیر درست.
         </p>
 
-        {/* دکمه‌ها */}
+        {/* BUTTONS */}
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href="/"
-            className="px-6 py-3 bg-hoboc text-white font-medium rounded-lg shadow-md hover:bg-hoboc-dark transition-colors duration-300"
+            className="bg-hoboc hover:bg-hoboc-dark text-white font-medium py-3 px-6 rounded-lg transition-colors shadow-sm"
           >
-            صفحه اصلی 
+            صفحه اصلی
           </Link>
           <Link
             href="/contact"
-            className="px-6 py-3 border border-hoboc text-hoboc font-medium rounded-lg hover:bg-hoboc/10 transition-colors duration-300"
+            className="bg-white border border-hoboc text-hoboc font-medium py-3 px-6 rounded-lg transition-colors hover:bg-hoboc/5"
           >
-            تماس با پشتیبانی 
+            تماس با پشتیبانی
           </Link>
         </div>
 
-        {/* متن پایینی */}
+        {/* FOOTER TEXT */}
         <div className="mt-10 text-sm text-gray-500">
           <p>اگه فکر می‌کنی اینجا باید صفحه‌ای باشه، بهمون خبر بده!</p>
         </div>

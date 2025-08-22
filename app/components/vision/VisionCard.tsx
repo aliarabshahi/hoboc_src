@@ -40,12 +40,12 @@ export default function VisionCard({
           whileHover={{ scale: 1.15, rotate: 5 }}
           className={`w-12 h-12 flex justify-center items-center rounded-lg ${bgColor} ${iconColor}`}
         >
-          <Icon size={25} className="opacity-90" />
+          <Icon size={30} className="opacity-90" />
         </motion.div>
 
         {/* Title */}
         <div className="flex-1 mr-4">
-          <h3 className="text-lg font-bold text-gray-800">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
         </div>
 
         {/* Arrow */}

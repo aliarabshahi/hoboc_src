@@ -1,4 +1,4 @@
-export default function ProjectSection() {
+export default function AboutProjectSection() {
   return (
     <div className="space-y-12">
       <div className="bg-gradient-to-br from-[#1f9ece08] to-[#f477b810] dark:from-[#1f9ece15] dark:to-[#f477b815] p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-justify leading-7 text-gray-700 dark:text-gray-200">

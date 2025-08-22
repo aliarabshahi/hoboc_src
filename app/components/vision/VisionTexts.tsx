@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  FaBookOpen,
-  FaProjectDiagram,
-  FaHandshake,
-  FaHeadphonesAlt,
+  FaGraduationCap,
+  FaUsers,
+  FaLaptopCode,
+  FaPodcast,
 } from "react-icons/fa";
 import VisionCard from "./VisionCard";
 
@@ -14,32 +14,32 @@ export default function VisionTexts() {
     {
       title: "آموزش و رشد حرفه‌ای",
       link: "/courses",
-      icon: FaBookOpen,
-      iconColor: "text-cyan-400",
+      icon: FaGraduationCap,
+      iconColor: "text-cyan-500",
       bgColor: "bg-cyan-50",
       hoverColor: "hover:bg-cyan-100",
     },
     {
       title: "همکاری با ما",
       link: "/join-us",
-      icon: FaProjectDiagram,
-      iconColor: "text-rose-400",
+      icon: FaUsers,
+      iconColor: "text-rose-500",
       bgColor: "bg-rose-50",
       hoverColor: "hover:bg-rose-100",
     },
     {
       title: "سفارش پروژه",
       link: "/join-us",
-      icon: FaHandshake,
-      iconColor: "text-green-400",
+      icon: FaLaptopCode,
+      iconColor: "text-green-500",
       bgColor: "bg-green-50",
       hoverColor: "hover:bg-green-100",
     },
     {
       title: "پادکست",
       link: "/podcast",
-      icon: FaHeadphonesAlt,
-      iconColor: "text-pink-400",
+      icon: FaPodcast,
+      iconColor: "text-pink-500",
       bgColor: "bg-pink-50",
       hoverColor: "hover:bg-pink-100",
     },

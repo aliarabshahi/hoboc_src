@@ -1,26 +1,26 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import localFont from 'next/font/local';
+import localFont from "next/font/local";
 import Alert from "./components/alert/Alert";
 
 const vazir = localFont({
   src: [
     {
-      path: '../public/fonts/vazirmatn/Vazirmatn-Regular.ttf',
-      weight: '400',
-      style: 'normal',
+      path: "../public/fonts/vazirmatn/Vazirmatn-Regular.ttf",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: '../public/fonts/vazirmatn/Vazirmatn-Bold.ttf',
-      weight: '700',
-      style: 'normal',
+      path: "../public/fonts/vazirmatn/Vazirmatn-Bold.ttf",
+      weight: "700",
+      style: "normal",
     },
   ],
-  display: 'swap',
-  variable: '--font-vazir',
+  display: "swap",
+  variable: "--font-vazir",
 });
 
 export const metadata: Metadata = {
@@ -36,8 +36,13 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className={`${vazir.variable}`}>
       <body className="font-sans bg-main-bg min-h-screen">
-              {/* <Alert /> */}
-        
+        {/* 
+          🔔 GLOBAL ALERT COMPONENT
+          Uncomment <Alert /> below if you want to display a persistent message
+          (e.g. maintenance notice, promo banner, urgent updates) on every page.
+        */}
+        {/* <Alert /> */}
+
         <Navbar />
         {children}
         <Footer />
