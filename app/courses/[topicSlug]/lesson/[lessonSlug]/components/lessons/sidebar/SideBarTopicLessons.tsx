@@ -12,11 +12,12 @@ export default async function SideBarTopicLessons({
 }) {
   const res = await getApiData(`/course-lessons/?topic-slug=${topicSlug}`);
 
+  // Error state
   if (!res || !res.data) {
     return (
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-red-100 bg-red-50 text-red-600 text-sm">
-        <p className="font-medium">خطا در دریافت اطلاعات</p>
-        <p className="mt-1 text-red-500">دریافت اطلاعات دروس با خطا مواجه شد.</p>
+      <div className="bg-pink-50 p-4 rounded-xl shadow-sm border border-pink-100 text-hoboc text-sm">
+        <p className="font-medium text-pink-700">خطا در دریافت اطلاعات</p>
+        <p className="mt-1 text-pink-600">دریافت اطلاعات دروس با خطا مواجه شد.</p>
       </div>
     );
   }
@@ -44,8 +45,8 @@ export default async function SideBarTopicLessons({
                 href={`/courses/${topicSlug}/lesson/${lesson.slug}`}
                 className={`group block px-2 py-1 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? "bg-hoboc/15 border border-hoboc/30"
-                    : "hover:bg-gray-50"
+                    ? "bg-hoboc/15 border border-hoboc/40"
+                    : "hover:bg-hoboc/5"
                 }`}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -55,10 +56,10 @@ export default async function SideBarTopicLessons({
                     <div
                       className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                         isActive
-                          ? "bg-hoboc-dark text-white"
+                          ? "bg-hoboc text-white"
                           : lesson.is_free
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-200 text-gray-600"
+                          ? "bg-hoboc/15 text-hoboc"
+                          : "bg-pink-100 text-pink-700"
                       }`}
                     >
                       {!lesson.is_free && !isActive ? (
@@ -69,17 +70,17 @@ export default async function SideBarTopicLessons({
                     </div>
 
                     <h3
-                      className={`text-sm ${
+                      className={`text-sm truncate ${
                         isActive
-                          ? "text-hoboc-dark font-bold"
+                          ? "text-hoboc font-bold"
                           : lesson.is_free
                           ? "text-gray-800 group-hover:text-hoboc"
-                          : "text-gray-600"
+                          : "text-pink-700"
                       }`}
                     >
                       {lesson.title}
                       {!lesson.is_free && (
-                        <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full mr-2">
+                        <span className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full mr-2">
                           ویژه
                         </span>
                       )}
@@ -89,7 +90,7 @@ export default async function SideBarTopicLessons({
                   {/* Right: Duration + Icon */}
                   <div
                     className={`flex items-center gap-1 text-xs whitespace-nowrap ${
-                      isActive ? "text-hoboc-dark" : "text-gray-400"
+                      isActive ? "text-hoboc" : "text-gray-400"
                     }`}
                   >
                     <span>{lesson.duration} دقیقه</span>

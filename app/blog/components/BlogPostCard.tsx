@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BlogPost } from "@/app/types/blogType";
 import { FiCalendar, FiUser } from "react-icons/fi";
+import { slug } from "valibot";
 
 export default function BlogPostCard({ post }: { post: BlogPost }) {
   return (
@@ -34,7 +35,7 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
       </div>
 
       <Link
-        href={`/blog/${post.topic}/${post.slug}`}
+        href={`/blog/${post.topic_slug}/${post.slug}`}
         className="absolute inset-0 z-10"
         aria-label={`Read more about ${post.title}`}
       />

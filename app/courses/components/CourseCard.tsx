@@ -43,7 +43,7 @@ export default function CourseCard({
 
       {/* تصویر درس یا جایگزین آن */}
       <Link
-        href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
+        href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
         className="h-40 w-full mb-4 rounded-lg overflow-hidden block"
       >
         {lesson.thumbnail ? (
@@ -65,7 +65,7 @@ export default function CourseCard({
 
       {/* عنوان درس */}
       <Link
-        href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
+        href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
         className="text-lg font-bold text-gray-700 mb-0 line-clamp-2 hover:text-hoboc transition-colors"
       >
         {lesson.title}
@@ -81,7 +81,7 @@ export default function CourseCard({
       {/* اطلاعات پایین کارت */}
       <div className="flex justify-between items-center mt-auto mb-4 pt-1 text-sm text-hoboc-dark">
         <Link
-          href={`/courses/${getTopicSlug()}`}
+          href={`/courses/${lesson.topic_slug}`}
           className="flex items-center gap-2 hover:text-hoboc transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
@@ -97,7 +97,7 @@ export default function CourseCard({
 
       {/* دکمه مشاهده درس */}
       <Link
-        href={`/courses/${getTopicSlug()}/lesson/${lesson.slug}`}
+        href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
         className="block w-full select-none text-center py-3 rounded-xl font-bold
                    bg-white text-hoboc border border-hoboc
                    hover:bg-hoboc hover:text-white

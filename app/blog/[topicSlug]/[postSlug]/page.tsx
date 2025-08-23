@@ -1,7 +1,7 @@
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { BlogPost, BlogTopic } from "@/app/types/blogType";
 import { notFound } from "next/navigation";
-import PdfViewer from "@/app/blog/[topicSlug]/[postSlug]/components/PdfViewer";
+import BlogPdfViewer from "@/app/blog/[topicSlug]/[postSlug]/components/BlogPdfViewer";
 import BlogSidebar from "@/app/blog/[topicSlug]/[postSlug]/components/BlogSidebar";
 import BlogNavigationBar from "@/app/blog/[topicSlug]/[postSlug]/components/BlogNavigationBar";
 
@@ -74,7 +74,7 @@ export default async function BlogPostPage({ params }: Params) {
           <div className="flex-1 min-w-0 order-2">
             {postData.pdf_file && (
               <div className="border rounded-lg shadow-lg overflow-hidden h-[80vh] w-full">
-                <PdfViewer pdfUrl={postData.pdf_file} />
+                <BlogPdfViewer pdfUrl={postData.pdf_file} />
               </div>
             )}
           </div>

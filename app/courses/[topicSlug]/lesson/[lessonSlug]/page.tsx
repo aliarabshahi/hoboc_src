@@ -1,7 +1,7 @@
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 import { notFound } from "next/navigation";
-import PdfViewer from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/PdfViewer";
+import LessonPdfViewer from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/LessonPdfViewer";
 import Sidebar from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/sidebar/Sidebar";
 import LessonNavigationBar from "@/app/courses/[topicSlug]/lesson/[lessonSlug]/components/lessons/LessonNavigationBar";
 
@@ -66,7 +66,7 @@ export default async function LessonPage({ params }: Params) {
           <div className="flex-1 min-w-0 order-2 lg:order-1">
             {lessonData.pdf_file && (
               <div className="border rounded-lg shadow-lg overflow-hidden h-[80vh] w-full">
-                <PdfViewer pdfUrl={lessonData.pdf_file} />
+                <LessonPdfViewer pdfUrl={lessonData.pdf_file} />
               </div>
             )}
           </div>

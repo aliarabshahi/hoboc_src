@@ -1,5 +1,5 @@
 import { BlogPost } from "@/app/types/blogType";
-import VideoPlayer from "./VideoPlayer";
+import BlogVideoPlayer from "./BlogVideoPlayer";
 import { FiUser, FiCalendar, FiBookmark } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image"; // ✅ Import added
@@ -101,9 +101,7 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
 
       {/* Video Section */}
       {(postData.video_url || postData.video_file) && (
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <VideoPlayer postData={postData} />
-        </div>
+          <BlogVideoPlayer postData={postData} />
       )}
     </div>
   );

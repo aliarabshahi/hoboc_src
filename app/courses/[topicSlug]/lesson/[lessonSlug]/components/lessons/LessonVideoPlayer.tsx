@@ -18,7 +18,7 @@ export default function LessonVideoPlayer({ lessonData }: { lessonData: CoursesL
           href={lessonData.video_url} 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="text-blue-600 hover:text-blue-800"
+          className="text-hoboc-dark hover:text-hoboc-dark/90"
         >
           مشاهده ویدیو در آپارات
         </a>

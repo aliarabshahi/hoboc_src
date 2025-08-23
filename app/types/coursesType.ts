@@ -34,6 +34,7 @@ export interface CoursesLesson {
   cover_image: any;
   id: number;
   topic: string | CoursesTopic;
+  topic_slug: string | CoursesTopic;
   instructor: CoursesInstructor | null;
   tags: CoursesTag[];
   title: string;

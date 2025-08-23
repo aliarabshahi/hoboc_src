@@ -33,6 +33,7 @@ export interface BlogWriter {
 export interface BlogPost {
   id: number;
   topic: string | BlogTopic;
+  topic_slug: string | BlogTopic;
   writer: BlogWriter | null;
   tags: BlogTag[];
   title: string;
