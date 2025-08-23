@@ -10,7 +10,7 @@ interface CourseNavigationBarProps {
 
 export default function CourseNavigationBar({ topic }: CourseNavigationBarProps) {
   return (
-    <nav aria-label="breadcrumb" className="bg-white border-b border-gray-200 py-3 mb-6" dir="rtl">
+    <nav aria-label="breadcrumb" className="bg-white bg-transparent backdrop-blur-sm border-b border-gray-400 py-3 mb-6" dir="rtl">
       <ol className="flex items-center gap-1 text-gray-600 text-sm select-none">
         <li>
           <Link href="/courses" className="hover:text-hoboc transition-colors duration-200 font-medium">
