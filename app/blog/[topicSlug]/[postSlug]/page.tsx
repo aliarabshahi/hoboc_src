@@ -52,7 +52,8 @@ export default async function BlogPostPage({ params }: Params) {
         <div className="absolute bottom-[17%] left-1/3 w-20 h-20 bg-[#fbd3e7] rounded-full mix-blend-multiply filter blur-3xl opacity-[0.018]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Responsive container with extra horizontal padding */}
+      <section className="container mx-auto px-4 md:px-8 lg:px-20 py-8">
         {/* Navigation Bar */}
         <BlogNavigationBar topic={topicData} postTitle={postData.title} />
 
@@ -78,7 +79,7 @@ export default async function BlogPostPage({ params }: Params) {
             )}
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
