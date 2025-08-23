@@ -3,7 +3,7 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import { ApiResponse } from "@/app/types/coursesType"; // ✅ import generic wrapper
 
 const API_BASE_URL = "http://localhost/hoboc/api/";
-const API_TOKEN = "4e496e0820b6515d1f62d989f8811d99a6aa451f";
+const API_TOKEN = "1ecdf57453ff0f1ce5ec4fe905ef6c699e0434a3";
 
 export const fetchApiData = async <T>(
   endpoint: string,

@@ -6,7 +6,7 @@ export const getApiData = async (endpoint: string) => {
   try {
     const res = await fetch(`${baseUrl}${endpoint}`, {
       headers: {
-        Authorization: 'Token 4e496e0820b6515d1f62d989f8811d99a6aa451f',
+        Authorization: 'Token 1ecdf57453ff0f1ce5ec4fe905ef6c699e0434a3',
       },
       cache: 'no-cache',
       // next: { revalidate: 3600 },
