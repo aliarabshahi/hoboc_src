@@ -15,11 +15,16 @@ const config: Config = {
         "main-bg-courses": "#F5F8FA",
         "main-bg": "#FEFEFE",
       },
+      zIndex: {
+        60: "60",
+        70: "70",
+        999: "999", // for absolute top-layer, if needed
+      },
     },
   },
   plugins: [
     require("daisyui"),
-    require("@tailwindcss/typography"), // ← needed for .prose
+    require("@tailwindcss/typography"), // for .prose classes
   ],
 };
 

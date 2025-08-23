@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -25,6 +26,11 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   const minScale = 0.5;
   const maxScale = 2;
   const scaleStep = 0.25;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -51,6 +57,20 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    if (isFullscreen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    };
   }, [isFullscreen]);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
@@ -102,10 +122,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       originalWidthRef.current = containerRef.current?.offsetWidth || 0;
     }
     setIsFullscreen(!isFullscreen);
-    // Reset zoom when exiting fullscreen
-    if (isFullscreen) {
-      setScale(1);
-    }
+    if (isFullscreen) setScale(1);
   };
 
   const LoadingSpinner = () => (
@@ -120,8 +137,8 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     </div>
   );
 
-  return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
+  const viewerBlock = (
+    <div className={`${isFullscreen ? 'fixed inset-0 z-999 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
       {/* Top Bar */}
       <div className="bg-gray-800 border-gray-700 flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
@@ -135,7 +152,6 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Show zoom controls only in fullscreen mode */}
           {isFullscreen && (
             <>
               <button
@@ -147,7 +163,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
                 <ZoomOut size={isMobile ? 16 : 18} />
               </button>
 
-              <span 
+              <span
                 className="text-sm font-medium text-gray-200 cursor-pointer px-2"
                 onClick={resetZoom}
                 title="بازنشانی اندازه"
@@ -177,7 +193,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       </div>
 
       {/* PDF Viewer */}
-      <div 
+      <div
         ref={containerRef}
         className="flex-1 overflow-auto bg-white w-full flex justify-center"
       >
@@ -209,11 +225,11 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         >
           قبلی
         </button>
-        
+
         <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200`}>
           صفحه {pageNumber} از {numPages || '--'}
         </span>
-        
+
         <button
           onClick={goToNextPage}
           disabled={!numPages || pageNumber >= numPages}
@@ -228,6 +244,11 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       </div>
     </div>
   );
+
+  if (isFullscreen && isClient) {
+    return createPortal(viewerBlock, document.body);
+  }
+  return viewerBlock;
 };
 
 export default BlogPdfViewer;

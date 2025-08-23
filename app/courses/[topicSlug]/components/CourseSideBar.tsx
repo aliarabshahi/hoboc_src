@@ -42,12 +42,12 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
         </div>
 
         {/* Course Title */}
-        <h1 className="text-3xl font-bold text-hoboc dark:text-hoboc mb-1">
+        <h1 className="text-3xl font-bold text-hoboc-dark dark:text-hoboc mb-1">
           {topic.title}
         </h1>
 
         {/* Catchy Title */}
-        <h2 className="text-lg text-hoboc-dark dark:text-hoboc-dark mb-4">
+        <h2 className="text-lg text-hoboc dark:text-hoboc-dark mb-4">
           {topic.catchy_title}
         </h2>
 

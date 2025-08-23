@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -25,6 +26,11 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   const minScale = 0.5;
   const maxScale = 2;
   const scaleStep = 0.25;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -49,8 +55,22 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       updateWidth();
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    if (isFullscreen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+    };
   }, [isFullscreen]);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
@@ -60,28 +80,28 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
 
   const scrollToTop = () => {
     if (containerRef.current) {
-      containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const goToPrevPage = () => {
-    setPageNumber(prev => Math.max(prev - 1, 1));
+    setPageNumber((prev) => Math.max(prev - 1, 1));
     scrollToTop();
   };
 
   const goToNextPage = () => {
     if (numPages) {
-      setPageNumber(prev => Math.min(prev + 1, numPages));
+      setPageNumber((prev) => Math.min(prev + 1, numPages));
       scrollToTop();
     }
   };
 
   const zoomIn = () => {
-    setScale(prev => Math.min(prev + scaleStep, maxScale));
+    setScale((prev) => Math.min(prev + scaleStep, maxScale));
   };
 
   const zoomOut = () => {
-    setScale(prev => Math.max(prev - scaleStep, minScale));
+    setScale((prev) => Math.max(prev - scaleStep, minScale));
   };
 
   const resetZoom = () => {
@@ -89,9 +109,9 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
   };
 
   const downloadPdf = () => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = pdfUrl;
-    link.download = pdfUrl.split('/').pop() || 'document.pdf';
+    link.download = pdfUrl.split("/").pop() || "document.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -102,10 +122,7 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       originalWidthRef.current = containerRef.current?.offsetWidth || 0;
     }
     setIsFullscreen(!isFullscreen);
-    // Reset zoom when exiting fullscreen
-    if (isFullscreen) {
-      setScale(1);
-    }
+    if (isFullscreen) setScale(1);
   };
 
   const LoadingSpinner = () => (
@@ -120,8 +137,8 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     </div>
   );
 
-  return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
+  const viewerBlock = (
+    <div className={`${isFullscreen ? "fixed inset-0 z-999 bg-white" : "border rounded-lg shadow-lg overflow-hidden"} flex flex-col h-full`}>
       {/* Top Bar */}
       <div className="bg-gray-800 border-gray-700 flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
@@ -135,7 +152,6 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Show zoom controls only in fullscreen mode */}
           {isFullscreen && (
             <>
               <button
@@ -147,7 +163,7 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
                 <ZoomOut size={isMobile ? 16 : 18} />
               </button>
 
-              <span 
+              <span
                 className="text-sm font-medium text-gray-200 cursor-pointer px-2"
                 onClick={resetZoom}
                 title="بازنشانی اندازه"
@@ -177,15 +193,8 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       </div>
 
       {/* PDF Viewer */}
-      <div 
-        ref={containerRef}
-        className="flex-1 overflow-auto bg-white w-full flex justify-center"
-      >
-        <Document
-          file={pdfUrl}
-          onLoadSuccess={onDocumentLoadSuccess}
-          loading={<LoadingSpinner />}
-        >
+      <div ref={containerRef} className="flex-1 overflow-auto bg-white w-full flex justify-center">
+        <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess} loading={<LoadingSpinner />}>
           <Page
             pageNumber={pageNumber}
             width={isFullscreen ? containerWidth * scale : originalWidthRef.current}
@@ -201,25 +210,25 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         <button
           onClick={goToPrevPage}
           disabled={pageNumber <= 1}
-          className={`${isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'} rounded-md font-medium transition-colors ${
-            pageNumber <= 1 
-              ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
+          className={`${isMobile ? "px-3 py-1 text-sm" : "px-5 py-2 text-base"} rounded-md font-medium transition-colors ${
+            pageNumber <= 1
+              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
               : "bg-hoboc text-white hover:bg-hoboc-dark"
           }`}
         >
           قبلی
         </button>
-        
-        <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200`}>
-          صفحه {pageNumber} از {numPages || '--'}
+
+        <span className={`${isMobile ? "text-xs" : "text-sm"} font-medium text-gray-200`}>
+          صفحه {pageNumber} از {numPages || "--"}
         </span>
-        
+
         <button
           onClick={goToNextPage}
           disabled={!numPages || pageNumber >= numPages}
-          className={`${isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'} rounded-md font-medium transition-colors ${
-            !numPages || pageNumber >= numPages 
-              ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
+          className={`${isMobile ? "px-3 py-1 text-sm" : "px-5 py-2 text-base"} rounded-md font-medium transition-colors ${
+            !numPages || pageNumber >= numPages
+              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
               : "bg-hoboc text-white hover:bg-hoboc-dark"
           }`}
         >
@@ -228,6 +237,11 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
       </div>
     </div>
   );
+
+  if (isFullscreen && isClient) {
+    return createPortal(viewerBlock, document.body);
+  }
+  return viewerBlock;
 };
 
 export default LessonPdfViewer;
