@@ -11,7 +11,7 @@ export default function LessonNavigationBar({ topic, lessonTitle }: LessonNaviga
   return (
     <nav
       aria-label="breadcrumb"
-      className="bg-transparent backdrop-blur-sm border-b border-gray-400 py-3 mb-6"
+      className="bg-transparent backdrop-blur-sm border-b border-gray-200 py-3 mb-6"
       dir="rtl"
     >
       <ol className="flex items-center gap-1 text-sm select-none">
