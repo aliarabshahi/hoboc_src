@@ -9,7 +9,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="sticky top-0 z-49 w-full border-b bg-white text-sm shadow-sm">
+    <div className="sticky top-0 z-50 w-full border-b bg-white text-sm shadow-sm">
       <div
         className="container mx-auto flex items-center justify-between px-4 py-2 md:px-14"
         dir="rtl"

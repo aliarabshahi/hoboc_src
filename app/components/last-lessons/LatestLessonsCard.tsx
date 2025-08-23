@@ -27,7 +27,7 @@ export default function LatestLessonsCard({ lesson }: { lesson: CoursesLesson })
 
   return (
     <Link
-      href={`/courses/${getTopicSlug(lesson)}/lesson/${lesson.slug}`}
+      href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
       prefetch={false}
       className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc
                  flex flex-col justify-between transition hover:shadow-md 

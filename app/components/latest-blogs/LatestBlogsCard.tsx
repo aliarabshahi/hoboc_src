@@ -53,7 +53,7 @@ export default function LatestBlogsCard({ post }: { post: BlogPost }) {
       {/* Blog title */}
       <h3 className="mt-3 text-lg font-semibold text-white line-clamp-2 leading-7">
         <Link
-          href={`/blog/${post.topic}/${post.slug}`}
+          href={`/blog/${post.topic_slug}/${post.slug}`}
           className="hover:text-gray-200 transition-colors"
         >
           <span className="absolute inset-0" />
