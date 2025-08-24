@@ -20,7 +20,7 @@ export default function VisionTexts() {
       hoverColor: "hover:bg-cyan-100",
     },
     {
-      title: "همکاری با ما",
+      title: "شبکه متخصصان",
       link: "/join-us",
       icon: FaUsers,
       iconColor: "text-rose-500",
@@ -28,7 +28,7 @@ export default function VisionTexts() {
       hoverColor: "hover:bg-rose-100",
     },
     {
-      title: "سفارش پروژه",
+      title: "ثبت و سفارش پروژه",
       link: "/join-us",
       icon: FaLaptopCode,
       iconColor: "text-green-500",
