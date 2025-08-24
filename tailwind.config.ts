@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 
+/** TailwindCSS configuration for custom theme colors, z-index levels, and plugins */
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -18,13 +19,13 @@ const config: Config = {
       zIndex: {
         60: "60",
         70: "70",
-        999: "999", // for absolute top-layer, if needed
+        999: "999",
       },
     },
   },
   plugins: [
     require("daisyui"),
-    require("@tailwindcss/typography"), // for .prose classes
+    require("@tailwindcss/typography"),
   ],
 };
 

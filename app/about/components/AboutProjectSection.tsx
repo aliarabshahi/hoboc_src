@@ -1,6 +1,8 @@
 export default function AboutProjectSection() {
   return (
     <div className="space-y-12">
+      
+      {/* Section 1 — About Hubook */}
       <div className="bg-gradient-to-br from-[#1f9ece08] to-[#f477b810] dark:from-[#1f9ece15] dark:to-[#f477b815] p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-justify leading-7 text-gray-700 dark:text-gray-200">
         <h2 className="text-xl font-bold mb-4 text-[#1F9ECE]">هوبوک چیه اصلاً؟</h2>
         <p className="mb-4">
@@ -15,6 +17,7 @@ export default function AboutProjectSection() {
         </p>
       </div>
 
+      {/* Section 2 — Data team services */}
       <div className="bg-gradient-to-br from-[#1f9ece15] to-[#f477b820] dark:from-[#1f9ece20] dark:to-[#f477b825] p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-justify leading-7 text-gray-700 dark:text-gray-200">
         <h2 className="text-xl font-bold mb-4 text-[#1F9ECE]">نیاز به تیم دیتایی داری؟</h2>
         <p className="mb-4">

@@ -1,10 +1,10 @@
-
 // app/courses/components/CourseTopicsFilter.tsx
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { CoursesTopic } from "@/app/types/coursesType";
 
+/** Topics filter bar - lets users filter course list by topic */
 export default function CourseTopicsFilter({
   topics,
   selectedTopicSlug,
@@ -16,6 +16,7 @@ export default function CourseTopicsFilter({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // Handle topic selection and update query params
   const handleSelect = (slug: string) => {
     const params = new URLSearchParams(searchParams.toString());
     slug ? params.set("topic", slug) : params.delete("topic");
@@ -24,6 +25,7 @@ export default function CourseTopicsFilter({
 
   return (
     <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+      {/* "All topics" button */}
       <button
         onClick={() => handleSelect("")}
         className={`px-4 py-2 rounded-full font-medium transition ${
@@ -35,6 +37,7 @@ export default function CourseTopicsFilter({
         همه موضوعات
       </button>
 
+      {/* Individual topic buttons */}
       {topics.map((topic) => {
         const isActive = topic.slug === selectedTopicSlug;
         return (

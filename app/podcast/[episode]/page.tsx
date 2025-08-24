@@ -4,16 +4,19 @@ import EpisodeLeftColumn from "./components/EpisodeLeftColumn";
 import { getApiData } from "@/app/services/api/apiServerFetch";
 import { PodcastEpisode } from "../lib/episodes";
 
+/** Fetch single episode data and its reverse-order number in the list */
 async function fetchEpisodeAndNumber(id: string): Promise<{
   episode: PodcastEpisode;
   number: number;
 }> {
+  // Get all podcast episodes from API
   const { data: listData, error } = await getApiData("/podcast-episodes/");
 
   if (error || !listData) {
     notFound();
   }
 
+  // Normalize audio file structure
   const episodes: PodcastEpisode[] = (listData as PodcastEpisode[]).map((ep) => ({
     ...ep,
     audio: { ...ep.audio, src: ep.audio_file },
@@ -27,18 +30,19 @@ async function fetchEpisodeAndNumber(id: string): Promise<{
   }
 
   const episode = episodes[indexInArray];
-  const number = total - indexInArray;
+  const number = total - indexInArray; // Reverse order number
 
   return { episode, number };
 }
 
+/** Generate metadata for the episode page */
 export async function generateMetadata({ params }: { params: { episode: string } }) {
   const { episode } = await fetchEpisodeAndNumber(params.episode);
   return { title: episode.title };
 }
 
+/** Episode details page (left column layout) */
 export default async function EpisodePage({ params }: { params: { episode: string } }) {
   const { episode, number } = await fetchEpisodeAndNumber(params.episode);
-
   return <EpisodeLeftColumn episode={episode} number={number} />;
 }

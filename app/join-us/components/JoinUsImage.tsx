@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 
+/** Static illustration displayed alongside the Join Us form */
 export default function JoinUsImage() {
   return (
     <div className="w-full h-full flex items-start justify-start">

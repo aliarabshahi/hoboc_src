@@ -1,3 +1,4 @@
+// app/components/courses_detail/CoursesDetail.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -14,23 +15,22 @@ interface CoursesDetailProps {
   topics: CoursesTopic[];
 }
 
+/** Skeleton placeholder for loading course details */
 const SkeletonLoader = () => (
   <div className="flex flex-col gap-6" dir="rtl">
-    {/* Fake Header */}
+    {/* Fake header */}
     <div className="h-14 w-1/5 bg-gray-100 rounded-lg animate-pulse" />
-
-    {/* Main Flex Container */}
+    {/* Main flex container */}
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Content block */}
       <div className="lg:w-2/3 h-[200px] bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
-
       {/* Image block */}
       <div className="lg:w-1/3 h-[200px] aspect-video bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
     </div>
-
   </div>
 );
 
+/** Shown when no topic is selected */
 const NoTopicSelected = () => (
   <div className="flex flex-col items-center justify-center py-12">
     <div className="w-32 h-32 bg-gray-100 rounded-full mb-4"></div>
@@ -38,6 +38,7 @@ const NoTopicSelected = () => (
   </div>
 );
 
+/** Shown when no course is found for the selected topic */
 const CourseNotFound = () => (
   <div className="flex flex-col items-center justify-center py-12">
     <div className="w-32 h-32 bg-gray-100 rounded-full mb-4"></div>
@@ -45,31 +46,34 @@ const CourseNotFound = () => (
   </div>
 );
 
+/** Container for course details with topic selector and dynamic data loading */
 const CoursesDetail = ({ initialTopic, topics }: CoursesDetailProps) => {
   const { activeTopic, setActiveTopic } = useTopicStore();
   const [courseData, setCourseData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Initialize store's activeTopic from initial server data if available
   useEffect(() => {
     if (initialTopic && !activeTopic) {
       setActiveTopic(initialTopic);
     }
   }, [initialTopic, activeTopic, setActiveTopic]);
 
+  // Fetch course lessons for the selected topic
   useEffect(() => {
     const fetchData = async () => {
       if (!activeTopic) {
         setLoading(false);
         return;
       }
-      
+
       setLoading(true);
       setError(null);
 
       try {
-        const data = await fetchApiData<any>("course-lessons", { 
-          'topic-slug': activeTopic.slug 
+        const data = await fetchApiData<any>("course-lessons", {
+          "topic-slug": activeTopic.slug,
         });
         setCourseData(data.results[0]);
       } catch (err) {
@@ -84,8 +88,10 @@ const CoursesDetail = ({ initialTopic, topics }: CoursesDetailProps) => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      {/* Topic selector bar */}
       <CourseTopicList initialTopics={topics} />
 
+      {/* Conditional rendering: loader → error → no topic → course details */}
       {loading ? (
         <SkeletonLoader />
       ) : error ? (

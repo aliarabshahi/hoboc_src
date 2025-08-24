@@ -1,8 +1,10 @@
+// app/components/inspire/InspiringQuote.tsx
 "use client";
 
 import InspiringQuoteBackground from "./InspiringQuoteBackground";
 import InspiringQuoteCard from "./InspiringQuoteCard";
 
+/** Container for the inspiring quote section with background and text card */
 export default function InspiringQuote() {
   return (
     <div className="lg:pr-10" dir="rtl">

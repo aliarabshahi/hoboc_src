@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { ProjectOrderRequest } from "@/app/types/formsType";
 import { postApiDataWithFile } from "@/app/services/api/apiClientPostDataWithFile";
@@ -22,7 +23,10 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+/** Max upload size in MB */
 const MAX_SIZE_MB = 20;
+
+/** Allowed file MIME types */
 const ALLOWED_TYPES = [
   "application/pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -34,6 +38,7 @@ const ALLOWED_TYPES = [
   "image/png",
 ];
 
+/** Project order form — collects project details and file uploads for submission */
 export default function ProjectOrderForm() {
   const [projectOrder, setProjectOrder] = useState<
     Omit<ProjectOrderRequest, "files">
@@ -50,10 +55,11 @@ export default function ProjectOrderForm() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  /** Validate added files, update state if allowed */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
 
-    // Validate files
+    // Type & size validation
     for (const file of newFiles) {
       if (!ALLOWED_TYPES.includes(file.type)) {
         setMessage(
@@ -69,7 +75,7 @@ export default function ProjectOrderForm() {
       }
     }
 
-    // Calculate total size
+    // Check total size across all files
     const totalSize = [...files, ...newFiles].reduce(
       (acc, file) => acc + file.size,
       0
@@ -85,10 +91,12 @@ export default function ProjectOrderForm() {
     setMessage("");
   };
 
+  /** Remove a file by index */
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  /** Return matching file type icon */
   const getFileIcon = (type: string) => {
     if (type === "application/pdf")
       return <FaFilePdf className="text-red-500" />;
@@ -107,6 +115,7 @@ export default function ProjectOrderForm() {
     return <FaFile className="text-gray-400" />;
   };
 
+  /** Submit form with project data and attached files */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -115,17 +124,11 @@ export default function ProjectOrderForm() {
     Object.entries(projectOrder).forEach(([key, value]) => {
       if (value) formData.append(key, value);
     });
-
-    files.forEach((file) => {
-      formData.append("files", file);
-    });
+    files.forEach((file) => formData.append("files", file));
 
     try {
       const { error } = await postApiDataWithFile("/project-orders/", formData);
-
-      if (error) {
-        throw new Error(error);
-      }
+      if (error) throw new Error(error);
 
       setMessage("سفارش شما با موفقیت ثبت شد");
       setProjectOrder({
@@ -143,6 +146,7 @@ export default function ProjectOrderForm() {
       setLoading(false);
     }
   };
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -150,6 +154,7 @@ export default function ProjectOrderForm() {
       transition={{ duration: 0.5 }}
       className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto"
     >
+      {/* Heading */}
       <div className="mb-8 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">
           سفارش پروژه
@@ -159,6 +164,7 @@ export default function ProjectOrderForm() {
         </p>
       </div>
 
+      {/* Main form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Full Name */}
         <FormField
@@ -191,7 +197,7 @@ export default function ProjectOrderForm() {
           onChange={(v) =>
             setProjectOrder({ ...projectOrder, phone_number: v })
           }
-          required={true}
+          required
           pattern="^0.*$"
           customInvalidMessage="The Phone Number must start with 0 And in English Please"
         />
@@ -238,7 +244,7 @@ export default function ProjectOrderForm() {
           onChange={(v) => setProjectOrder({ ...projectOrder, deadline: v })}
         />
 
-        {/* File Upload Section */}
+        {/* File Upload */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             فایل‌های پروژه (اختیاری)
@@ -258,13 +264,13 @@ export default function ProjectOrderForm() {
             <input
               type="file"
               multiple
-              accept=".pdf,.docx,.txt,.csv,.json,.zip,.jpg,.png" // 👈 Add this
+              accept=".pdf,.docx,.txt,.csv,.json,.zip,.jpg,.png"
               className="hidden"
               onChange={handleFileChange}
             />
           </label>
 
-          {/* File List */}
+          {/* Uploaded file list */}
           {files.length > 0 && (
             <div className="mt-4 space-y-2">
               {files.map((file, index) => (
@@ -295,22 +301,22 @@ export default function ProjectOrderForm() {
         </div>
 
         {/* Submit */}
-<button
-  type="submit"
-  disabled={loading}
-  className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] hover:from-[#1a8abc] hover:to-[#e066a6] text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
->
-  {loading ? (
-    <>
-      <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-      در حال ارسال...
-    </>
-  ) : (
-    "ارسال سفارش"
-  )}
-</button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] hover:from-[#1a8abc] hover:to-[#e066a6] text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <>
+              <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              در حال ارسال...
+            </>
+          ) : (
+            "ارسال سفارش"
+          )}
+        </button>
 
-        {/* Feedback Message */}
+        {/* Feedback */}
         {message && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -333,6 +339,8 @@ export default function ProjectOrderForm() {
     </motion.section>
   );
 }
+
+/** Labeled text input with icon and optional validation */
 function FormField({
   label,
   icon,

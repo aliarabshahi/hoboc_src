@@ -10,32 +10,38 @@ interface BlogSidebarProps {
   currentPostSlug: string;
 }
 
+/**
+ * BlogSidebar
+ * Displays blog post meta-information, cover image, and optional video player.
+ * Intended for use alongside the main blog post content (PDF / text).
+ */
 export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
   return (
     <div className="space-y-4">
-
-
-      {/* Post Info Card */}
+      {/* === Post Info Card === */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
-        {/* Title */}
+        {/* --- Post Title --- */}
         <h1 className="text-2xl font-bold text-gray-800">{postData.title}</h1>
 
-        {/* Description */}
+        {/* --- Post Short Description (if provided) --- */}
         {postData.description && (
           <p className="text-gray-500 leading-relaxed text-[15px]">
             {postData.description}
           </p>
         )}
 
-        {/* Metadata Section */}
+        {/* --- Metadata (Author, Date, Tags) --- */}
         <div className="space-y-3 pt-2 border-t border-gray-100">
-          {/* Author */}
+          {/* Author information */}
           {postData.writer && (
             <div className="flex items-center gap-3">
+              {/* Label */}
               <div className="flex items-center gap-2 text-gray-600 text-sm">
                 <FiUser className="text-gray-500" size={14} />
                 <span>نویسنده:</span>
               </div>
+
+              {/* Author avatar + name */}
               <div className="flex items-center gap-2">
                 {postData.writer.profile_picture && (
                   <Image
@@ -54,7 +60,7 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
             </div>
           )}
 
-          {/* Date */}
+          {/* Publication date */}
           <div className="flex items-center gap-2 text-gray-600 text-sm">
             <FiCalendar className="text-gray-500" size={14} />
             <span>تاریخ انتشار:</span>
@@ -63,13 +69,16 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
             </span>
           </div>
 
-          {/* Tags */}
+          {/* Tag list (clickable links to tag-filtered topic page) */}
           {postData.tags?.length > 0 && (
             <div className="pt-2">
+              {/* Tag label */}
               <div className="flex items-center text-gray-600 text-sm gap-2">
                 <FiBookmark size={14} className="text-gray-500" />
                 <span>برچسب‌ها:</span>
               </div>
+
+              {/* Tag links (LTR for consistency in tag rendering) */}
               <div className="flex flex-wrap gap-2 mt-2" dir="ltr">
                 {postData.tags.map((tag) => (
                   <Link
@@ -85,7 +94,8 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
           )}
         </div>
       </div>
-      {/* Cover Image - Now square */}
+
+      {/* === Cover Image (shown as square aspect ratio) === */}
       {postData.cover_image && (
         <div className="bg-white p-0 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="relative w-full aspect-square">
@@ -100,7 +110,8 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
           </div>
         </div>
       )}
-      {/* Video Section */}
+
+      {/* === Video Section (only if post has video file or URL) === */}
       {(postData.video_url || postData.video_file) && (
         <BlogVideoPlayer postData={postData} />
       )}

@@ -17,6 +17,7 @@ export default function BlogPage({
   const [topics, setTopics] = useState<BlogTopic[]>([]);
   const [loadingTopics, setLoadingTopics] = useState(true);
 
+  // Fetch list of blog topics on first render
   useEffect(() => {
     const fetchTopics = async () => {
       try {
@@ -33,28 +34,30 @@ export default function BlogPage({
     fetchTopics();
   }, []);
 
-  // Find the currently selected topic object
+  // Identify the currently selected topic from the fetched list
   const selectedTopic = topics.find((t) => t.slug === selectedTopicSlug);
 
-  // Build the title just like in CoursesPage
+  // Build page title based on selected topic (fallback to general blog title)
   const title = selectedTopic
     ? `مطالب بلاگ ${selectedTopic.title || selectedTopic.title || ""}`
     : "مطالب بلاگ";
 
+  // Blog description (Persian UI text preserved)
   const description =
     "بلاگ تخصصی علم داده، مهندسی داده و تحلیل داده، کاربردی برای بازار کار و دنیای واقعی";
 
   return (
     <main className="min-h-screen pb-16">
-      {/* Blog Header */}
+      {/* Blog page header */}
       <BlogHeader title={title} description={description} />
 
-      {/* Topics dropdown */}
+      {/* Blog topic filter dropdown */}
       <section
         className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-8 text-center"
         dir="rtl"
       >
         {loadingTopics ? (
+          // Skeleton loader for topics dropdown
           <div className="h-10 w-48 bg-gray-200 rounded-md animate-pulse mx-auto" />
         ) : (
           <BlogTopicsDropdown
@@ -64,7 +67,7 @@ export default function BlogPage({
         )}
       </section>
 
-      {/* Blog List */}
+      {/* Blog list/grid */}
       <section
         className="relative container mx-auto px-4 md:px-8 lg:px-20 mt-10"
         dir="rtl"

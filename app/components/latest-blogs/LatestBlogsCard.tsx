@@ -1,3 +1,4 @@
+// app/components/latest-blogs/LatestBlogsCard.tsx
 "use client";
 
 import Link from "next/link";
@@ -5,18 +6,18 @@ import Image from "next/image";
 import { BlogPost } from "@/app/types/blogType";
 import { FiCalendar, FiUser } from "react-icons/fi";
 
-/** Single blog card with thumbnail, meta, and title */
+/** Card showing blog post with image, metadata, and title */
 export default function LatestBlogsCard({ post }: { post: BlogPost }) {
   return (
     <article
       dir="rtl"
-      className="relative isolate flex flex-col justify-end 
-                 overflow-hidden rounded-2xl bg-gray-900 
+      className="relative isolate flex flex-col justify-end
+                 overflow-hidden rounded-2xl bg-gray-900
                  px-6 pb-6 pt-64 sm:pt-48 lg:pt-64
                  shadow-lg hover:shadow-xl transition
                  h-[340px]"
     >
-      {/* Cover image or fallback color */}
+      {/* Cover image or gray fallback */}
       {post.cover_image ? (
         <Image
           src={post.cover_image}
@@ -30,13 +31,11 @@ export default function LatestBlogsCard({ post }: { post: BlogPost }) {
         <div className="absolute inset-0 -z-10 size-full bg-gray-700" />
       )}
 
-      {/* Dark gradient overlay */}
+      {/* Dark overlay + ring */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
-
-      {/* Light inner ring */}
       <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
 
-      {/* Meta: author & date */}
+      {/* Metadata: author + date */}
       <div className="flex flex-wrap items-center gap-x-4 text-sm text-gray-300">
         <div className="flex items-center gap-x-1">
           <FiUser size={14} className="text-gray-300" />

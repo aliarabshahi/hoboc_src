@@ -1,7 +1,7 @@
-// stores/topicStore.ts
 import { create } from "zustand";
 import { CoursesTopic } from "@/app/types/coursesType";
 
+/** Global store to track and update the currently active topic */
 interface TopicStore {
   activeTopic: CoursesTopic | null;
   setActiveTopic: (topic: CoursesTopic | null) => void;

@@ -1,13 +1,16 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
+/** Client-side hook to periodically check backend health status */
 export default function useHealthCheck(intervalMs = 30000) {
   const [healthy, setHealthy] = useState(true);
 
+  // Perform one health check
   async function check() {
     try {
-      const res = await fetch(`http://localhost/hoboc/api/health/`, {
-        cache: "no-store"
+      const res = await fetch("http://localhost/hoboc/api/health/", {
+        cache: "no-store", // Always fetch fresh health status
       });
       setHealthy(res.ok);
     } catch {
@@ -16,9 +19,9 @@ export default function useHealthCheck(intervalMs = 30000) {
   }
 
   useEffect(() => {
-    check();
+    check(); // Run on mount
     const id = setInterval(check, intervalMs);
-    return () => clearInterval(id);
+    return () => clearInterval(id); // Clean up interval on unmount
   }, []);
 
   return healthy;

@@ -1,15 +1,16 @@
-import Link from 'next/link';
-import { PodcastEpisode } from '../../lib/episodes';
-import { EpisodePlayButton } from '../EpisodePlayButton';
-import { Container } from '../Container';
-import { formatJalaliDate, toPersianDigits } from '../../lib/date-utils';
-import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from 'react-icons/hi2';
+import Link from "next/link";
+import { PodcastEpisode } from "../../lib/episodes";
+import { EpisodePlayButton } from "../EpisodePlayButton";
+import { Container } from "../Container";
+import { formatJalaliDate, toPersianDigits } from "../../lib/date-utils";
+import { HiMiniPause as PauseIcon, HiMiniPlay as PlayIcon } from "react-icons/hi2";
 
 interface EpisodeEntryProps {
   episode: PodcastEpisode;
   index: number;
 }
 
+/** Single podcast episode entry with date, title, description, and playback controls */
 export default function EpisodeEntry({ episode, index }: EpisodeEntryProps) {
   const jalaliDate = formatJalaliDate(episode.published_at);
 
@@ -20,10 +21,10 @@ export default function EpisodeEntry({ episode, index }: EpisodeEntryProps) {
     >
       <Container>
         <div className="flex flex-col items-start">
-          {/* Jalali Date above title */}
+          {/* Jalali date above title */}
           <div className="font-mono text-sm text-slate-500">{jalaliDate}</div>
 
-          {/* Title with index before it */}
+          {/* Title with Persian index prefix */}
           <div className="flex items-center gap-3 mt-1">
             <span className="font-bold text-slate-900 font-mono">
               {toPersianDigits(index.toString().padStart(2, "0"))}
@@ -36,12 +37,12 @@ export default function EpisodeEntry({ episode, index }: EpisodeEntryProps) {
             </h2>
           </div>
 
-          {/* Description */}
+          {/* Episode description */}
           <p className="mt-2 text-base/7 text-slate-700">
             {episode.description}
           </p>
 
-          {/* Controls */}
+          {/* Playback + notes controls */}
           <div className="mt-4 flex items-center gap-4">
             <EpisodePlayButton
               episode={episode}

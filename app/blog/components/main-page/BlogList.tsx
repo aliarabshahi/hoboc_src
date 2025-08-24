@@ -21,9 +21,11 @@ export default function BlogList({
   const [currentPage, setCurrentPage] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  // --- Fetch topics and posts whenever the selected topic changes ---
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch available blog topics
         const topicsResponse = await getApiData("/blog-topics/?page_size=30");
         const fetchedTopics: BlogTopic[] =
           Array.isArray(topicsResponse.data)
@@ -31,13 +33,14 @@ export default function BlogList({
             : topicsResponse.data?.results || [];
         setTopics(fetchedTopics);
 
+        // Fetch blog posts filtered by selected topic (if any)
         const postsResponse = await fetchApiData<BlogPost>(
           "blog-posts",
           selectedTopicSlug ? { "topic-slug": selectedTopicSlug } : undefined
         );
         setPosts(postsResponse.results);
       } catch (err) {
-        setError("خطا در دریافت اطلاعات بلاگ");
+        setError("Error fetching blog data");
       } finally {
         setLoading(false);
       }
@@ -46,6 +49,7 @@ export default function BlogList({
     fetchData();
   }, [selectedTopicSlug]);
 
+  // --- Pagination setup ---
   const totalPages = Math.ceil(posts.length / pageSize);
   const currentPosts = posts.slice(
     currentPage * pageSize,
@@ -57,6 +61,7 @@ export default function BlogList({
     setCurrentPage(0);
   }, [selectedTopicSlug]);
 
+  // --- Loading state ---
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -67,10 +72,12 @@ export default function BlogList({
     );
   }
 
+  // --- Error state ---
   if (error) {
     return <div className="text-red-500 text-center mt-16">{error}</div>;
   }
 
+  // --- No posts found state (UI text in Persian left as-is) ---
   if (posts.length === 0) {
     return (
       <div className="text-gray-500 text-center mt-16">
@@ -79,14 +86,17 @@ export default function BlogList({
     );
   }
 
+  // --- Main list and pagination ---
   return (
     <>
+      {/* Blog post cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentPosts.map((post) => (
           <BlogPostCard key={post.id} post={post} />
         ))}
       </div>
 
+      {/* Pagination controls */}
       {totalPages > 1 && (
         <BlogPagination
           currentPage={currentPage}

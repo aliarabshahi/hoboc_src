@@ -1,3 +1,4 @@
+// app/components/courses_detail/CoursesDetailImage.tsx
 "use client";
 
 import Image from "next/image";
@@ -7,7 +8,9 @@ interface CoursesDetailImageProps {
   topic: CoursesTopic | null;
 }
 
+/** Displays the topic's main image with optional overlay or a fallback box */
 const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
+  // Fallback image area when there is no selected topic
   if (!topic) {
     return (
       <div
@@ -19,6 +22,7 @@ const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
     );
   }
 
+  // Main topic image with gradient overlay
   return (
     <div
       className="relative aspect-video rounded-box overflow-hidden shadow-xl flex-shrink-0"
@@ -33,6 +37,8 @@ const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
         unoptimized={process.env.NODE_ENV !== "production"}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+      {/* Optional bottom overlay content (currently unused) */}
       <div className="absolute bottom-0 right-0 p-6">
         {/* <span className="badge badge-accent mb-2">متوسط</span> */}
         {/* <h2 className="text-2xl pr-6 font-bold text-white">{topic.title}</h2> */}

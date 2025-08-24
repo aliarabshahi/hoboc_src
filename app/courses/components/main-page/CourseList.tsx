@@ -7,6 +7,7 @@ import CourseCard from "../CourseCard";
 import CourseListSkeletonCard from "./CourseListSkeletonCard";
 import CoursePagination from "./CoursePagination";
 
+/** Displays a paginated list of course lessons with optional topic filtering */
 export default function CourseList({
   selectedTopicSlug,
   pageSize,
@@ -19,6 +20,7 @@ export default function CourseList({
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
 
+  /** Fetch lessons from API whenever topic changes */
   useEffect(() => {
     const fetchLessons = async () => {
       setLoading(true);
@@ -34,7 +36,7 @@ export default function CourseList({
         setLessons(Array.isArray(res.data) ? res.data : res.data?.results || []);
         setError(null);
       } catch {
-        setError("خطا در دریافت اطلاعات");
+        setError("خطا در دریافت اطلاعات"); // Persian UI text preserved
       } finally {
         setLoading(false);
       }
@@ -42,7 +44,7 @@ export default function CourseList({
     fetchLessons();
   }, [selectedTopicSlug]);
 
-  // Reset page index when topic changes
+  // Reset pagination when topic changes
   useEffect(() => {
     setCurrentPage(0);
   }, [selectedTopicSlug]);
@@ -53,6 +55,7 @@ export default function CourseList({
     currentPage * pageSize + pageSize
   );
 
+  // Loading state - show placeholder skeleton cards
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -63,10 +66,12 @@ export default function CourseList({
     );
   }
 
+  // Error state - show Persian error message
   if (error) {
     return <div className="text-red-500 text-center mt-16">{error}</div>;
   }
 
+  // Empty state - show Persian message
   if (lessons.length === 0) {
     return (
       <div className="text-gray-500 text-center mt-10">
@@ -77,6 +82,7 @@ export default function CourseList({
 
   return (
     <>
+      {/* Lesson cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentLessons.map((lesson, index) => (
           <CourseCard
@@ -88,6 +94,7 @@ export default function CourseList({
         ))}
       </div>
 
+      {/* Pagination controls */}
       {totalPages > 1 && (
         <CoursePagination
           currentPage={currentPage}

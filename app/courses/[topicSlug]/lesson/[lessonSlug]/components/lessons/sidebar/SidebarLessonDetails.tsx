@@ -1,11 +1,13 @@
 import { CoursesLesson } from "@/app/types/coursesType";
 import { FiClock, FiUser, FiBookmark } from "react-icons/fi";
 
+/** Lesson details section for the sidebar — shows title, description, instructor, duration, and tags */
 export default function SidebarLessonDetails({
   lessonData,
 }: {
   lessonData: CoursesLesson;
 }) {
+  // Format duration into Persian hours/minutes string
   const durationMinutes = lessonData.duration || 0;
   const hours = Math.floor(durationMinutes / 60);
   const minutes = durationMinutes % 60;

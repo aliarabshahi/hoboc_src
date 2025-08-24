@@ -7,6 +7,7 @@ interface LessonNavigationBarProps {
   lessonTitle: string;
 }
 
+/** Breadcrumb-style navigation for course lessons */
 export default function LessonNavigationBar({ topic, lessonTitle }: LessonNavigationBarProps) {
   return (
     <nav
@@ -15,7 +16,7 @@ export default function LessonNavigationBar({ topic, lessonTitle }: LessonNaviga
       dir="rtl"
     >
       <ol className="flex items-center gap-1 text-sm select-none">
-        {/* Root link */}
+        {/* Link to courses root */}
         <li>
           <Link
             href="/courses"
@@ -25,7 +26,7 @@ export default function LessonNavigationBar({ topic, lessonTitle }: LessonNaviga
           </Link>
         </li>
 
-        {/* Topic link */}
+        {/* Link to course topic */}
         <li className="flex items-center">
           <FaChevronLeft className="w-3 h-3 mx-1 text-gray-400" />
           <Link
@@ -36,7 +37,7 @@ export default function LessonNavigationBar({ topic, lessonTitle }: LessonNaviga
           </Link>
         </li>
 
-        {/* Current lesson (active) */}
+        {/* Current lesson title (active) */}
         <li className="flex items-center">
           <FaChevronLeft className="w-3 h-3 mx-1 text-gray-400" />
           <span

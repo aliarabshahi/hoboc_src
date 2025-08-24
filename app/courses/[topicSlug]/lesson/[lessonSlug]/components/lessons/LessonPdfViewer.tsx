@@ -3,111 +3,98 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Document, Page, pdfjs } from "react-pdf";
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
 import { Download, Maximize, Minimize, ZoomIn, ZoomOut } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf/pdf.worker.min.js';
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf/pdf.worker.min.js";
 
 interface PdfViewerProps {
   pdfUrl: string;
 }
 
+/** PDF viewer for lesson content with fullscreen, zoom, and download */
 const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
+  // Pages
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
+
+  // Fullscreen state and container size
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const originalWidthRef = useRef<number>(0);
+
+  // Device detection
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Zoom control
   const [scale, setScale] = useState(1);
   const minScale = 0.5;
   const maxScale = 2;
   const scaleStep = 0.25;
+
+  // Hydration-safe check
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  // Ensure rendering only after mount
+  useEffect(() => setIsClient(true), []);
 
+  // Detect device and manage width
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
+    const checkIfMobile = () => setIsMobile(window.innerWidth < 768);
     const updateWidth = () => {
       if (containerRef.current) {
         const width = containerRef.current.offsetWidth;
         setContainerWidth(width);
-        if (!isFullscreen) {
-          originalWidthRef.current = width;
-        }
+        if (!isFullscreen) originalWidthRef.current = width;
       }
     };
 
     checkIfMobile();
     updateWidth();
-
-    const handleResize = () => {
+    window.addEventListener("resize", () => {
       checkIfMobile();
       updateWidth();
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    });
+    return () =>
+      window.removeEventListener("resize", () => {
+        checkIfMobile();
+        updateWidth();
+      });
   }, [isFullscreen]);
 
+  // Prevent body scroll in fullscreen
   useEffect(() => {
-    if (isFullscreen) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
-    }
+    document.body.style.overflow = isFullscreen ? "hidden" : "unset";
+    document.documentElement.style.overflow = isFullscreen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
       document.documentElement.style.overflow = "unset";
     };
   }, [isFullscreen]);
 
+  // --- PDF controls ---
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
     setPageNumber(1);
   };
-
-  const scrollToTop = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
+  const scrollToTop = () =>
+    containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   const goToPrevPage = () => {
-    setPageNumber((prev) => Math.max(prev - 1, 1));
+    setPageNumber((p) => Math.max(p - 1, 1));
     scrollToTop();
   };
-
   const goToNextPage = () => {
     if (numPages) {
-      setPageNumber((prev) => Math.min(prev + 1, numPages));
+      setPageNumber((p) => Math.min(p + 1, numPages));
       scrollToTop();
     }
   };
-
-  const zoomIn = () => {
-    setScale((prev) => Math.min(prev + scaleStep, maxScale));
-  };
-
-  const zoomOut = () => {
-    setScale((prev) => Math.max(prev - scaleStep, minScale));
-  };
-
-  const resetZoom = () => {
-    setScale(1);
-  };
-
+  const zoomIn = () => setScale((s) => Math.min(s + scaleStep, maxScale));
+  const zoomOut = () => setScale((s) => Math.max(s - scaleStep, minScale));
+  const resetZoom = () => setScale(1);
   const downloadPdf = () => {
     const link = document.createElement("a");
     link.href = pdfUrl;
@@ -116,32 +103,38 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     link.click();
     document.body.removeChild(link);
   };
-
   const toggleFullscreen = () => {
-    if (!isFullscreen) {
+    if (!isFullscreen)
       originalWidthRef.current = containerRef.current?.offsetWidth || 0;
-    }
     setIsFullscreen(!isFullscreen);
     if (isFullscreen) setScale(1);
   };
 
+  // Loading states
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center h-full py-16">
       <FaSpinner className="animate-spin text-4xl text-hoboc" />
     </div>
   );
-
   const PageLoadingSpinner = () => (
     <div className="flex items-center justify-center h-full py-16">
       <FaSpinner className="animate-spin text-3xl text-hoboc" />
     </div>
   );
 
+  // Main viewer
   const viewerBlock = (
-    <div className={`${isFullscreen ? "fixed inset-0 z-999 bg-white" : "border rounded-lg shadow-lg overflow-hidden"} flex flex-col h-full`}>
-      {/* Top Bar */}
+    <div
+      className={`${
+        isFullscreen
+          ? "fixed inset-0 z-999 bg-white"
+          : "border rounded-lg shadow-lg overflow-hidden"
+      } flex flex-col h-full`}
+    >
+      {/* Toolbar */}
       <div className="bg-gray-800 border-gray-700 flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
+          {/* Download */}
           <button
             onClick={downloadPdf}
             className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
@@ -151,6 +144,7 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
           </button>
         </div>
 
+        {/* Zoom + fullscreen controls */}
         <div className="flex items-center gap-2">
           {isFullscreen && (
             <>
@@ -185,19 +179,36 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
           <button
             onClick={toggleFullscreen}
             className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
-            title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
+            title={
+              isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"
+            }
           >
-            {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
+            {isFullscreen ? (
+              <Minimize size={isMobile ? 16 : 18} />
+            ) : (
+              <Maximize size={isMobile ? 16 : 18} />
+            )}
           </button>
         </div>
       </div>
 
-      {/* PDF Viewer */}
-      <div ref={containerRef} className="flex-1 overflow-auto bg-white w-full flex justify-center">
-        <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess} loading={<LoadingSpinner />}>
+      {/* PDF content */}
+      <div
+        ref={containerRef}
+        className="flex-1 overflow-auto bg-white w-full flex justify-center"
+      >
+        <Document
+          file={pdfUrl}
+          onLoadSuccess={onDocumentLoadSuccess}
+          loading={<LoadingSpinner />}
+        >
           <Page
             pageNumber={pageNumber}
-            width={isFullscreen ? containerWidth * scale : originalWidthRef.current}
+            width={
+              isFullscreen
+                ? containerWidth * scale
+                : originalWidthRef.current
+            }
             renderAnnotationLayer={false}
             renderTextLayer={true}
             loading={<PageLoadingSpinner />}
@@ -205,12 +216,14 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         </Document>
       </div>
 
-      {/* Bottom Navigation */}
+      {/* Bottom navigation */}
       <div className="bg-gray-800 border-t border-gray-700 flex items-center justify-between p-3">
         <button
           onClick={goToPrevPage}
           disabled={pageNumber <= 1}
-          className={`${isMobile ? "px-3 py-1 text-sm" : "px-5 py-2 text-base"} rounded-md font-medium transition-colors ${
+          className={`${
+            isMobile ? "px-3 py-1 text-sm" : "px-5 py-2 text-base"
+          } rounded-md font-medium transition-colors ${
             pageNumber <= 1
               ? "bg-gray-700 text-gray-400 cursor-not-allowed"
               : "bg-hoboc text-white hover:bg-hoboc-dark"
@@ -219,14 +232,20 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
           قبلی
         </button>
 
-        <span className={`${isMobile ? "text-xs" : "text-sm"} font-medium text-gray-200`}>
+        <span
+          className={`${
+            isMobile ? "text-xs" : "text-sm"
+          } font-medium text-gray-200`}
+        >
           صفحه {pageNumber} از {numPages || "--"}
         </span>
 
         <button
           onClick={goToNextPage}
           disabled={!numPages || pageNumber >= numPages}
-          className={`${isMobile ? "px-3 py-1 text-sm" : "px-5 py-2 text-base"} rounded-md font-medium transition-colors ${
+          className={`${
+            isMobile ? "px-3 py-1 text-sm" : "px-5 py-2 text-base"
+          } rounded-md font-medium transition-colors ${
             !numPages || pageNumber >= numPages
               ? "bg-gray-700 text-gray-400 cursor-not-allowed"
               : "bg-hoboc text-white hover:bg-hoboc-dark"
@@ -238,6 +257,7 @@ const LessonPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     </div>
   );
 
+  // Render fullscreen in portal
   if (isFullscreen && isClient) {
     return createPortal(viewerBlock, document.body);
   }

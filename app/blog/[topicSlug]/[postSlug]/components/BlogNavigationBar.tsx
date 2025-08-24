@@ -7,6 +7,7 @@ interface BlogNavigationBarProps {
   postTitle: string;
 }
 
+// Breadcrumb-style navigation bar for blog post pages (RTL layout)
 export default function BlogNavigationBar({ topic, postTitle }: BlogNavigationBarProps) {
   return (
     <nav
@@ -15,7 +16,7 @@ export default function BlogNavigationBar({ topic, postTitle }: BlogNavigationBa
       dir="rtl"
     >
       <ol className="flex items-center gap-1 text-sm select-none">
-        {/* Root link */}
+        {/* === Root link to the main blog page === */}
         <li>
           <Link
             href="/blog"
@@ -25,8 +26,9 @@ export default function BlogNavigationBar({ topic, postTitle }: BlogNavigationBa
           </Link>
         </li>
 
-        {/* Topic link */}
+        {/* === Link to the topic’s blog listing page === */}
         <li className="flex items-center">
+          {/* Chevron icon separator */}
           <FaChevronLeft className="w-3 h-3 mx-1 text-gray-400" />
           <Link
             href={`/blog/${topic.slug}`}
@@ -36,11 +38,12 @@ export default function BlogNavigationBar({ topic, postTitle }: BlogNavigationBa
           </Link>
         </li>
 
-        {/* Current post (active) */}
+        {/* === Current post title (active breadcrumb item) === */}
         <li className="flex items-center">
+          {/* Chevron icon separator */}
           <FaChevronLeft className="w-3 h-3 mx-1 text-gray-400" />
           <span
-            title={postTitle} // Shows full title on hover
+            title={postTitle} // Shows full title on hover for truncated text
             className="truncate max-w-[200px] font-bold text-hoboc-dark"
           >
             {postTitle}

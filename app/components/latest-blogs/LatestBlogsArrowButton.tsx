@@ -1,8 +1,9 @@
+// app/components/latest-blogs/LatestBlogsArrowButton.tsx
 "use client";
 
 import { ReactNode } from "react";
 
-/** Generic navigation arrow button for blog carousel */
+/** Carousel navigation arrow button for latest blogs section */
 export default function LatestBlogsArrowButton({
   onClick,
   icon,
@@ -23,7 +24,7 @@ export default function LatestBlogsArrowButton({
   );
 }
 
-/** Skeleton version for arrow button during loading */
+/** Skeleton placeholder for arrow buttons while loading */
 export function LatestBlogsSkeletonArrowButton() {
   return (
     <div className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse">

@@ -1,3 +1,4 @@
+// app/components/courses/CourseTopicList.tsx
 "use client";
 
 import { useTopicStore } from "@/app/stores/topicStore";
@@ -10,6 +11,7 @@ interface CourseTopicListProps {
   initialTopics: CoursesTopic[];
 }
 
+/** Horizontal list of course topics with active state and optional API fetch */
 const CourseTopicList = ({ initialTopics }: CourseTopicListProps) => {
   const { activeTopic, setActiveTopic } = useTopicStore();
   const [topics, setTopics] = useState<CoursesTopic[]>(initialTopics || []);
@@ -17,7 +19,7 @@ const CourseTopicList = ({ initialTopics }: CourseTopicListProps) => {
   const [isLoading, setIsLoading] = useState(!initialTopics?.length);
 
   useEffect(() => {
-    // Only fetch if we didn't get initial data from server
+    // Skip fetch if server already provided initial data
     if (initialTopics?.length > 0) return;
 
     const fetchData = async () => {
@@ -31,11 +33,12 @@ const CourseTopicList = ({ initialTopics }: CourseTopicListProps) => {
           const topicsData = data as CoursesTopic[];
           setTopics(topicsData);
 
+          // Default select the first topic
           if (topicsData.length > 0 && !activeTopic) {
             setActiveTopic(topicsData[0]);
           }
         }
-      } catch (err) {
+      } catch {
         setError("Failed to fetch topics");
       } finally {
         setIsLoading(false);
@@ -45,24 +48,29 @@ const CourseTopicList = ({ initialTopics }: CourseTopicListProps) => {
     fetchData();
   }, [setActiveTopic, activeTopic, initialTopics]);
 
+  // Handle selecting a new active topic
   const handleTopicClick = (topic: CoursesTopic) => {
     if (activeTopic?.slug !== topic.slug) {
       setActiveTopic(topic);
     }
   };
 
+  // Loading state
   if (isLoading) {
     return <div className="flex justify-center py-4">Loading topics...</div>;
   }
 
+  // API error state
   if (error) {
     return <div className="text-red-500 py-4">{error}</div>;
   }
 
+  // Empty list state
   if (!topics.length) {
     return <div className="py-4">No topics available</div>;
   }
 
+  // Render horizontal list of topics
   return (
     <div
       className="pt-3 pb-5 flex justify-center items-center gap-8 overflow-x-auto px-4"

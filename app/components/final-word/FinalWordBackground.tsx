@@ -1,6 +1,7 @@
+// app/components/final-word/FinalWordBackground.tsx
 "use client";
 
-// Decorative blurred gradient blob for the bottom of the section
+/** Decorative blurred gradient blob at the bottom of the section */
 export default function FinalWordBackground() {
   return (
     <div

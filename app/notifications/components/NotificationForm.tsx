@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { postApiData } from "@/app/services/api/apiClientPost";
 import { getApiData } from "@/app/services/api/apiServerFetch";
@@ -12,13 +13,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-interface NotificationRequest {
-  full_name: string;
-  email: string;
-  phone_number: string;
-  topics: number[]; // Array of topic IDs
-}
-
+/** Form for subscribing to notifications — fetches topic list, validates user input, and posts data to API */
 export default function NotificationForm() {
   const [notification, setNotification] = useState<NotificationRequest>({
     full_name: "",
@@ -31,7 +26,7 @@ export default function NotificationForm() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch topics on mount
+  /** Fetch topics on mount */
   useEffect(() => {
     const fetchTopics = async () => {
       const response = await getApiData("/course-topics/");
@@ -46,10 +41,12 @@ export default function NotificationForm() {
     fetchTopics();
   }, []);
 
+  /** Update single field in notification state */
   const handleChange = (field: keyof NotificationRequest, value: string) => {
     setNotification({ ...notification, [field]: value });
   };
 
+  /** Toggle topic selection on/off */
   const toggleTopic = (topicId: number) => {
     setNotification((prev) => {
       const newTopics = prev.topics.includes(topicId)
@@ -59,6 +56,7 @@ export default function NotificationForm() {
     });
   };
 
+  /** Validate & submit data to the notification API */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -80,8 +78,10 @@ export default function NotificationForm() {
       "/notification-subscriptions/",
       payload
     );
+
     setLoading(false);
     setMessage(error ? ` ${error}` : "مشخصات شما با موفقیت ارسال شد!");
+
     if (!error) {
       setNotification({
         full_name: "",
@@ -99,6 +99,7 @@ export default function NotificationForm() {
       transition={{ duration: 0.5 }}
       className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 w-full"
     >
+      {/* Heading */}
       <div className="mb-8 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">
           نوتیفیکیشن جات!!!
@@ -108,76 +109,43 @@ export default function NotificationForm() {
         </p>
       </div>
 
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Full Name */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-            نام کامل (اختیاری)
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-              <FaUser className="text-hoboc" />
-            </div>
-            <input
-              type="text"
-              placeholder="نام و نام خانوادگی"
-              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
-              value={notification.full_name}
-              onChange={(e) => handleChange("full_name", e.target.value)}
-            />
-          </div>
-        </div>
+        <FormField
+          label="نام کامل (اختیاری)"
+          icon={<FaUser className="text-hoboc" />}
+          placeholder="نام و نام خانوادگی"
+          value={notification.full_name}
+          onChange={(v) => handleChange("full_name", v)}
+          type="text"
+        />
 
         {/* Email */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-            ایمیل (اختیاری)
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-              <FaEnvelope className="text-hoboc" />
-            </div>
-            <input
-              type="email"
-              placeholder="ایمیل شما"
-              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
-              value={notification.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-            />
-          </div>
-        </div>
+        <FormField
+          label="ایمیل (اختیاری)"
+          icon={<FaEnvelope className="text-hoboc" />}
+          placeholder="ایمیل شما"
+          value={notification.email}
+          onChange={(v) => handleChange("email", v)}
+          type="email"
+        />
 
         {/* Phone */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-            شماره تماس
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-              <FaPhone className="text-hoboc" />
-            </div>
-            <input
-              type="tel"
-              placeholder="مثلاً 09123456789"
-              pattern="^0.*$"
-              maxLength={12}
-              required
-              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
-              value={notification.phone_number}
-              onChange={(e) => handleChange("phone_number", e.target.value)}
-              onInvalid={(e) =>
-                (e.target as HTMLInputElement).setCustomValidity(
-                  "The Phone Number must start with 0 And in English Please"
-                )
-              }
-              onInput={(e) =>
-                (e.target as HTMLInputElement).setCustomValidity("")
-              }
-            />
-          </div>
-        </div>
+        <FormField
+          label="شماره تماس"
+          icon={<FaPhone className="text-hoboc" />}
+          placeholder="مثلاً 09123456789"
+          value={notification.phone_number}
+          onChange={(v) => handleChange("phone_number", v)}
+          type="tel"
+          required
+          pattern="^0.*$"
+          maxLength={12}
+          customInvalidMessage="The Phone Number must start with 0 And in English Please"
+        />
 
-        {/* Topics Selection */}
+        {/* Topics selection */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             موضوعات مورد علاقه
@@ -205,7 +173,7 @@ export default function NotificationForm() {
           )}
         </div>
 
-        {/* Submit Button - Updated Style */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading || notification.topics.length === 0}
@@ -219,7 +187,7 @@ export default function NotificationForm() {
           {loading ? "در حال ارسال..." : "ارسال مشخصات"}
         </button>
 
-        {/* Feedback Message */}
+        {/* Feedback message */}
         {message && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -241,4 +209,69 @@ export default function NotificationForm() {
       </form>
     </motion.section>
   );
+}
+
+/** Individual labeled input field with icon and optional validation */
+function FormField({
+  label,
+  icon,
+  placeholder,
+  value,
+  onChange,
+  type,
+  required,
+  pattern,
+  maxLength,
+  customInvalidMessage,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+  type: string;
+  required?: boolean;
+  pattern?: string;
+  maxLength?: number;
+  customInvalidMessage?: string;
+}) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+        {label}
+      </label>
+      <div className="relative">
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+          {icon}
+        </div>
+        <input
+          type={type}
+          placeholder={placeholder}
+          className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required={required}
+          pattern={pattern}
+          maxLength={maxLength}
+          onInvalid={(e) => {
+            if (customInvalidMessage) {
+              (e.target as HTMLInputElement).setCustomValidity(
+                customInvalidMessage
+              );
+            }
+          }}
+          onInput={(e) => {
+            (e.target as HTMLInputElement).setCustomValidity("");
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+interface NotificationRequest {
+  full_name: string;
+  email: string;
+  phone_number: string;
+  topics: number[]; // topic IDs
 }

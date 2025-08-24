@@ -1,4 +1,6 @@
-// Holds all static content for the FinalWord section
+// app/components/final-word/FinalWordTexts.tsx
+
+/** Static Persian UI content for the FinalWord section */
 export const finalWordData = {
   title: (
     <>

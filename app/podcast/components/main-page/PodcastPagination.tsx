@@ -9,6 +9,7 @@ interface PodcastPaginationProps {
   onPageChange: (page: number) => void;
 }
 
+/** Simple podcast pagination with next/previous buttons (RTL layout) */
 export default function PodcastPagination({
   currentPage,
   totalPages,
@@ -18,7 +19,7 @@ export default function PodcastPagination({
 
   return (
     <div className="flex justify-center gap-8 mt-10" dir="rtl">
-      {/* Previous Button */}
+      {/* Previous page button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 0}
@@ -28,7 +29,7 @@ export default function PodcastPagination({
         <ChevronRight size={24} />
       </button>
 
-      {/* Next Button */}
+      {/* Next page button */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages - 1}

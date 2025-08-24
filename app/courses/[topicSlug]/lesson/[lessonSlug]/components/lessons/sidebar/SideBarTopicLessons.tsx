@@ -3,6 +3,7 @@ import { CoursesLesson } from "@/app/types/coursesType";
 import Link from "next/link";
 import { FaChevronLeft, FaLock } from "react-icons/fa";
 
+/** Lists all lessons in the current topic for display in the lesson sidebar */
 export default async function SideBarTopicLessons({
   topicSlug,
   currentLessonSlug,
@@ -12,7 +13,7 @@ export default async function SideBarTopicLessons({
 }) {
   const res = await getApiData(`/course-lessons/?topic-slug=${topicSlug}`);
 
-  // Error state
+  // API error UI
   if (!res || !res.data) {
     return (
       <div className="bg-pink-50 p-4 rounded-xl shadow-sm border border-pink-100 text-hoboc text-sm">
@@ -30,6 +31,7 @@ export default async function SideBarTopicLessons({
         محتوای دوره
       </h2>
 
+      {/* Empty state */}
       {lessons.length === 0 ? (
         <div className="bg-gray-50 p-3 rounded-lg text-center">
           <p className="text-gray-500 text-sm">درسی برای این موضوع یافت نشد.</p>
@@ -51,7 +53,7 @@ export default async function SideBarTopicLessons({
                 aria-current={isActive ? "page" : undefined}
               >
                 <div className="flex justify-between items-center">
-                  {/* Left: Number + Title */}
+                  {/* Left: lesson number or lock + title */}
                   <div className="flex items-center gap-3 min-w-0 overflow-hidden">
                     <div
                       className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -87,7 +89,7 @@ export default async function SideBarTopicLessons({
                     </h3>
                   </div>
 
-                  {/* Right: Duration + Icon */}
+                  {/* Right: duration + chevron */}
                   <div
                     className={`flex items-center gap-1 text-xs whitespace-nowrap ${
                       isActive ? "text-hoboc" : "text-gray-400"

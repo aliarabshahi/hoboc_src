@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+/** Contact form with API submit + Persian UI labels */
 export default function ContactForm() {
   const [contact, setContact] = useState<ContactUsRequest>({
     full_name: "",
@@ -24,10 +25,12 @@ export default function ContactForm() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Update form state
   const handleChange = (field: keyof ContactUsRequest, value: string) => {
     setContact({ ...contact, [field]: value });
   };
 
+  // Submit form to API
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -46,6 +49,7 @@ export default function ContactForm() {
       transition={{ duration: 0.5 }}
       className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 w-full"
     >
+      {/* Form header */}
       <div className="mb-8 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">
           تماس با ما
@@ -56,7 +60,7 @@ export default function ContactForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Full Name */}
+        {/* Name input */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             نام کامل
@@ -76,7 +80,7 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Email */}
+        {/* Email input */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             ایمیل
@@ -96,7 +100,7 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Phone */}
+        {/* Phone number input */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             شماره تماس
@@ -126,7 +130,7 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Message */}
+        {/* Message textarea */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             پیام شما
@@ -145,20 +149,21 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Submit Button */}
-<button
-  type="submit"
-  disabled={loading}
-  className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] hover:from-[#1a8abc] hover:to-[#e066a6] text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
->
-  {loading ? (
-    <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-  ) : (
-    <FaPaperPlane className="text-sm" />
-  )}
-  {loading ? "در حال ارسال..." : "ارسال پیام"}
-</button>
-        {/* Feedback Message */}
+        {/* Submit button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] hover:from-[#1a8abc] hover:to-[#e066a6] text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          ) : (
+            <FaPaperPlane className="text-sm" />
+          )}
+          {loading ? "در حال ارسال..." : "ارسال پیام"}
+        </button>
+
+        {/* Feedback message */}
         {message && (
           <motion.div
             initial={{ opacity: 0 }}

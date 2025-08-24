@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+/** Join Us form — collects applicant info, validates PDF upload, and posts data to /resume-submissions/ */
 export default function JoinUsForm() {
   const [resume, setResume] = useState<
     Omit<ResumeSubmissionRequest, "resume_file">
@@ -35,6 +36,7 @@ export default function JoinUsForm() {
 
   const MAX_SIZE_MB = 5;
 
+  /** Validates selected file (must be PDF under size limit) */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -53,6 +55,7 @@ export default function JoinUsForm() {
     }
   };
 
+  /** Submits form data + file (if present) to API */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -62,7 +65,6 @@ export default function JoinUsForm() {
       if (value) formData.append(key, value);
     });
 
-    // ✅ Only append resume_file if user selected it
     if (resumeFile) {
       formData.append("resume_file", resumeFile);
     }
@@ -101,6 +103,7 @@ export default function JoinUsForm() {
       transition={{ duration: 0.5 }}
       className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto"
     >
+      {/* Heading */}
       <div className="mb-8 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-hoboc mb-2">
           ارسال رزومه
@@ -110,6 +113,7 @@ export default function JoinUsForm() {
         </p>
       </div>
 
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <FormField
           label="نام کامل"
@@ -158,6 +162,7 @@ export default function JoinUsForm() {
           type="url"
         />
 
+        {/* Cover letter */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             انگیزه‌نامه (اختیاری)
@@ -177,7 +182,7 @@ export default function JoinUsForm() {
           </div>
         </div>
 
-        {/* File Upload */}
+        {/* File upload */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
             فایل رزومه (PDF - اختیاری)
@@ -208,29 +213,29 @@ export default function JoinUsForm() {
           )}
         </div>
 
-        {/* Submit */}
-<button
-  type="submit"
-  disabled={loading}
-  className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] 
+        {/* Submit button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] 
              hover:from-[#1a8abc] hover:to-[#e066a6] 
              text-white font-medium py-3 px-6 rounded-lg 
              transition-colors duration-300 
              shadow-md hover:shadow-lg 
              disabled:opacity-70 disabled:cursor-not-allowed 
              flex items-center justify-center gap-2"
->
-  {loading ? (
-    <>
-      <span className="h-4 w-4 border-2 border-white  rounded-full animate-spin"></span>
-      در حال ارسال...
-    </>
-  ) : (
-    <>ارسال رزومه</>
-  )}
-</button>
+        >
+          {loading ? (
+            <>
+              <span className="h-4 w-4 border-2 border-white rounded-full animate-spin"></span>
+              در حال ارسال...
+            </>
+          ) : (
+            <>ارسال رزومه</>
+          )}
+        </button>
 
-        {/* Feedback */}
+        {/* Feedback messages */}
         {message && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -254,6 +259,7 @@ export default function JoinUsForm() {
   );
 }
 
+/** Single labeled input field with icon, supports validation & custom error message */
 function FormField({
   label,
   icon,
@@ -292,7 +298,9 @@ function FormField({
           pattern={pattern}
           onInvalid={(e) => {
             if (customInvalidMessage) {
-              (e.target as HTMLInputElement).setCustomValidity(customInvalidMessage);
+              (e.target as HTMLInputElement).setCustomValidity(
+                customInvalidMessage
+              );
             }
           }}
           onInput={(e) => {

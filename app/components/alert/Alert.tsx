@@ -1,8 +1,10 @@
+// app/.../Alert.tsx
 'use client'
 
 import { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
+/** Temporary announcement banner with dismiss option */
 export default function Alert() {
   const [visible, setVisible] = useState(true)
 
@@ -41,7 +43,7 @@ export default function Alert() {
         />
       </div>
 
-      {/* Alert Content */}
+      {/* Main alert content */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-sm/6 text-gray-900">
           <strong className="font-semibold">همایش تخصصی دیتاجو ۱۴۰۴</strong>
@@ -62,7 +64,7 @@ export default function Alert() {
         </a>
       </div>
 
-      {/* Dismiss Button with Gradient Icon */}
+      {/* Dismiss button with gradient icon */}
       <div className="flex flex-1 justify-start sm:justify-end">
         <button
           type="button"

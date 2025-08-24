@@ -1,3 +1,4 @@
+// app/components/hero/Hero.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,9 +8,11 @@ import HeroTopDecoration from "./HeroTopDecoration";
 import HeroBottomDecoration from "./HeroBottomDecoration";
 import HeroMainContent from "./HeroMainContent";
 
+/** Top-level Hero section container with decorative elements and video modal */
 export default function Hero() {
   const [showVideo, setShowVideo] = useState(false);
 
+  // Lock scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = showVideo ? "hidden" : "";
     return () => {
@@ -25,8 +28,12 @@ export default function Hero() {
         <HeroBottomDecoration />
       </div>
 
+      {/* Video modal rendered via portal */}
       {showVideo &&
-        createPortal(<HeroVideoModal onClose={() => setShowVideo(false)} />, document.body)}
+        createPortal(
+          <HeroVideoModal onClose={() => setShowVideo(false)} />,
+          document.body
+        )}
     </div>
   );
 }

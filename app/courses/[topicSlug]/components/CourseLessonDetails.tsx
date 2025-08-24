@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaChevronLeft, FaLock } from "react-icons/fa";
 import { BsBook } from "react-icons/bs";
 
+/** Helper to shorten lesson descriptions without cutting words mid-way */
 function truncateDescription(text: string, maxLength = 150): string {
   if (!text) return "";
 
@@ -18,6 +19,7 @@ function truncateDescription(text: string, maxLength = 150): string {
   return slice.slice(0, lastSpaceIndex) + "...";
 }
 
+/** Lesson list for a specific course topic with free/premium badge handling */
 export default function CourseLessonDetails({
   topic,
   lessons,
@@ -28,11 +30,13 @@ export default function CourseLessonDetails({
   return (
     <div className="flex-1 min-w-0">
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-700">
+        {/* Section title with icon */}
         <h2 className="text-xl font-bold mb-6 flex items-center text-hoboc-dark">
           <BsBook className="w-6 h-6 ml-2" />
           محتوای دوره
         </h2>
 
+        {/* Scrollable lessons list */}
         <div className="overflow-y-auto max-h-[calc(100vh-200px)] pl-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-700 dark:scrollbar-track-gray-800">
           <div className="space-y-2">
             {lessons.map((lesson, index) => {
@@ -45,7 +49,7 @@ export default function CourseLessonDetails({
                   aria-label={`رفتن به درس ${lesson.title}`}
                 >
                   <div className="flex justify-between items-center">
-                    {/* Left: Number / Lock + Title */}
+                    {/* Left: lesson index or lock + title + premium tag */}
                     <div className="flex items-center gap-3">
                       <div
                         className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold select-none ${
@@ -79,7 +83,7 @@ export default function CourseLessonDetails({
                       </div>
                     </div>
 
-                    {/* Right: Duration + Chevron */}
+                    {/* Right: duration + free badge + chevron */}
                     <div className="flex items-center gap-3 text-xs select-none">
                       <span className="whitespace-nowrap pr-2 text-gray-500">
                         {lesson.duration} دقیقه

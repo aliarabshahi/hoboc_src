@@ -1,9 +1,11 @@
+// app/components/hero/HeroMainContent.tsx
 import { IoPlayCircleSharp } from "react-icons/io5";
 
+/** Main Hero content: video button, heading, description, and CTA */
 export default function HeroMainContent({ onVideoOpen }: { onVideoOpen: () => void }) {
   return (
     <div className="mx-auto max-w-2xl pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-10 lg:pb-12">
-      {/* Play video button */}
+      {/* Video trigger button */}
       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
         <button
           onClick={onVideoOpen}
@@ -18,7 +20,7 @@ export default function HeroMainContent({ onVideoOpen }: { onVideoOpen: () => vo
         </button>
       </div>
 
-      {/* Heading + description + CTA */}
+      {/* Persian heading, description, and call-to-action */}
       <div className="text-center space-y-8">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-tight">
           از داده خام تا <span className="text-hoboc-dark">ارزش واقعی</span>
@@ -32,7 +34,10 @@ export default function HeroMainContent({ onVideoOpen }: { onVideoOpen: () => vo
         <div className="flex items-center justify-center">
           <a
             href="/courses"
-            className="rounded-md bg-hoboc px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-hoboc-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark transition-colors"
+            className="rounded-md bg-hoboc px-6 py-3 text-base font-semibold text-white shadow-sm 
+                       hover:bg-hoboc-dark focus-visible:outline focus-visible:outline-2 
+                       focus-visible:outline-offset-2 focus-visible:outline-hoboc-dark 
+                       transition-colors"
           >
             شروع مسیر یادگیری
           </a>

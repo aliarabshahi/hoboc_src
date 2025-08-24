@@ -10,7 +10,9 @@ type Props = {
   onClick: () => void;
 };
 
+/** Single course topic tile with logo, title, and active state styling */
 const CourseTopic = ({ topic, isActive, onClick }: Props) => {
+  // Detect if logo is hosted locally to disable Next.js image optimization
   const isLocalhostImage = topic.image?.includes("localhost");
 
   return (
@@ -22,6 +24,7 @@ const CourseTopic = ({ topic, isActive, onClick }: Props) => {
       }`}
       onClick={onClick}
     >
+      {/* Course topic logo */}
       <Image
         src={topic.logo_file}
         alt={topic.title}
@@ -30,6 +33,8 @@ const CourseTopic = ({ topic, isActive, onClick }: Props) => {
         className="rounded-full w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16"
         unoptimized={isLocalhostImage}
       />
+
+      {/* Topic title (Persian) */}
       <span className="text-xs sm:text-sm md:text-base font-medium mt-1">
         {topic.title}
       </span>

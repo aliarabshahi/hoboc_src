@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 
+/** Contact page illustration (alt text in Persian for UI consistency) */
 export default function ContactImage() {
   return (
     <div className="w-full h-full flex items-start justify-start">

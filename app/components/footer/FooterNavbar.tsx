@@ -1,5 +1,7 @@
+// app/components/footer/FooterNavbar.tsx
 import Link from "next/link";
 
+/** Navigation groups and their Persian labels/links */
 const navItems = [
   {
     title: "شرکت",
@@ -21,12 +23,13 @@ const navItems = [
   },
 ];
 
+/** Footer navigation section with grouped Persian menu links */
 export default function FooterNavbar() {
   return (
     <div className="flex justify-between gap-8">
       {navItems.map((item, index) => (
         <nav key={index} className="flex-1 space-y-2">
-          <h6 className=" text-lg font-bold text-black whitespace-nowrap">
+          <h6 className="text-lg font-bold text-black whitespace-nowrap">
             {item.title}
           </h6>
           <div className="flex flex-col space-y-1">

@@ -6,6 +6,7 @@ interface CourseNavigationBarProps {
   topic: CoursesTopic;
 }
 
+/** Breadcrumb navigation for course topic pages */
 export default function CourseNavigationBar({ topic }: CourseNavigationBarProps) {
   return (
     <nav
@@ -24,7 +25,7 @@ export default function CourseNavigationBar({ topic }: CourseNavigationBarProps)
           </Link>
         </li>
 
-        {/* Current topic */}
+        {/* Current topic (non-clickable) */}
         <li className="flex items-center">
           <FaChevronLeft className="w-3 h-3 mx-1 text-gray-400" />
           <span

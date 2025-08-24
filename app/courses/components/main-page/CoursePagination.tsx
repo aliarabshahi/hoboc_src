@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+/** Pagination controls for course list navigation */
 export default function CoursePagination({
   currentPage,
   totalPages,
@@ -15,6 +16,7 @@ export default function CoursePagination({
 }) {
   return (
     <div className="flex justify-center gap-8 mt-10">
+      {/* Previous page button */}
       <button
         onClick={onPrev}
         disabled={currentPage === 0}
@@ -23,6 +25,8 @@ export default function CoursePagination({
       >
         <ChevronRight size={24} />
       </button>
+
+      {/* Next page button */}
       <button
         onClick={onNext}
         disabled={currentPage === totalPages - 1}

@@ -1,3 +1,4 @@
+// app/components/last-lessons/LatestLessonsCard.tsx
 "use client";
 
 import Link from "next/link";
@@ -5,10 +6,15 @@ import Image from "next/image";
 import { FiBookOpen, FiClock } from "react-icons/fi";
 import { CoursesLesson, CoursesTopic } from "@/app/types/coursesType";
 
+/** Card displaying a single lesson with thumbnail, title, metadata, and CTA */
 export default function LatestLessonsCard({ lesson }: { lesson: CoursesLesson }) {
   const getTopicSlug = (lesson: CoursesLesson): string => {
     if (lesson.tags?.[0]?.slug) return lesson.tags[0].slug;
-    if (lesson.topic && typeof lesson.topic !== "string" && (lesson.topic as CoursesTopic).slug) {
+    if (
+      lesson.topic &&
+      typeof lesson.topic !== "string" &&
+      (lesson.topic as CoursesTopic).slug
+    ) {
       return (lesson.topic as CoursesTopic).slug;
     }
     return "general";
@@ -33,7 +39,7 @@ export default function LatestLessonsCard({ lesson }: { lesson: CoursesLesson })
                  flex flex-col justify-between transition hover:shadow-md 
                  relative overflow-hidden h-[418px] max-h-[418px]"
     >
-      {/* Thumbnail */}
+      {/* Lesson thumbnail */}
       <div className="-mt-5 -mx-5 mb-4 h-40 overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-100 dark:bg-gray-800 relative">
         {lesson.thumbnail ? (
           <>
@@ -54,7 +60,9 @@ export default function LatestLessonsCard({ lesson }: { lesson: CoursesLesson })
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-bold text-gray-700 mb-1 line-clamp-2">{lesson.title}</h3>
+      <h3 className="text-lg font-bold text-gray-700 mb-1 line-clamp-2">
+        {lesson.title}
+      </h3>
 
       {/* Short description */}
       {lesson.description && (
@@ -63,7 +71,7 @@ export default function LatestLessonsCard({ lesson }: { lesson: CoursesLesson })
         </p>
       )}
 
-      {/* Meta info */}
+      {/* Metadata: topic + duration */}
       <div className="flex items-center justify-between text-sm text-hoboc-dark mt-auto mb-5 pt-3">
         <div className="flex items-center gap-2">
           <FiBookOpen size={14} />

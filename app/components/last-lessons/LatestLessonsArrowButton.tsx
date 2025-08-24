@@ -1,10 +1,9 @@
+// app/components/last-lessons/LatestLessonsArrowButton.tsx
 "use client";
 
 import { ReactNode } from "react";
 
-/**
- * Navigation arrow button for carousel scrolling.
- */
+/** Navigation arrow button for lesson carousel */
 export default function LatestLessonsArrowButton({
   onClick,
   icon,
@@ -25,7 +24,7 @@ export default function LatestLessonsArrowButton({
   );
 }
 
-/** Skeleton version for arrow button during loading */
+/** Skeleton arrow button placeholder shown while loading */
 export function LatestLessonsSkeletonArrowButton() {
   return (
     <div className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse">

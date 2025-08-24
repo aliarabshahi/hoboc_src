@@ -14,6 +14,7 @@ export default function BlogTopicsDropdown({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // Update URL query to reflect selected topic
   const handleSelect = (slug: string) => {
     const params = new URLSearchParams(searchParams.toString());
     slug ? params.set("topic", slug) : params.delete("topic");
@@ -21,9 +22,10 @@ export default function BlogTopicsDropdown({
   };
 
   return (
-    <section className="container mx-auto px-4 ">
+    <section className="container mx-auto px-4">
       <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-        {/* "همه موضوعات" button */}
+        
+        {/* "All Topics" button */}
         <button
           onClick={() => handleSelect("")}
           className={`px-4 py-2 rounded-full font-medium transition ${
@@ -35,7 +37,7 @@ export default function BlogTopicsDropdown({
           همه موضوعات
         </button>
 
-        {/* dynamic topics */}
+        {/* Dynamic topic buttons */}
         {topics.map((topic) => {
           const isActive = topic.slug === selectedTopicSlug;
           return (

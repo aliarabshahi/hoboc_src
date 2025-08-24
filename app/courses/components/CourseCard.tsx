@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FiBookOpen, FiClock } from "react-icons/fi";
 import { CoursesLesson } from "@/app/types/coursesType";
 
+/** Single course lesson card - thumbnail, title, info, and "view lesson" button */
 export default function CourseCard({
   lesson,
   lessonNumber,
@@ -14,16 +15,22 @@ export default function CourseCard({
   lessonNumber?: number;
   showLessonNumber?: boolean;
 }) {
+  // Get topic slug from tags or topic data
   const getTopicSlug = (): string => {
     if (lesson.tags?.[0]?.slug) return lesson.tags[0].slug;
-    if (lesson.topic && typeof lesson.topic !== "string") return lesson.topic.slug || "general";
+    if (lesson.topic && typeof lesson.topic !== "string")
+      return lesson.topic.slug || "general";
     return "general";
   };
 
+  // Get readable topic title
   const getTopicTitle = (): string => {
-    return typeof lesson.topic === "string" ? lesson.topic : lesson.topic?.title || "بدون موضوع";
+    return typeof lesson.topic === "string"
+      ? lesson.topic
+      : lesson.topic?.title || "بدون موضوع";
   };
 
+  // Format lesson duration in Persian-friendly format
   const formatDuration = (duration: number | null): string => {
     if (!duration) return "زمان نامشخص";
     return duration < 60
@@ -33,15 +40,14 @@ export default function CourseCard({
 
   return (
     <div className="group block bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col justify-between transition hover:shadow-md relative overflow-hidden">
-      
-      {/* شماره درس (اختیاری) */}
+      {/* Lesson number badge (optional) */}
       {lessonNumber && showLessonNumber && (
         <div className="absolute top-3 right-3 bg-hoboc text-white font-bold flex items-center justify-center rounded-xl shadow-md z-10 w-8 h-8 text-sm border border-hoboc-dark/20 transition-all hover:bg-hoboc-dark">
           {lessonNumber}
         </div>
       )}
 
-      {/* تصویر درس یا جایگزین آن */}
+      {/* Lesson thumbnail or placeholder */}
       <Link
         href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
         className="h-40 w-full mb-4 rounded-lg overflow-hidden block"
@@ -63,7 +69,7 @@ export default function CourseCard({
         )}
       </Link>
 
-      {/* عنوان درس */}
+      {/* Lesson title */}
       <Link
         href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
         className="text-lg font-bold text-gray-700 mb-0 line-clamp-2 hover:text-hoboc transition-colors"
@@ -71,14 +77,14 @@ export default function CourseCard({
         {lesson.title}
       </Link>
 
-      {/* توضیح کوتاه */}
+      {/* Short description */}
       {lesson.description && (
         <p className="text-gray-500 text-sm mb-3 mt-0 line-clamp-3 leading-6">
           {lesson.description}
         </p>
       )}
 
-      {/* اطلاعات پایین کارت */}
+      {/* Bottom info row - topic link + duration */}
       <div className="flex justify-between items-center mt-auto mb-4 pt-1 text-sm text-hoboc-dark">
         <Link
           href={`/courses/${lesson.topic_slug}`}
@@ -95,7 +101,7 @@ export default function CourseCard({
         </div>
       </div>
 
-      {/* دکمه مشاهده درس */}
+      {/* View lesson button */}
       <Link
         href={`/courses/${lesson.topic_slug}/lesson/${lesson.slug}`}
         className="block w-full select-none text-center py-3 rounded-xl font-bold

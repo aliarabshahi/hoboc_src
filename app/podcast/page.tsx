@@ -6,6 +6,7 @@ import { getApiData } from "../services/api/apiServerFetch";
 import { PodcastEpisode } from "./lib/episodes";
 import { FaSpinner } from "react-icons/fa";
 
+/** Podcast listing page with pagination and loading/error handling */
 export default function PodcastPage() {
   const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function PodcastPage() {
           return;
         }
 
+        // Normalize audio property for UI
         const formattedEpisodes = (data as PodcastEpisode[]).map((ep) => ({
           ...ep,
           audio: {
@@ -37,7 +39,7 @@ export default function PodcastPage() {
         }));
 
         setEpisodes(formattedEpisodes);
-      } catch (err) {
+      } catch {
         setError("خطا در دریافت اطلاعات پادکست");
       } finally {
         setLoading(false);
@@ -47,17 +49,18 @@ export default function PodcastPage() {
     fetchEpisodes();
   }, []);
 
-  // Simple loading spinner
-if (loading) {
-  return (
-    <div className="flex-1 flex flex-col lg:pr-20 pt-4 pb-10">
-      <div className="flex justify-center pt-8">
-        <FaSpinner className="animate-spin text-[#F477B8] text-4xl" />
+  // Loading state → spinner
+  if (loading) {
+    return (
+      <div className="flex-1 flex flex-col lg:pr-20 pt-4 pb-10">
+        <div className="flex justify-center pt-8">
+          <FaSpinner className="animate-spin text-[#F477B8] text-4xl" />
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
+  // Error state → message
   if (error) {
     return (
       <div className="w-full lg:w-3/5 flex flex-col">
@@ -68,20 +71,20 @@ if (loading) {
     );
   }
 
+  // Pagination setup
   const totalPages = Math.ceil(episodes.length / pageSize);
   const currentEpisodes = episodes.slice(
     currentPage * pageSize,
     currentPage * pageSize + pageSize
   );
 
+  // Render podcast list with pagination controls
   return (
-    <>
-      <PodcastLeftColumn
-        episodes={currentEpisodes}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
-    </>
+    <PodcastLeftColumn
+      episodes={currentEpisodes}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onPageChange={setCurrentPage}
+    />
   );
 }

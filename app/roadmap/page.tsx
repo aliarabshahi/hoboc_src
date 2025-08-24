@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { Roadmap } from "./components/Rodmap";
 import RoadmapImage from "./components/RoadmapImage";
 import { getApiData } from "../services/api/apiServerFetch";
-import {
-  RoadmapItem as RoadmapItemType
-} from "@/app/types/roadmapType";
+import { RoadmapItem as RoadmapItemType } from "@/app/types/roadmapType";
 
-// Skeleton while loading
+/** Placeholder skeleton displayed while roadmap content loads */
 function RoadmapSkeleton() {
   return (
     <div className="max-w-4xl mx-auto">
@@ -17,22 +15,23 @@ function RoadmapSkeleton() {
   );
 }
 
+/** Roadmap landing page — fetches learning roadmap items and displays them with accompanying image */
 export default function RoadmapPage() {
   const [roadmapData, setRoadmapData] = useState<RoadmapItemType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch roadmap items on initial mount
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const { data, error } = await getApiData('/roadmap-items/');
+      const { data, error } = await getApiData("/roadmap-items/");
 
       if (error) {
         setError(error);
       } else {
         setRoadmapData(data || []);
       }
-
       setLoading(false);
     };
 
@@ -43,24 +42,27 @@ export default function RoadmapPage() {
     <div className="min-h-screen bg-white dark:bg-gray-900 py-12 px-6 sm:px-8 lg:px-12">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center gap-10">
-          {/* Roadmap Image */}
+          {/* Image column */}
           <div className="w-full lg:w-1/2 order-1 lg:order-2 lg:sticky lg:top-0 self-start pt-12">
             <RoadmapImage />
           </div>
 
-          {/* Roadmap Content */}
+          {/* Content column */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
             {loading ? (
               <RoadmapSkeleton />
             ) : error ? (
+              // API error message
               <p className="text-red-600 dark:text-red-400 text-center font-medium">
                 {error}
               </p>
             ) : roadmapData.length === 0 ? (
+              // No roadmap data message
               <p className="text-center text-gray-500 dark:text-gray-300">
                 نقشه راهی برای نمایش وجود ندارد!
               </p>
             ) : (
+              // Render roadmap component with data
               <Roadmap
                 title="نقشه راه جامع مهندسی داده"
                 description="مسیر یادگیری برای تبدیل شدن به یک مهندس داده حرفه‌ای"
@@ -73,7 +75,6 @@ export default function RoadmapPage() {
     </div>
   );
 }
-
 
 
 

@@ -1,7 +1,8 @@
-// components/footer/Footer.tsx
+// app/components/footer/Footer.tsx
 import FooterNavbar from "./FooterNavbar";
 import FooterSocial from "./FooterSocial";
 
+/** Main footer container with navigation and social links */
 export default function Footer() {
   return (
     <footer className="bg-white border-t border-gray-300 text-base-content py-10" dir="rtl">

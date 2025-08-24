@@ -9,12 +9,15 @@ interface CourseSideBarProps {
   lessons: CoursesLesson[];
 }
 
+/** Sidebar for course topic pages showing info, metadata, and quick actions */
 export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
+  // Calculate total course duration in hours/minutes
   const totalDuration = lessons.reduce((sum, lesson) => sum + (lesson.duration || 0), 0);
   const hours = Math.floor(totalDuration / 60);
   const minutes = totalDuration % 60;
   const durationText = hours > 0 ? `${hours} ساعت و ${minutes} دقیقه` : `${minutes} دقیقه`;
 
+  // Get first found instructor and the first lesson slug
   const instructor = lessons.find(lesson => lesson.instructor)?.instructor;
   const firstLesson = lessons[0]?.slug;
 
@@ -22,7 +25,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
     <div className="lg:w-80 xl:w-96 flex-shrink-0">
       <div className="bg-white p-4 rounded-xl py-6 px-6 shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-700 lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
         
-        {/* Back button */}
+        {/* Back to courses link */}
         <Link 
           href="/courses" 
           className="flex items-center text-sm text-gray-500 hover:text-hoboc mb-4 transition-colors"
@@ -31,7 +34,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           بازگشت به دوره‌ها
         </Link>
 
-        {/* Course Image */}
+        {/* Course cover image */}
         <div className="relative aspect-video rounded-lg overflow-hidden mb-4">
           <Image
             src={topic.image}
@@ -41,12 +44,10 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           />
         </div>
 
-        {/* Course Title */}
+        {/* Title and subtitle */}
         <h1 className="text-3xl font-bold text-hoboc-dark dark:text-hoboc mb-1">
           {topic.title}
         </h1>
-
-        {/* Catchy Title */}
         <h2 className="text-lg text-hoboc dark:text-hoboc-dark mb-4">
           {topic.catchy_title}
         </h2>
@@ -56,7 +57,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           {topic.description}
         </p>
 
-        {/* Metadata */}
+        {/* Metadata section */}
         <div className="mt-3 space-y-2 text-[13px]">
           {instructor && (
             <div className="flex items-center gap-2">
@@ -79,7 +80,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           </div>
         </div>
 
-        {/* Start Course Button */}
+        {/* Start course / disabled button */}
         {firstLesson ? (
           <Link 
             href={`/courses/${topic.slug}/lesson/${firstLesson}`}
@@ -96,7 +97,7 @@ export default function CourseSideBar({ topic, lessons }: CourseSideBarProps) {
           </button>
         )}
 
-        {/* Tags */}
+        {/* Tags list */}
         <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
           <div className="flex items-center text-gray-500 text-[13px] gap-2 mb-2">
             <FiBookmark size={14} className="text-gray-500" />

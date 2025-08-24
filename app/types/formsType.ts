@@ -1,5 +1,4 @@
 
-// 💬 Contact Us
 export interface ContactUsRequest {
   full_name: string;
   email: string;
@@ -7,7 +6,6 @@ export interface ContactUsRequest {
   message: string;
 }
 
-// 📦 Project Order
 export interface ProjectOrderRequest {
   full_name: string;
   email: string;
@@ -18,7 +16,6 @@ export interface ProjectOrderRequest {
   files?: File[];
 }
 
-// 🧑‍💼 Resume Submission
 export interface ResumeSubmissionRequest {
   full_name: string;
   email: string;

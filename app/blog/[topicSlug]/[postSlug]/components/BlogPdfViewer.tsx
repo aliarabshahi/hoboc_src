@@ -8,30 +8,39 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Download, Maximize, Minimize, ZoomIn, ZoomOut } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 
+// Configure PDF.js worker location (served locally in /public/pdf)
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf/pdf.worker.min.js';
 
 interface PdfViewerProps {
   pdfUrl: string;
 }
 
+/**
+ * BlogPdfViewer
+ * A responsive, fullscreen-enabled PDF viewer with zoom controls,
+ * page navigation, and download support.
+ */
 const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
+  // ====== Viewer State ======
+  const [numPages, setNumPages] = useState<number | null>(null); // total pages
+  const [pageNumber, setPageNumber] = useState(1); // current page being viewed
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const originalWidthRef = useRef<number>(0);
-  const [scale, setScale] = useState(1);
+  const originalWidthRef = useRef<number>(0); // store default width for zoom reset
+  const [scale, setScale] = useState(1); // zoom factor
   const minScale = 0.5;
   const maxScale = 2;
   const scaleStep = 0.25;
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(false); // to ensure portal rendering works
 
+  // ====== Client-side hydration check ======
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  // ====== Handle window resize & detect mobile view ======
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -59,6 +68,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     return () => window.removeEventListener('resize', handleResize);
   }, [isFullscreen]);
 
+  // ====== Prevent background scrolling in fullscreen ======
   useEffect(() => {
     if (isFullscreen) {
       document.body.style.overflow = 'hidden';
@@ -73,17 +83,20 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     };
   }, [isFullscreen]);
 
+  // ====== PDF load success handler ======
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
-    setPageNumber(1);
+    setPageNumber(1); // reset to first page
   };
 
+  // ====== Scroll helpers ======
   const scrollToTop = () => {
     if (containerRef.current) {
       containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
+  // ====== Page navigation handlers ======
   const goToPrevPage = () => {
     setPageNumber(prev => Math.max(prev - 1, 1));
     scrollToTop();
@@ -96,6 +109,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     }
   };
 
+  // ====== Zoom controls ======
   const zoomIn = () => {
     setScale(prev => Math.min(prev + scaleStep, maxScale));
   };
@@ -108,6 +122,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     setScale(1);
   };
 
+  // ====== File download handler ======
   const downloadPdf = () => {
     const link = document.createElement('a');
     link.href = pdfUrl;
@@ -117,14 +132,16 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     document.body.removeChild(link);
   };
 
+  // ====== Fullscreen toggle ======
   const toggleFullscreen = () => {
     if (!isFullscreen) {
       originalWidthRef.current = containerRef.current?.offsetWidth || 0;
     }
     setIsFullscreen(!isFullscreen);
-    if (isFullscreen) setScale(1);
+    if (isFullscreen) setScale(1); // reset zoom when exiting fullscreen
   };
 
+  // ====== Loading indicators ======
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center h-full py-16">
       <FaSpinner className="animate-spin text-4xl text-hoboc" />
@@ -137,10 +154,14 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     </div>
   );
 
+  // ====== Main viewer block ======
   const viewerBlock = (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-999 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}>
-      {/* Top Bar */}
+    <div
+      className={`${isFullscreen ? 'fixed inset-0 z-999 bg-white' : 'border rounded-lg shadow-lg overflow-hidden'} flex flex-col h-full`}
+    >
+      {/* === Top toolbar === */}
       <div className="bg-gray-800 border-gray-700 flex items-center justify-between p-3">
+        {/* Left controls — Download */}
         <div className="flex items-center gap-2">
           <button
             onClick={downloadPdf}
@@ -151,6 +172,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
           </button>
         </div>
 
+        {/* Right controls — Zoom + Fullscreen */}
         <div className="flex items-center gap-2">
           {isFullscreen && (
             <>
@@ -163,6 +185,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
                 <ZoomOut size={isMobile ? 16 : 18} />
               </button>
 
+              {/* Zoom percentage (click to reset) */}
               <span
                 className="text-sm font-medium text-gray-200 cursor-pointer px-2"
                 onClick={resetZoom}
@@ -182,17 +205,20 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
             </>
           )}
 
+          {/* Fullscreen toggle */}
           <button
             onClick={toggleFullscreen}
             className="p-2 rounded-md hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
             title={isFullscreen ? "خروج از حالت تمام صفحه" : "حالت تمام صفحه"}
           >
-            {isFullscreen ? <Minimize size={isMobile ? 16 : 18} /> : <Maximize size={isMobile ? 16 : 18} />}
+            {isFullscreen
+              ? <Minimize size={isMobile ? 16 : 18} />
+              : <Maximize size={isMobile ? 16 : 18} />}
           </button>
         </div>
       </div>
 
-      {/* PDF Viewer */}
+      {/* === PDF render area === */}
       <div
         ref={containerRef}
         className="flex-1 overflow-auto bg-white w-full flex justify-center"
@@ -212,31 +238,40 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
         </Document>
       </div>
 
-      {/* Bottom Navigation */}
+      {/* === Bottom navigation bar === */}
       <div className="bg-gray-800 border-t border-gray-700 flex items-center justify-between p-3">
+        {/* Previous Page */}
         <button
           onClick={goToPrevPage}
           disabled={pageNumber <= 1}
-          className={`${isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'} rounded-md font-medium transition-colors ${
+          className={`${
+            isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'
+          } rounded-md font-medium transition-colors ${
             pageNumber <= 1 
               ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
-              : "bg-hoboc text-white hover:bg-hoboc-dark"
+              : 'bg-hoboc text-white hover:bg-hoboc-dark'
           }`}
         >
           قبلی
         </button>
 
-        <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200`}>
+        {/* Page status */}
+        <span
+          className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-200`}
+        >
           صفحه {pageNumber} از {numPages || '--'}
         </span>
 
+        {/* Next Page */}
         <button
           onClick={goToNextPage}
           disabled={!numPages || pageNumber >= numPages}
-          className={`${isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'} rounded-md font-medium transition-colors ${
+          className={`${
+            isMobile ? 'px-3 py-1 text-sm' : 'px-5 py-2 text-base'
+          } rounded-md font-medium transition-colors ${
             !numPages || pageNumber >= numPages 
               ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
-              : "bg-hoboc text-white hover:bg-hoboc-dark"
+              : 'bg-hoboc text-white hover:bg-hoboc-dark'
           }`}
         >
           بعدی
@@ -245,6 +280,7 @@ const BlogPdfViewer = ({ pdfUrl }: PdfViewerProps) => {
     </div>
   );
 
+  // ====== Render normally or via portal in fullscreen ======
   if (isFullscreen && isClient) {
     return createPortal(viewerBlock, document.body);
   }
