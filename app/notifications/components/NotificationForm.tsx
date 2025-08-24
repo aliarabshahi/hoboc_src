@@ -1,4 +1,3 @@
-// app/notifications/components/NotificationForm.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { postApiData } from "@/app/services/api/apiClientPost";
@@ -157,24 +156,24 @@ export default function NotificationForm() {
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
               <FaPhone className="text-hoboc" />
             </div>
-<input
-  type="tel"
-  placeholder="مثلاً 09123456789"
-  pattern="^0.*$"
-  maxLength={12}
-  required
-  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
-  value={notification.phone_number}
-  onChange={(e) => handleChange("phone_number", e.target.value)}
-  onInvalid={(e) =>
-    (e.target as HTMLInputElement).setCustomValidity(
-      "The Phone Number must start with 0 And in English Please"
-    )
-  }
-  onInput={(e) =>
-    (e.target as HTMLInputElement).setCustomValidity("")
-  }
-/>
+            <input
+              type="tel"
+              placeholder="مثلاً 09123456789"
+              pattern="^0.*$"
+              maxLength={12}
+              required
+              className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-hoboc focus:border-hoboc block p-3 pr-10 transition"
+              value={notification.phone_number}
+              onChange={(e) => handleChange("phone_number", e.target.value)}
+              onInvalid={(e) =>
+                (e.target as HTMLInputElement).setCustomValidity(
+                  "The Phone Number must start with 0 And in English Please"
+                )
+              }
+              onInput={(e) =>
+                (e.target as HTMLInputElement).setCustomValidity("")
+              }
+            />
           </div>
         </div>
 
@@ -200,21 +199,23 @@ export default function NotificationForm() {
             ))}
           </div>
           {notification.topics.length === 0 && (
-            <p className="mt-3 text-sm text-center text-hoboc-dark font-bold">
+            <p className="mt-3 text-sm text-center text-[#e066a6] font-bold">
               لطفاً حداقل یک موضوع را انتخاب کنید
             </p>
           )}
         </div>
 
-        {/* Submit Button */}
+        {/* Submit Button - Updated Style */}
         <button
           type="submit"
           disabled={loading || notification.topics.length === 0}
-          className="w-full bg-hoboc hover:bg-hoboc-dark text-white font-medium py-3 px-6 rounded-lg transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-[#1F9ECE] to-[#F477B8] hover:from-[#1a8abc] hover:to-[#e066a6] text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-90 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? (
             <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-          ) : null}
+          ) : (
+            <FaPaperPlane className="text-sm" />
+          )}
           {loading ? "در حال ارسال..." : "ارسال مشخصات"}
         </button>
 
