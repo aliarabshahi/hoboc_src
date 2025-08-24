@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PodcastLeftColumn from "./components/main-page/PodcastLeftColumn";
 import { getApiData } from "../services/api/apiServerFetch";
 import { PodcastEpisode } from "./lib/episodes";
+import { FaSpinner } from "react-icons/fa";
 
 export default function PodcastPage() {
   const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
@@ -46,38 +47,26 @@ export default function PodcastPage() {
     fetchEpisodes();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="w-full lg:w-3/5 flex flex-col">
-        <div className="flex-1 overflow-y-auto">
-          <div className="py-8 lg:py-16">
-            <div className="container mx-auto px-4">
-              <div className="animate-pulse">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="py-6 border-b border-gray-200">
-                    <div className="h-6 bg-gray-200 rounded w-1/4 mb-2"></div>
-                    <div className="h-8 bg-gray-200 rounded w-3/4 mb-3"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-if (error) {
+  // Simple loading spinner
+if (loading) {
   return (
-    <div className="w-full lg:w-3/5 flex flex-col">
-      <div className="flex-1 overflow-y-auto flex items-center pr-10 py-8">
-        <p className="text-center text-md text-gray-600">{error}</p>
+    <div className="flex-1 flex flex-col lg:pr-20 pt-4 pb-10">
+      <div className="flex justify-center pt-8">
+        <FaSpinner className="animate-spin text-[#F477B8] text-4xl" />
       </div>
     </div>
   );
 }
+
+  if (error) {
+    return (
+      <div className="w-full lg:w-3/5 flex flex-col">
+        <div className="flex-1 overflow-y-auto flex items-center pr-10 py-8">
+          <p className="text-center text-md text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   const totalPages = Math.ceil(episodes.length / pageSize);
   const currentEpisodes = episodes.slice(
