@@ -17,7 +17,7 @@ export default function CoursesPage() {
 
   const selectedTopic = topics.find((t) => t.slug === selectedTopicSlug);
   const title = selectedTopic
-    ? `دوره آموزشی ${selectedTopic.title || selectedTopic.catchy_title || ""}`
+    ? `دوره آموزشی ${selectedTopic.title || selectedTopic.title || ""}`
     : "دوره‌های آموزشی";
   const description =
     "یادگیری حرفه‌ای با دوره‌های کاربردی علم داده و مهندسی داده برای ورود به بازار کار";

@@ -74,7 +74,7 @@ export default function BlogList({
   if (posts.length === 0) {
     return (
       <div className="text-gray-500 text-center mt-16">
-        مطلبی یافت نشد. لطفاً موضوع دیگری را انتخاب کنید.
+        مطلبی یافت نشد!
       </div>
     );
   }
