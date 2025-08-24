@@ -48,7 +48,7 @@ export default function BlogTopicsDropdown({
                   : "bg-gray-100 text-gray-700 hover:bg-hoboc hover:text-white"
               }`}
             >
-              {topic.catchy_title}
+              {topic.title}
             </button>
           );
         })}
