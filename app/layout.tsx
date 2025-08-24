@@ -5,6 +5,7 @@ import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import localFont from "next/font/local";
 import Alert from "./components/alert/Alert";
+import ClientDowntimeWrapper from "./components/alert/no_backend/ClientDowntimeWrapper";
 
 const vazir = localFont({
   src: [
@@ -44,7 +45,8 @@ export default function RootLayout({
         {/* <Alert /> */}
 
         <Navbar />
-        {children}
+        {/* {children} */}
+        <ClientDowntimeWrapper>{children}</ClientDowntimeWrapper>
         <Footer />
       </body>
     </html>
