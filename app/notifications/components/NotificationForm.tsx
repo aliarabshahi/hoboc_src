@@ -199,7 +199,7 @@ export default function NotificationForm() {
             ))}
           </div>
           {notification.topics.length === 0 && (
-            <p className="mt-3 text-sm text-center text-[#e066a6] font-bold">
+            <p className="mt-3 text-sm text-center text-[#e9278b] font-bold">
               لطفاً حداقل یک موضوع را انتخاب کنید
             </p>
           )}

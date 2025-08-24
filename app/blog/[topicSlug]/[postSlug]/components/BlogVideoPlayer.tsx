@@ -6,7 +6,7 @@ export default function BlogVideoPlayer({ postData }: { postData: BlogPost }) {
   // Handle uploaded video file
   if (postData.video_file) {
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md border">
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
         <h3 className="text-lg font-bold mb-3">پخش ویدیو</h3>
         <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
           <video 
@@ -33,7 +33,7 @@ export default function BlogVideoPlayer({ postData }: { postData: BlogPost }) {
 
     if (!videoHash) {
       return (
-        <div className="bg-white p-4 rounded-lg shadow-md border">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
           <a 
             href={postData.video_url} 
             target="_blank" 
@@ -47,7 +47,7 @@ export default function BlogVideoPlayer({ postData }: { postData: BlogPost }) {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md border">
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
         <h3 className="text-lg font-bold mb-3">پخش ویدیو</h3>
         <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
           <iframe

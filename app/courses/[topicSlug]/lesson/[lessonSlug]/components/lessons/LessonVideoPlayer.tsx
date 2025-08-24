@@ -3,7 +3,6 @@ import { CoursesLesson } from "@/app/types/coursesType";
 export default function LessonVideoPlayer({ lessonData }: { lessonData: CoursesLesson }) {
   if (!lessonData.video_url) return null;
 
-  // Extract video hash from Aparat URL (e.g., from "https://www.aparat.com/v/ABC123")
   const getAparatVideoHash = (url: string) => {
     const match = url.match(/aparat\.com\/v\/([^\/]+)/);
     return match ? match[1] : null;
@@ -13,7 +12,7 @@ export default function LessonVideoPlayer({ lessonData }: { lessonData: CoursesL
 
   if (!videoHash) {
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md border">
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
         <a 
           href={lessonData.video_url} 
           target="_blank" 
@@ -27,7 +26,7 @@ export default function LessonVideoPlayer({ lessonData }: { lessonData: CoursesL
   }
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md border">
+    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
       <h3 className="text-lg font-bold mb-3">پخش ویدیو</h3>
       <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
         <iframe
