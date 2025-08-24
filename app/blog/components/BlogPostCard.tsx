@@ -1,26 +1,31 @@
 import Link from "next/link";
+import Image from "next/image";
 import { BlogPost } from "@/app/types/blogType";
 import { FiCalendar, FiUser } from "react-icons/fi";
-import { slug } from "valibot";
 
 export default function BlogPostCard({ post }: { post: BlogPost }) {
   return (
     <div className="bg-white p-5 rounded-xl shadow-sm border border-hoboc flex flex-col transition hover:shadow-md relative overflow-hidden">
-      <div className="h-40 w-full mb-4 rounded-lg overflow-hidden bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+      {/* Square cover image */}
+      <div className="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
         {post.cover_image ? (
-          <img
+          <Image
             src={post.cover_image}
             alt={post.title}
-            className="object-cover w-full h-full"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 400px"
+            unoptimized={post.cover_image.startsWith("data:")}
           />
         ) : (
           <span>تصویری موجود نیست</span>
         )}
       </div>
 
+      {/* Post title */}
       <h3 className="text-lg font-bold text-gray-800 mb-1 line-clamp-2">{post.title}</h3>
-      <p className="text-gray-500 text-sm mb-3 line-clamp-3">{post.description}</p>
 
+      {/* Meta info */}
       <div className="flex items-center justify-between text-sm text-hoboc-dark mt-auto pt-3">
         <div className="flex items-center gap-2">
           <FiUser size={14} className="text-hoboc-dark" />
@@ -34,6 +39,7 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
         </div>
       </div>
 
+      {/* Clickable overlay link */}
       <Link
         href={`/blog/${post.topic_slug}/${post.slug}`}
         className="absolute inset-0 z-10"

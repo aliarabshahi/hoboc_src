@@ -21,7 +21,7 @@ export default function BlogTopicsDropdown({
   };
 
   return (
-    <section className="container mx-auto px-4 mt-10">
+    <section className="container mx-auto px-4 ">
       <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
         {/* "همه موضوعات" button */}
         <button

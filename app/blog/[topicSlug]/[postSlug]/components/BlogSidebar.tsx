@@ -2,7 +2,7 @@ import { BlogPost } from "@/app/types/blogType";
 import BlogVideoPlayer from "./BlogVideoPlayer";
 import { FiUser, FiCalendar, FiBookmark } from "react-icons/fi";
 import Link from "next/link";
-import Image from "next/image"; // ✅ Import added
+import Image from "next/image";
 
 interface BlogSidebarProps {
   postData: BlogPost;
@@ -12,21 +12,8 @@ interface BlogSidebarProps {
 
 export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
   return (
-    <div className="space-y-6">
-      {/* Cover Image - Fixed size banner at top */}
-      {postData.cover_image && (
-        <div className="bg-white p-0 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <Image
-            src={postData.cover_image}
-            alt={postData.title}
-            className="w-full h-48 object-cover"
-            width={640}    // عرض دلخواه بنر، متناسب با سایت. اعداد را می‌توانی تنظیم کنی
-            height={192}   // ارتفاع بنر
-            priority={true} // چون احتمالاً همیشه بالای سایدبار هست
-            unoptimized={postData.cover_image.startsWith("data:")}
-          />
-        </div>
-      )}
+    <div className="space-y-4">
+
 
       {/* Post Info Card */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
@@ -55,7 +42,7 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
                     src={postData.writer.profile_picture}
                     alt={postData.writer.name}
                     className="w-6 h-6 rounded-full object-cover"
-                    width={24} // 6 × 4px = 24px
+                    width={24}
                     height={24}
                     unoptimized={postData.writer.profile_picture.startsWith("data:")}
                   />
@@ -72,7 +59,7 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
             <FiCalendar className="text-gray-500" size={14} />
             <span>تاریخ انتشار:</span>
             <span className="text-gray-700">
-              {new Date(postData.created_at).toLocaleDateString('fa-IR')}
+              {new Date(postData.created_at).toLocaleDateString("fa-IR")}
             </span>
           </div>
 
@@ -98,10 +85,24 @@ export default function BlogSidebar({ postData, topicSlug }: BlogSidebarProps) {
           )}
         </div>
       </div>
-
+      {/* Cover Image - Now square */}
+      {postData.cover_image && (
+        <div className="bg-white p-0 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="relative w-full aspect-square">
+            <Image
+              src={postData.cover_image}
+              alt={postData.title}
+              fill
+              className="object-cover"
+              priority={true}
+              unoptimized={postData.cover_image.startsWith("data:")}
+            />
+          </div>
+        </div>
+      )}
       {/* Video Section */}
       {(postData.video_url || postData.video_file) && (
-          <BlogVideoPlayer postData={postData} />
+        <BlogVideoPlayer postData={postData} />
       )}
     </div>
   );
