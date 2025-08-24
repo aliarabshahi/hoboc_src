@@ -30,7 +30,7 @@ export default function FooterSocial() {
     <nav className="flex flex-col items-center space-y-4">
       <div className="pb-1">
         <Image
-          src="/real-logo.png"
+          src="/images/footer/footer-logo.png"
           alt="لوگو"
           width={100}
           height={100}

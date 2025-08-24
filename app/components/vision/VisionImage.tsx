@@ -6,7 +6,7 @@ export default function VisionImage({ className }: { className?: string }) {
       className={`${className ?? ""} relative w-full min-h-[300px] flex items-center justify-center`}
     >
       <Image
-        src="/main/Education-bro (5).svg"
+        src="/images/main_page/vision/education-bro.svg"
         alt="Vision Image"
         width={1500}
         height={1500}

@@ -57,8 +57,8 @@ export default function RoadmapPage() {
                 {error}
               </p>
             ) : roadmapData.length === 0 ? (
-              <p className="text-center text-gray-600 dark:text-gray-300">
-                نقشه راهی برای نمایش وجود ندارد.
+              <p className="text-center text-gray-500 dark:text-gray-300">
+                نقشه راهی برای نمایش وجود ندارد!
               </p>
             ) : (
               <Roadmap

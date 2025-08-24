@@ -25,7 +25,7 @@ const CoursesDetailImage = ({ topic }: CoursesDetailImageProps) => {
       dir="rtl"
     >
       <Image
-        src={topic.image || "/logo.png"}
+        src={topic.image || "/images/logo.png"}
         alt={topic.title}
         fill
         className="object-cover"

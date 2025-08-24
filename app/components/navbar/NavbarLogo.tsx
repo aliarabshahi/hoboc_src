@@ -7,7 +7,7 @@ export default function NavbarLogo() {
       {/* 
       <div>
         <Image
-          src="/logo.png"
+          src="/images/logo.png"
           alt="Hoboc Logo"
           width={32}  // عرض مورد نظر
           height={32} // ارتفاع مورد نظر

@@ -8,7 +8,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Download, Maximize, Minimize, ZoomIn, ZoomOut } from "lucide-react";
 import { FaSpinner } from "react-icons/fa";
 
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf/pdf.worker.min.js';
 
 interface PdfViewerProps {
   pdfUrl: string;

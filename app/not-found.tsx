@@ -19,7 +19,7 @@ export default function NotFound() {
         {/* IMAGE */}
         <div className="w-full max-w-md mx-auto mb-8">
           <Image
-            src="/hero_images/404_not_found2.svg"
+            src="/images/not_found.svg"
             alt="تصویر صفحه پیدا نشد"
             width={500}
             height={500}
