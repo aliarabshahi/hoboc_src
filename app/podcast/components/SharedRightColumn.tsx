@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { AboutSection } from "./AboutSection";
 import { Waveform } from "./Waveform";
-import posterImage from "../images/poster.png";
+import posterImage from "../../../public/images/podcast/hoboc-podcast-poster.png";
 import { HiOutlineUser as PersonIcon } from "react-icons/hi2";
 
 interface SharedRightColumnProps {
