@@ -16,3 +16,5 @@ export interface PodcastEpisode {
   is_published: boolean
 }
 
+
+export type Episode = PodcastEpisode
