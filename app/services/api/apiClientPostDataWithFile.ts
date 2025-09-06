@@ -1,21 +1,19 @@
+import { API_BASE_URL, API_TOKEN } from "@/app/services/config/config";
+
 /** Sends multipart/form-data POST requests (with file uploads) to API and returns typed data or error message */
 export const postApiDataWithFile = async <T>(
   endpoint: string,
   formData: FormData
 ): Promise<{ data: T | null; error?: string }> => {
-  const baseUrl = "http://localhost/hoboc/api";
-  const token = "1ecdf57453ff0f1ce5ec4fe905ef6c699e0434a3";
-
   try {
-    const res = await fetch(`${baseUrl}${endpoint}`, {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: "POST",
       headers: {
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${API_TOKEN}`,
       },
       body: formData,
     });
 
-    // Handle common HTTP errors with Persian user-facing text
     if (!res.ok) {
       if (res.status === 400) {
         const errorData = await res.json();

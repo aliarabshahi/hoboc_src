@@ -1,17 +1,15 @@
+import { API_BASE_URL, API_TOKEN } from "@/app/services/config/config";
+
 /** Generic GET request helper with error handling and fallback messages */
 export const getApiData = async (endpoint: string) => {
-  const baseUrl = "http://localhost/hoboc/api";
-
   try {
-    const res = await fetch(`${baseUrl}${endpoint}`, {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers: {
-        Authorization: "Token 1ecdf57453ff0f1ce5ec4fe905ef6c699e0434a3",
+        Authorization: `Token ${API_TOKEN}`,
       },
       cache: "no-cache",
-      // next: { revalidate: 3600 }, // Optional: revalidation hint for Next.js
     });
 
-    // Map HTTP status codes to Persian user-facing messages
     if (!res.ok) {
       if (res.status === 401) {
         throw new Error("عدم دسترسی: لطفا وارد سیستم شوید");
@@ -28,7 +26,6 @@ export const getApiData = async (endpoint: string) => {
 
     const data = await res.json();
 
-    // Handle cases where results array or nested data array is empty
     if (Array.isArray(data.results) && data.results.length === 0) {
       return { data: [], message: "داده‌ای برای نمایش وجود ندارد" };
     }
@@ -36,7 +33,6 @@ export const getApiData = async (endpoint: string) => {
       return { data: [], message: "داده‌ای برای نمایش وجود ندارد" };
     }
 
-    // Normalize common API response shapes
     if (Array.isArray(data.results)) return { data: data.results };
     if (data.results?.data) return { data: data.results.data };
 
@@ -44,7 +40,6 @@ export const getApiData = async (endpoint: string) => {
   } catch (error) {
     const msg = error instanceof Error ? error.message : "";
 
-    // Handle network-level errors
     if (
       msg.includes("fetch failed") ||
       msg.includes("Failed to fetch") ||

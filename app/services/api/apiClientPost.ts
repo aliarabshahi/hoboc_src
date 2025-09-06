@@ -1,22 +1,20 @@
+import { API_BASE_URL, API_TOKEN } from "@/app/services/config/config";
+
 /** Sends JSON POST requests to API and returns typed data or error message */
 export const postApiData = async <T>(
   endpoint: string,
   body: Record<string, any>
 ): Promise<{ data: T | null; error?: string }> => {
-  const baseUrl = "http://localhost/hoboc/api";
-  const token = "1ecdf57453ff0f1ce5ec4fe905ef6c699e0434a3";
-
   try {
-    const res = await fetch(`${baseUrl}${endpoint}`, {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${API_TOKEN}`,
       },
       body: JSON.stringify(body),
     });
 
-    // Handle non-2xx responses with Persian user-facing messages
     if (!res.ok) {
       if (res.status === 400) {
         const errorData = await res.json();
